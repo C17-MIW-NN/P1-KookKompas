@@ -2,6 +2,8 @@ package nl.miw.ch17.mmadevforce.kookkompas.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 /**
  * @author MMA Dev Force
  *
@@ -13,6 +15,9 @@ public class Recipe {
     @Id @GeneratedValue
     long recipeId;
     String title;
+
+    @OneToMany(mappedBy = "recipe")
+    private List<RecipeIngredient> recipeingredients;
 
     public String getTitle() {
         return title;

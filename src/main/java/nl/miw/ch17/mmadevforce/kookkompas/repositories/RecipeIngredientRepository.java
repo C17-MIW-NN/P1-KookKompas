@@ -1,8 +1,8 @@
 package nl.miw.ch17.mmadevforce.kookkompas.repositories;
 
-/**
- * @author Melanie van der Vlies
- * Doel van de class:
- */
-public interface RecipeIngredientRepository {
+import nl.miw.ch17.mmadevforce.kookkompas.model.RecipeIngredient;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+
+public interface RecipeIngredientRepository extends JpaRepository <RecipeIngredient, Long> {
 }
