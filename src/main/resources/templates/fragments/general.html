@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:fragment="baseheader(title)">
+    <meta charset="UTF-8">
+    <title th:replace="${title}">This is the base title</title>
+</head>
+<body>
+    <div th:fragment="navbar" class="navbar" >
+        <ul class="nav">
+            <li class="nav-item">
+                <a th:href="@{/recipe/all}">Recipe</a>
+            </li>
+        </ul>
+    </div>
+
+    <div th:fragment="footer" class="footer">
+        <footer><p class="text-center">Copyright MMA Dev Force &copy;2025</p></footer>
+    </div>
+
+    <div th:fragment="bottomScripts" >
+        <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    </div>
+</body>
+</html>
