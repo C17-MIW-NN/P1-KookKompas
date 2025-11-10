@@ -1,0 +1,8 @@
+package nl.miw.ch17.mmadevforce.kookkompas.model;
+
+/**
+ * @author Melanie van der Vlies
+ * Doel van de class:
+ */
+public class RecipeIngredient {
+}
