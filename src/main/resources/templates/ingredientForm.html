@@ -9,7 +9,9 @@
 <div th:replace="~{fragments/general :: navbar}"></div>
 
 <div class="container">
-    <h1>Add new ingredient</h1>
+
+    <h1 th:if="${formIngredient.ingredientId == null}">Add a new ingredient</h1>
+    <h1 th:unless="${formIngredient.ingredientId == null}" th:text="|Edit ${formIngredient.name}|"></h1>
 
     <form th:action="@{/ingredient/save}" method="post" th:object="${formIngredient}">
         <input type="hidden" th:field="*{ingredientId}">

@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 /**
  * @author MMA Dev Force
  * Doel methode
@@ -36,6 +38,18 @@ public class IngredientController {
     @PostMapping("/save")
     public String saveIngredient(@ModelAttribute("formIngredient") Ingredient ingredientToBeSaved){
         ingredientRepository.save(ingredientToBeSaved);
+        return "redirect:/ingredient/all";
+    }
+
+    @GetMapping("/edit/{name}")
+    public String showEditIngredientForm(@PathVariable("name") String name, Model datamodel) {
+        Optional<Ingredient> optionalIngredient = ingredientRepository.findByName(name);
+
+        if (optionalIngredient.isPresent()) {
+            datamodel.addAttribute("formIngredient", optionalIngredient.get());
+            return "ingredientForm";
+        }
+
         return "redirect:/ingredient/all";
     }
 

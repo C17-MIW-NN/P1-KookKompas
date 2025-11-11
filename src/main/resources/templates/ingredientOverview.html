@@ -23,6 +23,7 @@
             <td><a th:text="${ingredient.name}"></a></td>
             <td>
                 <a th:href="@{/ingredient/delete/{ingredientId}(ingredientId = ${ingredient.ingredientId})}">Delete</a>
+                <a th:href="@{/ingredient/edit/{name}(name = ${ingredient.name})}">Edit</a>
             </td>
         </tr>
         </tbody>
