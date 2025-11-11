@@ -9,8 +9,17 @@
 
 <div th:replace="~{fragments/general :: navbar}"></div>
 
-<form th:action="@{/recipe}">
+<h2>Amount of servings</h2>
+<form th:action="@{/recipe/decrease}" method="post" style="display:inline;">
+    <input type="hidden" name="currentServings" th:value="${currentServings}">
+    <button type="submit"> less </button>
+</form>
 
+<span th:text="${currentServings}"></span>
+
+<form th:action="@{/recipe/increase}" method="post" style="display:inline;">
+    <input type="hidden" name="currentServings" th:value="${currentServings}">
+    <button type="submit"> more </button>
 </form>
 
 </body>

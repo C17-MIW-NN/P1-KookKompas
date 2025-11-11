@@ -16,13 +16,24 @@ public class Recipe {
     @Id @GeneratedValue
     private Long recipeId;
     private String title;
-    private int servings = DEFAULT_MINIMUM_SERVINGS;
+    private int currentServings = DEFAULT_MINIMUM_SERVINGS;
 
     @OneToMany(mappedBy = "recipe")
     private List<RecipeIngredient> recipeingredients;
 
     public Recipe() {
 
+    }
+
+    public int addPerson(int servingsCurrent) {
+        return servingsCurrent++;
+    }
+
+    public int decreasePerson(int servingsCurrent) {
+        if (servingsCurrent > 1) {
+            return servingsCurrent - 1;
+        }
+        return servingsCurrent;
     }
 
     public String getTitle() {
@@ -42,10 +53,10 @@ public class Recipe {
     }
 
     public int getServings() {
-        return servings;
+        return currentServings;
     }
 
     public void setServings(int servings) {
-        this.servings = servings;
+        this.currentServings = currentServings;
     }
 }

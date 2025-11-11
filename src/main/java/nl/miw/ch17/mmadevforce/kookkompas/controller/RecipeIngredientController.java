@@ -1,5 +1,6 @@
 package nl.miw.ch17.mmadevforce.kookkompas.controller;
 
+import nl.miw.ch17.mmadevforce.kookkompas.model.Recipe;
 import nl.miw.ch17.mmadevforce.kookkompas.model.RecipeIngredient;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.IngredientRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.RecipeIngredientRepository;
@@ -59,13 +60,34 @@ public class RecipeIngredientController {
     }
 
     @GetMapping("/recipeIngredient/edit/{recipeIngredientId}")
-    public String showEditRecipeIngredientForm(@PathVariable("complaintId") Long recipeIngredientId, Model viewmodel) {
+    public String showEditRecipeIngredientForm(@PathVariable("recipeIngredientId") Long recipeIngredientId, Model viewmodel) {
         Optional<RecipeIngredient> optionalRecipeIngredient = recipeIngredientRepository.findById(recipeIngredientId);
 
         if (optionalRecipeIngredient.isPresent()) {
-            viewmodel.addAttribute("formComplaint", optionalRecipeIngredient);
+            viewmodel.addAttribute("formIngredient", optionalRecipeIngredient);
             return "recipeIngredientForm";
         }
         return "redirect:/recipeIngredient/all";
+    }
+
+    @GetMapping("/{title}")
+    public String showRecipe(@PathVariable String title, @RequestParam(required = false) Integer servings, Model model) {
+        Recipe recipe = recipeRepository.findByTitle(title).orElseThrow();
+        int currentServings = (servings != null) ? servings : recipe.getServings();
+        model.addAttribute("recipe", recipe);
+        model.addAttribute("currentServings", currentServings);
+
+        return "redirect:/recipe/detail/{title}";
+    }
+
+    @PostMapping("/{recipeId}/increase")
+    public String increaseServings(@PathVariable Long recipeId, @RequestParam int currentServings) {
+        return "redirect:/recipe/{recipeId}/";
+    }
+
+    @PostMapping("/{recipeId}/decrease")
+    public String decreaseServings(@PathVariable Long recipeId, @RequestParam int currentServings) {
+        if (currentServings > 1) currentServings--;
+        return "redirect:/recipe/{recipeId}/";
     }
 }
