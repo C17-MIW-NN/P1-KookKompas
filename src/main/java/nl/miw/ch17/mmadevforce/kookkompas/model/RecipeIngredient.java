@@ -17,7 +17,7 @@ public class RecipeIngredient {
     private Long recipeId;
     private Long ingredientId;
 
-    private int ingredientAmount;
+    private double ingredientAmount;
 
     @ManyToOne
     private Ingredient ingredient;
@@ -31,8 +31,15 @@ public class RecipeIngredient {
     }
 
     //METHOD ADD AMOUNT
-    public void addIngredient(Ingredient ingredient, int ingredientAmount) {
+    public int addPerson(int servings) {
+        return servings++;
+    }
 
+    public int decreasePerson(int servings) {
+        if (servings > 1) {
+            return servings - 1;
+        }
+        return servings;
     }
 
 
@@ -60,7 +67,7 @@ public class RecipeIngredient {
         this.ingredientId = ingredientId;
     }
 
-    public int getIngredientAmount() {
+    public double getIngredientAmount() {
         return ingredientAmount;
     }
 

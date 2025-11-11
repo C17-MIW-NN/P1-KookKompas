@@ -11,13 +11,19 @@ import java.util.List;
 
 @Entity
 public class Recipe {
+    private final int DEFAULT_MINIMUM_SERVINGS = 2;
 
     @Id @GeneratedValue
-    long recipeId;
-    String title;
+    private Long recipeId;
+    private String title;
+    private int servings = DEFAULT_MINIMUM_SERVINGS;
 
     @OneToMany(mappedBy = "recipe")
     private List<RecipeIngredient> recipeingredients;
+
+    public Recipe() {
+
+    }
 
     public String getTitle() {
         return title;
@@ -27,11 +33,19 @@ public class Recipe {
         this.title = Title;
     }
 
-    public long getRecipeId() {
+    public Long getRecipeId() {
         return recipeId;
     }
 
-    public void setRecipeId(long recipeId) {
+    public void setRecipeId(Long recipeId) {
         this.recipeId = recipeId;
+    }
+
+    public int getServings() {
+        return servings;
+    }
+
+    public void setServings(int servings) {
+        this.servings = servings;
     }
 }
