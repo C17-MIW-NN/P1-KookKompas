@@ -20,6 +20,13 @@ public class Ingredient {
     @OneToMany(mappedBy = "ingredient")
     private List<RecipeIngredient> recipeingredients;
 
+    public Ingredient(String name) {
+        this.name = name;
+    }
+
+    public Ingredient() {
+    }
+
     public Long getIngredientId() {
         return ingredientId;
     }
