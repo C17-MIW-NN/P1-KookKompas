@@ -11,13 +11,13 @@
 
 </head>
 <body>
-    <div th:fragment="navbar" class="navbar" >
-        <ul class="nav">
-            <li class="nav-item">
-                <a th:href="@{/recipe/all}">Recipe</a>
+    <div th:fragment="navbar" class="navbar justify-content-center" >
+        <ul class="nav d-flex gap-3">
+            <li class="nav-item fs-5">
+                <a th:href="@{/recipe/all}">Recipes</a>
             </li>
-            <li class="nav-item">
-                <a th:href="@{/ingredient/all}">Ingredient</a>
+            <li class="nav-item fs-5">
+                <a th:href="@{/ingredient/all}">Ingredients</a>
             </li>
         </ul>
     </div>

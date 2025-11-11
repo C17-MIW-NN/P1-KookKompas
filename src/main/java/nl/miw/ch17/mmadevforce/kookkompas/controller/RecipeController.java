@@ -55,13 +55,9 @@ public class RecipeController {
         return "redirect:/recipe/all";
     }
 
-    /*
-
     @PostMapping("/recipe/save")
     public String saveOrUpdateRecipe(
-            @ModelAttribute("formRecipe") Recipe recipeFromForm,
-            BindingResult result,
-            Model datamodel) {
+            @ModelAttribute("formRecipe") Recipe recipeFromForm) {
 
         // Bestaand recept ophalen of nieuwe aanmaken
         Recipe recipeToBeSaved;
@@ -78,8 +74,6 @@ public class RecipeController {
 
         return "redirect:/recipe/all";
     }
-
-    */
 
     @GetMapping("/recipe/delete/{recipeId}")
     public String deleteRecipe(@PathVariable("recipeId") Long recipeId) {
@@ -99,14 +93,6 @@ public class RecipeController {
         datamodel.addAttribute("recipe", recipeToShow.get());
 
         return "recipeDetails";
-
     }
-
-
-
-
-
-
-
 
 }

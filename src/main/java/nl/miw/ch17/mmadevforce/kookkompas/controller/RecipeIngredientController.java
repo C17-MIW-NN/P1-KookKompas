@@ -28,7 +28,7 @@ public class RecipeIngredientController {
         this.ingredientRepository = ingredientRepository;
     }
 
-    @GetMapping({"/recipeIngredient/all", "/"})
+    @GetMapping({"/recipeIngredient/all"})
     public String showRecipeIngredientOverview(Model viewmodel) {
         viewmodel.addAttribute("recipeIngredient", new RecipeIngredient());
         viewmodel.addAttribute("ingredients", ingredientRepository.findAll());
