@@ -11,6 +11,26 @@
 <div class="container">
     <h1>Overview of all the ingredients</h1>
 
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="ingredient : ${ingredients}">
+            <td><a th:text="${ingredient.name}"></a></td>
+            <td>
+                <a th:href="@{/ingredient/delete/{ingredientId}(ingredientId = ${ingredient.ingredientId})}">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a th:href="@{/ingredient/add}">Add a new ingredient</a>
+
+
 </div>
 
 <div th:replace="~{fragments/general :: footer}"></div>

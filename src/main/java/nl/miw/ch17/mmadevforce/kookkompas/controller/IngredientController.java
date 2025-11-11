@@ -4,10 +4,7 @@ import nl.miw.ch17.mmadevforce.kookkompas.model.Ingredient;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.IngredientRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author MMA Dev Force
@@ -39,6 +36,12 @@ public class IngredientController {
     @PostMapping("/save")
     public String saveIngredient(@ModelAttribute("formIngredient") Ingredient ingredientToBeSaved){
         ingredientRepository.save(ingredientToBeSaved);
+        return "redirect:/ingredient/all";
+    }
+
+    @GetMapping("/delete/{ingredientId}")
+    public String deleteIngredient(@PathVariable("ingredientId") Long ingredientId) {
+        ingredientRepository.deleteById(ingredientId);
         return "redirect:/ingredient/all";
     }
 
