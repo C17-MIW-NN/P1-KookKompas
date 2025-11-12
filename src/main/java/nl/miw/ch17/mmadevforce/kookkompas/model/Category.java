@@ -17,8 +17,8 @@ public class Category {
     private String categoryName;
 
 
-    public Category(String category) {
-        this.categoryName = category;
+    public Category(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public Category() {
@@ -34,11 +34,11 @@ public class Category {
         this.categoryId = categoryId;
     }
 
-    public String getCategory() {
+    public String getCategoryName() {
         return categoryName;
     }
 
-    public void setCategory(String category) {
-        this.categoryName = category;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }

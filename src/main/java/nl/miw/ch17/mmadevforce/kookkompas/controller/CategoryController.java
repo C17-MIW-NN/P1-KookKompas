@@ -9,7 +9,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.Optional;
 
 /**
  * @author MMA Dev Force
@@ -27,6 +30,7 @@ public class CategoryController {
 
     @GetMapping("/category/all")
     public String showRecipeCategories(Model viewmodel) {
+        viewmodel.addAttribute("categories", categoryRepository.findAll());
         viewmodel.addAttribute("formRecipeCategories", new Category());
         return "categoryOverview";
     }
@@ -44,7 +48,5 @@ public class CategoryController {
         }
         return "redirect:/category/all";
     }
-
-
 
 }

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
-<head th:replace="~{fragments/general :: baseheader(~{:: title})}">
+<head th:replace="~{fragments/general :: baseheader(~{::title})}">
     <meta charset="UTF-8">
     <title>Overview of categories</title>
 </head>
@@ -18,12 +18,13 @@
             </tr>
             </thead>
             <tbody>
-                <tr th:each="category :${category}">
-                    <td th:text="${category.category}"></td>
-                    <td></td>
+                <tr th:each="category : ${categories}">
+                    <td th:text="${category.categoryName}"></td>
                 </tr>
             </tbody>
         </table>
+
+        <a th:href="@{/category/add}">add</a>
     </div>
 
 

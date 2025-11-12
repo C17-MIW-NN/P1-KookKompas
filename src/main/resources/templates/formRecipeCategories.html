@@ -12,7 +12,7 @@
         <h1>Add categories</h1>
         <form th:action="@{/category/save}" method="post" th:object="${formCategory}">
             <input type="hidden" th:field="*{categoryId}">
-            Category: <input type="text" th:field="*{category}">
+            Category: <input type="text" th:field="*{categoryName}">
             <input type="submit" value="Save category">
         </form>
     </div>
