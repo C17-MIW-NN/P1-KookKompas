@@ -1,19 +1,36 @@
-Ingredient,Amount,Unit
-Spaghetti,300.0,g
-Rundergehakt,375.0,g
-Ui,1.0,stuk
-Knoflook,2.0,teentje
-Wortel,1.0,stuk 
-Bleekselderij,1.0,stengel
-Olijfolie,2.0,eetlepel
-Tomatenpuree,1.0,eetlepel
-Tomatenblokjes,400.0,g
-Runderbouillon,150.0,ml
-Rode wijn,75.0,ml
-Melk,75.0,ml
-Zout,0.5,theelepel
-Zwarte peper,0.5,theelepel
-Gedroogde oregano,0.5,theelepel
-Gedroogde basilicum,0.5,theelepel
-Laurierblad,1.0,blad
-Parmezaanse kaas,35.0,g
+recipeTitle,Ingredient,Amount,Unit
+Pasta Bolognese,Spaghetti,300.0,g
+Pasta Bolognese,Rundergehakt,375.0,g
+Pasta Bolognese,Ui,1.0,stuk
+Pasta Bolognese,Knoflook,2.0,teentje
+Pasta Bolognese,Wortel,1.0,stuk
+Pasta Bolognese,Bleekselderij,1.0,stengel
+Pasta Bolognese,Olijfolie,2.0,eetlepel
+Pasta Bolognese,Tomatenpuree,1.0,eetlepel
+Pasta Bolognese,Tomatenblokjes,400.0,g
+Pasta Bolognese,Runderbouillon,150.0,ml
+Pasta Bolognese,Rode wijn,75.0,ml
+Pasta Bolognese,Melk,75.0,ml
+Pasta Bolognese,Zout,0.5,theelepel
+Pasta Bolognese,Zwarte peper,0.5,theelepel
+Pasta Bolognese,Gedroogde oregano,0.5,theelepel
+Pasta Bolognese,Gedroogde basilicum,0.5,theelepel
+Pasta Bolognese,Laurierblad,1.0,blad
+Pasta Bolognese,Parmezaanse kaas,35.0,g
+Groenteburger,Kikkererwten,240.0,g
+Groenteburger,Wortel,1.0,stuk
+Groenteburger,Courgette,0.5,stuk
+Groenteburger,Ui,1.0,stuk
+Groenteburger,Knoflook,1.0,teentje
+Groenteburger,Paneermeel,60.0,g
+Groenteburger,Ei,1.0,stuk
+Groenteburger,Olijfolie,2.0,eetlepel
+Groenteburger,Zout,0.5,theelepel
+Groenteburger,Zwarte peper,0.5,theelepel
+Groenteburger,Komijn,0.5,theelepel
+Groenteburger,Paprikapoeder,0.5,theelepel
+Groenteburger,Hamburgerbroodjes,3.0,stuk
+Groenteburger,Sla,6.0,blad
+Groenteburger,Tomaat,3.0,plak
+Groenteburger,Kaas,3.0,plak
+

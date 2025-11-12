@@ -32,6 +32,10 @@ public class Recipe {
         this.recipeingredients = recipeingredients;
     }
 
+    public Recipe(String title) {
+        this.title = title;
+    }
+
     public Recipe() {
     }
 

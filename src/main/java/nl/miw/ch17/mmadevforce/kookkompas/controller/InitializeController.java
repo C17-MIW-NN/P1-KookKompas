@@ -43,9 +43,6 @@ public class InitializeController {
     }
 
     private void initializeDB() {
-        Recipe pastaBolognese = new Recipe();
-        pastaBolognese.setTitle("Pasta Bolognese");
-        recipeRepository.save(pastaBolognese);
 
         ClassPathResource ingredientBestand = new ClassPathResource("static/IngredientList.csv");
 
@@ -56,16 +53,20 @@ public class InitializeController {
                 String regel = invoer.nextLine().trim();
                 if (!regel.isEmpty()) {
                     String[] parts = regel.split(",");
-                    String name = parts[0];
-                    double ingredientAmount = Double.parseDouble(parts[1]);
-                    String unit = parts[2];
+                    String recipeTitle = parts[0];
+                    String name = parts[1];
+                    double ingredientAmount = Double.parseDouble(parts[2]);
+                    String unit = parts[3];
+
+                    Recipe recipe = recipeRepository.findByTitle(recipeTitle)
+                            .orElseGet(() -> recipeRepository.save(new Recipe(recipeTitle)));
 
                     Ingredient ingredient = ingredientRepository.findByName(name)
                             .orElseGet(() -> ingredientRepository.save(new Ingredient(name)));
 
                     RecipeIngredient recipeIngredient = new RecipeIngredient();
                     recipeIngredient.setIngredient(ingredient);
-                    recipeIngredient.setRecipe(pastaBolognese);
+                    recipeIngredient.setRecipe(recipe);
                     recipeIngredient.setIngredientAmount(ingredientAmount);
                     recipeIngredient.setUnit(unit);
 
