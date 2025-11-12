@@ -59,4 +59,12 @@ public class Recipe {
     public void setServings(int servings) {
         this.currentServings = currentServings;
     }
+
+    public List<RecipeIngredient> getRecipeingredients() {
+        return recipeingredients;
+    }
+
+    public void setRecipeingredients(List<RecipeIngredient> recipeingredients) {
+        this.recipeingredients = recipeingredients;
+    }
 }
