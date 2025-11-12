@@ -59,7 +59,7 @@ public class RecipeController {
     public String saveOrUpdateRecipe(
             @ModelAttribute("formRecipe") Recipe recipeFromForm) {
 
-        // Bestaand recept ophalen of nieuwe aanmaken
+        // Bestaand recept ophalen of nieuw recept aanmaken
         Recipe recipeToBeSaved;
         if (recipeFromForm.getRecipeId() != null) {
             recipeToBeSaved = recipeRepository.findById(recipeFromForm.getRecipeId()).orElseThrow();

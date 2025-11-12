@@ -16,6 +16,8 @@ public class Recipe {
     @Id @GeneratedValue
     private Long recipeId;
     private String title;
+    private String description;
+    private int preparationTime;
     private int currentServings = DEFAULT_MINIMUM_SERVINGS;
 
     @OneToMany(mappedBy = "recipe")
@@ -58,5 +60,21 @@ public class Recipe {
 
     public void setServings(int servings) {
         this.currentServings = currentServings;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getPreparationTime() {
+        return preparationTime;
+    }
+
+    public void setPreparationTime(int preparationTime) {
+        this.preparationTime = preparationTime;
     }
 }
