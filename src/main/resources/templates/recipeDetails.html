@@ -13,43 +13,62 @@
 
     <p><span th:text="${recipe.description}"></span></p>
 
-    <table>
-        <tr>
-            <th>Ingredient</th>
-            <th>Amount</th>
-            <th>Unit</th>
-        </tr>
-        <tr th:each="recipeIngredient : ${ingredients}">
-            <td th:text="${recipeIngredient.ingredient.name}"></td>
-            <td th:text="${recipeIngredient.ingredientAmount}"></td>
-            <td th:text="${recipeIngredient.unit}"></td>
-        </tr>
-    </table>
+    <div class="row">
 
-    <table>
-        <tr>
-            <th>Step</th>
-            <th>Description</th>
-        </tr>
-        <tr th:each="recipeStep : ${recipe.steps}">
-            <td th:text="${recipeStep.stepNumber}"></td>
-            <td th:text="${recipeStep.stepDescription}"></td>
-        </tr>
-    </table>
+        <div class="col-md-4">
+            <h2>Ingrediënten</h2>
 
-    <h2>Amount of servings</h2>
-    <form th:action="@{/recipe/decrease}" method="post" style="display:inline;">
-        <input type="hidden" name="currentServings" th:value="${currentServings}">
-        <button type="submit"> less </button>
-    </form>
+            <div class="mb-2">
+                <form th:action="@{/recipe/decrease}" method="post" style="display:inline;">
+                    <input type="hidden" name="currentServings" th:value="${currentServings}">
+                    <button type="submit" class="btn btn-sm btn-outline-secondary">less</button>
+                </form>
 
-    <span th:text="${currentServings}"></span>
+                <span th:text="${currentServings}"></span>
 
-    <form th:action="@{/recipe/increase}" method="post" style="display:inline;">
-        <input type="hidden" name="currentServings" th:value="${currentServings}">
-        <button type="submit"> more </button>
-    </form>
+                <form th:action="@{/recipe/increase}" method="post" style="display:inline;">
+                    <input type="hidden" name="currentServings" th:value="${currentServings}">
+                    <button type="submit" class="btn btn-sm btn-outline-secondary">more</button>
+                </form>
+            </div>
 
+            <table class="table table-sm">
+                <thead>
+                <tr>
+                    <th>Ingredient</th>
+                    <th>Amount</th>
+                    <th>Unit</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="recipeIngredient : ${ingredients}">
+                    <td th:text="${recipeIngredient.ingredient.name}"></td>
+                    <td th:text="${recipeIngredient.ingredientAmount}"></td>
+                    <td th:text="${recipeIngredient.unit}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-8">
+            <h2>Bereidingswijze</h2>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Step</th>
+                    <th>Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="recipeStep : ${recipe.steps}">
+                    <td th:text="${recipeStep.stepNumber}"></td>
+                    <td th:text="${recipeStep.stepDescription}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
     <div th:replace="~{fragments/general :: footer}"></div>
     <div th:replace="~{fragments/general :: bottomScripts}"></div>
 </div>

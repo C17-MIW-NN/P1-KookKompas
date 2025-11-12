@@ -15,7 +15,7 @@ public class Ingredient {
     private Long ingredientId;
 
     @Column(unique = true)
-    String name;
+    private String name;
 
     @OneToMany(mappedBy = "ingredient")
     private List<RecipeIngredient> recipeingredients;
