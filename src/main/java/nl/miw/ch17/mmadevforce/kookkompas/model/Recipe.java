@@ -18,13 +18,18 @@ public class Recipe {
     private String title;
     private String description;
     private int preparationTime;
-    private int currentServings = DEFAULT_MINIMUM_SERVINGS;
+    private int servings = DEFAULT_MINIMUM_SERVINGS;
 
     @OneToMany(mappedBy = "recipe")
     private List<RecipeIngredient> recipeingredients;
 
-    public Recipe() {
+    public Recipe(String title, int servings, List<RecipeIngredient> recipeingredients) {
+        this.title = title;
+        this.servings = servings;
+        this.recipeingredients = recipeingredients;
+    }
 
+    public Recipe() {
     }
 
     public int addPerson(int servingsCurrent) {
@@ -55,11 +60,19 @@ public class Recipe {
     }
 
     public int getServings() {
-        return currentServings;
+        return servings;
     }
 
     public void setServings(int servings) {
-        this.currentServings = currentServings;
+        this.servings = servings;
+    }
+
+    public List<RecipeIngredient> getRecipeingredients() {
+        return recipeingredients;
+    }
+
+    public void setRecipeingredients(List<RecipeIngredient> recipeingredients) {
+        this.recipeingredients = recipeingredients;
     }
 
     public String getDescription() {

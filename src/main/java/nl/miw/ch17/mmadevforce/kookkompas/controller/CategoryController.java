@@ -1,0 +1,50 @@
+package nl.miw.ch17.mmadevforce.kookkompas.controller;
+
+import nl.miw.ch17.mmadevforce.kookkompas.model.Category;
+import nl.miw.ch17.mmadevforce.kookkompas.model.RecipeIngredient;
+import nl.miw.ch17.mmadevforce.kookkompas.repositories.CategoryRepository;
+import nl.miw.ch17.mmadevforce.kookkompas.repositories.RecipeRepository;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+
+/**
+ * @author MMA Dev Force
+ *
+ */
+@Controller
+public class CategoryController {
+    private final CategoryRepository categoryRepository;
+    private final RecipeRepository recipeRepository;
+
+    public CategoryController(CategoryRepository categoryRepository, RecipeRepository recipeRepository) {
+        this.categoryRepository = categoryRepository;
+        this.recipeRepository = recipeRepository;
+    }
+
+    @GetMapping("/category/all")
+    public String showRecipeCategories(Model viewmodel) {
+        viewmodel.addAttribute("formRecipeCategories", new Category());
+        return "categoryOverview";
+    }
+
+    @GetMapping("/category/add")
+    public String showCategoryForm(Model viewmodel) {
+        viewmodel.addAttribute("formCategory", new Category());
+        return "formRecipeCategories";
+    }
+
+    @PostMapping("/category/save")
+    public String saveOrUpdateCategory(@ModelAttribute("formCategory") Category categoryToBeSaved, BindingResult result) {
+        if (!result.hasErrors()) {
+            categoryRepository.save(categoryToBeSaved);
+        }
+        return "redirect:/category/all";
+    }
+
+
+
+}

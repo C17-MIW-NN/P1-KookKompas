@@ -11,6 +11,19 @@
 <div class="container">
     <h1><span th:text="${recipe.title}"></span></h1>
 
+    <table>
+        <tr>
+            <th>Ingredient</th>
+            <th>Amount</th>
+            <th>Unit</th>
+        </tr>
+        <tr th:each="recipeIngredient : ${ingredients}">
+            <td th:text="${recipeIngredient.ingredient.name}"></td>
+            <td th:text="${recipeIngredient.ingredientAmount}"></td>
+            <td th:text="${recipeIngredient.unit}"></td>
+        </tr>
+    </table>
+
     <h2>Amount of servings</h2>
     <form th:action="@{/recipe/decrease}" method="post" style="display:inline;">
         <input type="hidden" name="currentServings" th:value="${currentServings}">
