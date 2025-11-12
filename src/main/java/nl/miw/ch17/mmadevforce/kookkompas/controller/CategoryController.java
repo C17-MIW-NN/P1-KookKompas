@@ -42,9 +42,32 @@ public class CategoryController {
     }
 
     @PostMapping("/category/save")
-    public String saveOrUpdateCategory(@ModelAttribute("formCategory") Category categoryToBeSaved, BindingResult result) {
-        if (!result.hasErrors()) {
-            categoryRepository.save(categoryToBeSaved);
+    public String saveOrUpdateCategory(@ModelAttribute("formCategory") Category categoryToBeSaved) {
+        categoryRepository.save(categoryToBeSaved);
+        return "redirect:/category/all";
+    }
+
+//    @PostMapping("/category/save")
+//    public String saveOrUpdateCategory(@ModelAttribute("formCategory") Category categoryToBeSaved, BindingResult result) {
+//        if (!result.hasErrors()) {
+//            categoryRepository.save(categoryToBeSaved);
+//        }
+//        return "redirect:/category/all";
+//    }
+
+    @GetMapping("/category/delete/{categoryId}")
+    public String deleteCategory(@PathVariable("categoryId") Long categoryId) {
+        categoryRepository.deleteById(categoryId);
+        return "redirect:/category/all";
+    }
+
+    @GetMapping("/category/edit/{categoryName}")
+    public String showEditCategoryForm(@PathVariable("categoryName") String categoryName, Model viewmodel) {
+        Optional<Category> optionalCategory = categoryRepository.findByCategoryName(categoryName);
+
+        if (optionalCategory.isPresent()) {
+            viewmodel.addAttribute("formCategory", optionalCategory.get());
+            return "formRecipeCategories";
         }
         return "redirect:/category/all";
     }

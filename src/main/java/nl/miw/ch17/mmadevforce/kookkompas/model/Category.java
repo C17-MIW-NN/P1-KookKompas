@@ -1,5 +1,6 @@
 package nl.miw.ch17.mmadevforce.kookkompas.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -14,6 +15,7 @@ public class Category {
     @Id @GeneratedValue
     private Long categoryId;
 
+    @Column(unique = true)
     private String categoryName;
 
 

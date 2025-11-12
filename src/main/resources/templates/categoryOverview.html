@@ -20,11 +20,13 @@
             <tbody>
                 <tr th:each="category : ${categories}">
                     <td th:text="${category.categoryName}"></td>
+                    <td><a th:href="@{/category/edit/{categoryName}(categoryName=${category.categoryName})}" type="button">edit</a></td>
+                    <td><a th:href="@{/category/delete/{categoryId}(categoryId=${category.categoryId})}" type="button">delete</a></td>
                 </tr>
             </tbody>
         </table>
 
-        <a th:href="@{/category/add}">add</a>
+        <a th:href="@{/category/add}">add a category</a>
     </div>
 
 
