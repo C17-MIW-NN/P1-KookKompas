@@ -24,6 +24,19 @@
             <textarea class="form-control" id="recipeDescription" type="text" th:field="*{description}"></textarea>
         </div>
 
+<!--        <div class="form-group">-->
+<!--            <label for="recipeIngredients">Ingredients</label>-->
+<!--            <div id="recipeIngredients" th:each="ingredient : ${ingredients}">-->
+<!--                <input type="checkbox" name="ingredientIds"-->
+<!--                       th:value="${ingredient.ingredientId}" />-->
+<!--                <span th:text="${ingredient.name}"></span><br>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <div class="form-group">-->
+<!--            <label for="recipeSteps">Steps</label>-->
+<!--            <div id="recipeSteps"></div>-->
+<!--        </div>-->
 
         <input type="submit" value="Save recipe">
 
