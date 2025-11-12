@@ -1,7 +1,8 @@
 package nl.miw.ch17.mmadevforce.kookkompas.repositories;
 
-/**
-  * @author Melanie van der Vlies
-  * Doel van de class:
-  */public interface CategoryRepository {
+import nl.miw.ch17.mmadevforce.kookkompas.model.Category;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface CategoryRepository extends JpaRepository <Category, Long> {
+
 }
