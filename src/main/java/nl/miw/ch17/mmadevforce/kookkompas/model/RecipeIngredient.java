@@ -18,6 +18,7 @@ public class RecipeIngredient {
     private Long ingredientId;
 
     private double ingredientAmount;
+    private String unit;
 
     @ManyToOne
     private Ingredient ingredient;
@@ -71,7 +72,33 @@ public class RecipeIngredient {
         return ingredientAmount;
     }
 
-    public void setIngredientAmount(int ingredientAmount) {
+    public void setIngredientAmount(double ingredientAmount) {
         this.ingredientAmount = ingredientAmount;
     }
+
+    public Ingredient getIngredient() {
+        return ingredient;
+    }
+
+    public void setIngredient(Ingredient ingredient) {
+        this.ingredient = ingredient;
+    }
+
+    public Recipe getRecipe() {
+        return recipe;
+    }
+
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+
 }

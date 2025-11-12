@@ -90,7 +90,9 @@ public class RecipeController {
             return "redirect:/recipe/all";
         }
 
-        datamodel.addAttribute("recipe", recipeToShow.get());
+        Recipe recipe = recipeToShow.get();
+        datamodel.addAttribute("recipe", recipe);
+        datamodel.addAttribute("ingredients", recipe.getRecipeingredients());
 
         return "recipeDetails";
     }
