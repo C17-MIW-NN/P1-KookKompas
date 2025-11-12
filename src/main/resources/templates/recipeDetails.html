@@ -11,6 +11,8 @@
 <div class="container">
     <h1><span th:text="${recipe.title}"></span></h1>
 
+    <p><span th:text="${recipe.description}"></span></p>
+
     <table>
         <tr>
             <th>Ingredient</th>
@@ -21,6 +23,17 @@
             <td th:text="${recipeIngredient.ingredient.name}"></td>
             <td th:text="${recipeIngredient.ingredientAmount}"></td>
             <td th:text="${recipeIngredient.unit}"></td>
+        </tr>
+    </table>
+
+    <table>
+        <tr>
+            <th>Step</th>
+            <th></th>
+        </tr>
+        <tr th:each="recipeStep : ${recipe}">
+            <td th:text="${recipeStep.stepNumber}"></td>
+            <td th:text="${recipeStep.stepDescription}"></td>
         </tr>
     </table>
 
