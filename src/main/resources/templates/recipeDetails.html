@@ -29,9 +29,9 @@
     <table>
         <tr>
             <th>Step</th>
-            <th></th>
+            <th>Description</th>
         </tr>
-        <tr th:each="recipeStep : ${recipeStep}">
+        <tr th:each="recipeStep : ${recipe.steps}">
             <td th:text="${recipeStep.stepNumber}"></td>
             <td th:text="${recipeStep.stepDescription}"></td>
         </tr>

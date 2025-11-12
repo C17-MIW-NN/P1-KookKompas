@@ -3,9 +3,11 @@ package nl.miw.ch17.mmadevforce.kookkompas.controller;
 import nl.miw.ch17.mmadevforce.kookkompas.model.Ingredient;
 import nl.miw.ch17.mmadevforce.kookkompas.model.Recipe;
 import nl.miw.ch17.mmadevforce.kookkompas.model.RecipeIngredient;
+import nl.miw.ch17.mmadevforce.kookkompas.model.RecipeStep;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.IngredientRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.RecipeIngredientRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.RecipeRepository;
+import nl.miw.ch17.mmadevforce.kookkompas.repositories.RecipeStepRepository;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.io.ClassPathResource;
@@ -23,12 +25,14 @@ public class InitializeController {
     private final IngredientRepository ingredientRepository;
     private final RecipeIngredientRepository recipeIngredientRepository;
     private final RecipeRepository recipeRepository;
+    private final RecipeStepRepository recipeStepRepository;
 
 
-    public InitializeController(IngredientRepository ingredientRepository, RecipeIngredientRepository recipeIngredientRepository, RecipeRepository recipeRepository) {
+    public InitializeController(IngredientRepository ingredientRepository, RecipeIngredientRepository recipeIngredientRepository, RecipeRepository recipeRepository, RecipeStepRepository recipeStepRepository) {
         this.ingredientRepository = ingredientRepository;
         this.recipeIngredientRepository = recipeIngredientRepository;
         this.recipeRepository = recipeRepository;
+        this.recipeStepRepository = recipeStepRepository;
     }
 
     @EventListener
@@ -70,6 +74,36 @@ public class InitializeController {
             }
         } catch (Exception e) {
             System.err.println("Bestand kon niet geopend worden.");
+            System.err.println(e.getMessage());
+        }
+
+        ClassPathResource stepsBestand = new ClassPathResource("static/RecipeSteps.csv");
+
+        try (Scanner invoer = new Scanner(stepsBestand.getInputStream())) {
+            if (invoer.hasNextLine()) invoer.nextLine();
+
+            while (invoer.hasNextLine()) {
+                String line = invoer.nextLine().trim();
+                if (!line.isEmpty()) {
+                    String[] parts = line.split(",");
+                    String recipeTitle = parts[0];
+                    int stepNumber = Integer.parseInt(parts[1]);
+                    String stepDescription = parts[2];
+
+                    Recipe recipe = recipeRepository.findByTitle(recipeTitle)
+                            .orElseThrow(() -> new IllegalArgumentException("Recipe not found: " + recipeTitle));
+
+                    RecipeStep step = new RecipeStep();
+                    step.setRecipe(recipe);
+                    step.setStepNumber(stepNumber);
+                    step.setStepDescription(stepDescription);
+
+                    recipeStepRepository.save(step);
+                }
+            }
+
+        } catch (Exception e) {
+            System.err.println("Stappenbestand kon niet geopend worden.");
             System.err.println(e.getMessage());
         }
 
