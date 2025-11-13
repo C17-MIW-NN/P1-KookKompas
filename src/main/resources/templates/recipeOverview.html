@@ -27,8 +27,12 @@
             <td><a th:each="category : ${recipe.categories}"
                    th:text="${category.categoryName}"></a>
             </td>
-            <td><a th:href="@{/recipe/detail/{title}(title = ${recipe.title})}">Edit</a>
-                <a th:href="@{/recipe/delete/{recipeId}(recipeId = ${recipe.recipeId})}">Delete</a>
+            <td><a th:href="@{/recipe/edit/{title}(title = ${recipe.title})}" class="btn btn-sm btn-primary">
+                    <i class="bi bi-pencil"></i>
+                </a>
+                <a th:href="@{/recipe/delete/{recipeId}(recipeId = ${recipe.recipeId})}" class="btn btn-sm btn-danger">
+                    <i class="bi bi-trash"></i>
+                </a>
                 <a th:href="@{/shoppinglist/add/{recipeId}(recipeId=${recipe.recipeId})}"
                    class="btn btn-sm btn-success">Add to shoppinglist</a>
             </td>
@@ -37,7 +41,7 @@
 
     </table>
     <br>
-    <a th:href="@{/recipe/add}">Add a new recipe</a>
+    <a th:href="@{/recipe/add}" class="btn btn-sm btn-success">Add a new recipe</a>
     <br>
 </div>
 
