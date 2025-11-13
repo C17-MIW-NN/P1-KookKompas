@@ -66,5 +66,11 @@ public class ShoppingListController {
         return "redirect:/shoppinglist/all";
     }
 
+    @GetMapping("/clear")
+    public String clearShoppingList() {
+        shoppingListItemRepository.deleteAll();
+        return "redirect:/shoppinglist/all";
+    }
+
 
 }
