@@ -22,14 +22,19 @@
         <tr th:each="ingredient : ${ingredients}">
             <td><a th:text="${ingredient.name}"></a></td>
             <td>
-                <a th:href="@{/ingredient/delete/{ingredientId}(ingredientId = ${ingredient.ingredientId})}">Delete</a>
-                <a th:href="@{/ingredient/edit/{name}(name = ${ingredient.name})}">Edit</a>
+                <a th:href="@{/ingredient/edit/{name}(name = ${ingredient.name})}" class="btn btn-sm btn-primary">
+                    <i class="bi bi-pencil"></i>
+                </a>
+                <a th:href="@{/ingredient/delete/{ingredientId}(ingredientId = ${ingredient.ingredientId})}"
+                   class="btn btn-sm btn-danger">
+                    <i class="bi bi-trash"></i>
+                </a>
             </td>
         </tr>
         </tbody>
     </table>
 
-    <a th:href="@{/ingredient/add}">Add a new ingredient</a>
+    <a th:href="@{/ingredient/add}" class="btn btn-sm btn-success">Add a new ingredient</a>
 
 
 </div>

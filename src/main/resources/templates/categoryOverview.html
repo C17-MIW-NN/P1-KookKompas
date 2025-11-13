@@ -10,23 +10,26 @@
 
     <div class="container">
         <h1>Overview of recipe categories</h1>
-        <table>
+        <table class="table">
             <thead>
             <tr>
                 <th>Category</th>
-                <th></th>
+                <th>Actions</th>
             </tr>
             </thead>
             <tbody>
                 <tr th:each="category : ${categories}">
                     <td th:text="${category.categoryName}"></td>
-                    <td><a th:href="@{/category/edit/{categoryName}(categoryName=${category.categoryName})}" type="button">edit</a></td>
-                    <td><a th:href="@{/category/delete/{categoryId}(categoryId=${category.categoryId})}" type="button">delete</a></td>
+                    <td><a th:href="@{/category/edit/{categoryName}(categoryName=${category.categoryName})}"
+                           class="btn btn-sm btn-primary"><i class="bi bi-pencil"></i></a>
+                        <a th:href="@{/category/delete/{categoryId}(categoryId=${category.categoryId})}"
+                           class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>
+                    </td>
                 </tr>
             </tbody>
         </table>
 
-        <a th:href="@{/category/add}">add a category</a>
+        <a th:href="@{/category/add}" class="btn btn-sm btn-success">Add a category</a>
     </div>
 
 
