@@ -15,6 +15,7 @@
         <thead>
         <tr>
             <th>Title</th>
+            <th>Category</th>
             <th>Actions</th>
         </tr>
         </thead>
@@ -23,6 +24,9 @@
         <tr th:each="recipe : ${recipes}">
             <td><a th:href="@{/recipe/detail/{title}(title = ${recipe.title})}"
                    th:text="${recipe.title}"></a></td>
+            <td><a th:each="category : ${recipe.categories}"
+                   th:text="${category.categoryName}"></a>
+            </td>
             <td><a th:href="@{/recipe/detail/{title}(title = ${recipe.title})}">Edit</a>
                 <a th:href="@{/recipe/delete/{recipeId}(recipeId = ${recipe.recipeId})}">Delete</a></td>
         </tr>

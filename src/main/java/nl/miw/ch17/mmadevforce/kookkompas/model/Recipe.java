@@ -26,6 +26,10 @@ public class Recipe {
     @OneToMany(mappedBy = "recipe")
     private List<RecipeStep> steps;
 
+    @ManyToMany
+    private List<Category> categories;
+
+
     public Recipe(String title, int servings, List<RecipeIngredient> recipeingredients) {
         this.title = title;
         this.servings = servings;
@@ -104,5 +108,13 @@ public class Recipe {
 
     public void setSteps(List<RecipeStep> steps) {
         this.steps = steps;
+    }
+
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
     }
 }

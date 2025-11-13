@@ -1,9 +1,8 @@
 package nl.miw.ch17.mmadevforce.kookkompas.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.Set;
 
 /**
  * @author MMA Dev Force
@@ -43,4 +42,5 @@ public class Category {
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
     }
+
 }

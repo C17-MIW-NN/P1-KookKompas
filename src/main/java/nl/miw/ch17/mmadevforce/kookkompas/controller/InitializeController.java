@@ -1,20 +1,13 @@
 package nl.miw.ch17.mmadevforce.kookkompas.controller;
 
-import nl.miw.ch17.mmadevforce.kookkompas.model.Ingredient;
-import nl.miw.ch17.mmadevforce.kookkompas.model.Recipe;
-import nl.miw.ch17.mmadevforce.kookkompas.model.RecipeIngredient;
-import nl.miw.ch17.mmadevforce.kookkompas.model.RecipeStep;
-import nl.miw.ch17.mmadevforce.kookkompas.repositories.IngredientRepository;
-import nl.miw.ch17.mmadevforce.kookkompas.repositories.RecipeIngredientRepository;
-import nl.miw.ch17.mmadevforce.kookkompas.repositories.RecipeRepository;
-import nl.miw.ch17.mmadevforce.kookkompas.repositories.RecipeStepRepository;
+import nl.miw.ch17.mmadevforce.kookkompas.model.*;
+import nl.miw.ch17.mmadevforce.kookkompas.repositories.*;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * @author MMA Dev Force
@@ -26,13 +19,19 @@ public class InitializeController {
     private final RecipeIngredientRepository recipeIngredientRepository;
     private final RecipeRepository recipeRepository;
     private final RecipeStepRepository recipeStepRepository;
+    private final CategoryRepository categoryRepository;
 
 
-    public InitializeController(IngredientRepository ingredientRepository, RecipeIngredientRepository recipeIngredientRepository, RecipeRepository recipeRepository, RecipeStepRepository recipeStepRepository) {
+    public InitializeController(IngredientRepository ingredientRepository,
+                                RecipeIngredientRepository recipeIngredientRepository,
+                                RecipeRepository recipeRepository,
+                                RecipeStepRepository recipeStepRepository,
+                                CategoryRepository categoryRepository) {
         this.ingredientRepository = ingredientRepository;
         this.recipeIngredientRepository = recipeIngredientRepository;
         this.recipeRepository = recipeRepository;
         this.recipeStepRepository = recipeStepRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     @EventListener
@@ -106,6 +105,40 @@ public class InitializeController {
         } catch (Exception e) {
             System.err.println("Stappenbestand kon niet geopend worden.");
             System.err.println(e.getMessage());
+        }
+
+        ClassPathResource categoryFile = new ClassPathResource("static/RecipeCategory.csv");
+        try (Scanner input = new Scanner(categoryFile.getInputStream())) {
+            if (input.hasNextLine()) input.nextLine();
+
+            while(input.hasNextLine()) {
+                String line = input.nextLine().trim();
+                if (!line.isEmpty()) {
+                    String[] parts = line.split(",", 2);
+                    String recipeTitle = parts[0].trim();
+                    String categoriesString = parts[1].replaceAll("^\"|\"$", "").trim();
+
+                    Recipe recipe = recipeRepository.findByTitle(recipeTitle)
+                            .orElseGet(() -> recipeRepository.save(new Recipe(recipeTitle)));
+
+                    List<Category> categoryList = new ArrayList<>();
+
+                    String[] categoryNames = categoriesString.split(",");
+                    for (String categoryName : categoryNames) {
+                        String cleanName = categoryName.trim();
+                        Category category = categoryRepository.findByCategoryName(cleanName)
+                                .orElseGet(() -> categoryRepository.save(new Category(categoryName)));
+                    categoryList.add(category);
+                    }
+
+                    recipe.setCategories(categoryList);
+                    recipeRepository.save(recipe);
+                }
+            }
+
+        } catch (Exception exception) {
+            System.err.println("Categorie bestand kon niet geopend worden.");
+            System.err.println(exception.getMessage());
         }
 
     }
