@@ -15,7 +15,7 @@
 
     <div class="row">
 
-        <div class="col-md-4">
+        <div class="col-md-3 bordered-block">
             <h2>Ingrediënten</h2>
 
             <div class="mb-2">
@@ -32,40 +32,23 @@
                 </form>
             </div>
 
-            <table class="table table-sm">
-                <thead>
-                <tr>
-                    <th>Ingredient</th>
-                    <th>Amount</th>
-                    <th>Unit</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="recipeIngredient : ${ingredients}">
-                    <td th:text="${recipeIngredient.ingredient.name}"></td>
-                    <td th:text="${recipeIngredient.ingredientAmount}"></td>
-                    <td th:text="${recipeIngredient.unit}"></td>
-                </tr>
-                </tbody>
-            </table>
+            <ul class="ingredients-list">
+                <li th:each="recipeIngredient : ${ingredients}">
+                    <span th:text="${recipeIngredient.ingredientAmount}"></span>
+                    <span th:text="${recipeIngredient.unit}"></span>
+                    <span th:text="${recipeIngredient.ingredient.name}"></span>
+                </li>
+            </ul>
+
         </div>
 
-        <div class="col-md-8">
+        <div class="col-md-9">
             <h2>Bereidingswijze</h2>
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>Step</th>
-                    <th>Description</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="recipeStep : ${recipe.steps}">
-                    <td th:text="${recipeStep.stepNumber}"></td>
-                    <td th:text="${recipeStep.stepDescription}"></td>
-                </tr>
-                </tbody>
-            </table>
+            <ol class="preparation-list">
+                <li th:each="recipeStep : ${recipe.steps}">
+                    <span th:text="${recipeStep.stepDescription}"></span>
+                </li>
+            </ol>
         </div>
     </div>
     

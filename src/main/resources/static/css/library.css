@@ -1,0 +1,54 @@
+.ingredients-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.ingredients-list li {
+    margin-bottom: 0.3rem;
+}
+
+.bordered-block {
+    border: 2px solid black;
+    padding: 1rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+}
+
+.preparation-list {
+    list-style: none;
+    counter-reset: step;
+    padding-left: 0;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.preparation-list li {
+    counter-increment: step;
+    margin-bottom: 0.8rem;
+    position: relative;
+    padding-left: 3rem;   /* iets meer ruimte dan de bol */
+}
+
+.preparation-list li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%); /* verticaal centreren */
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: #000;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+
+
+
+
