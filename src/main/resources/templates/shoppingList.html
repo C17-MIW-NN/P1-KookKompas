@@ -19,9 +19,9 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="entry : ${shoppingList}">
-            <td th:text="${entry.key.name}"></td>
-            <td th:text="${entry.value}"></td>
+        <tr th:each="item : ${shoppingList}">
+            <td th:text="${item.ingredientName}"></td>
+            <td th:text="${item.amount + ' ' + item.unit}"></td>
         </tr>
         </tbody>
     </table>
