@@ -28,17 +28,14 @@ public class Recipe {
     private List<RecipeStep> steps;
 
     @ManyToMany
-    private List<Category> categories;
+    private Set<Category> categories;
 
-    @ManyToMany
-    private Set<Category> categorySet;
-
-    public Set<Category> getCategorySet() {
-        return categorySet;
+    public Set<Category> getCategories() {
+        return categories;
     }
 
-    public void setCategorySet(Set<Category> categorySet) {
-        this.categorySet = categorySet;
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
     }
 
     public Recipe(String title, int servings, List<RecipeIngredient> recipeingredients) {
@@ -121,11 +118,4 @@ public class Recipe {
         this.steps = steps;
     }
 
-    public List<Category> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(List<Category> categories) {
-        this.categories = categories;
-    }
 }

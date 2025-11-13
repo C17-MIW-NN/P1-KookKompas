@@ -121,17 +121,17 @@ public class InitializeController {
                     Recipe recipe = recipeRepository.findByTitle(recipeTitle)
                             .orElseGet(() -> recipeRepository.save(new Recipe(recipeTitle)));
 
-                    List<Category> categoryList = new ArrayList<>();
+                    Set<Category> categorySet = new HashSet<>();
 
                     String[] categoryNames = categoriesString.split(",");
                     for (String categoryName : categoryNames) {
                         String cleanName = categoryName.trim();
                         Category category = categoryRepository.findByCategoryName(cleanName)
                                 .orElseGet(() -> categoryRepository.save(new Category(categoryName)));
-                    categoryList.add(category);
+                    categorySet.add(category);
                     }
 
-                    recipe.setCategories(categoryList);
+                    recipe.setCategories(categorySet);
                     recipeRepository.save(recipe);
                 }
             }

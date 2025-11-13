@@ -26,12 +26,10 @@
 
         <div class="form-group">
             Category
-            <select th:field="*{categorySet}" multiple>
+            <select th:field="*{categories}" multiple="multiple">
                 <option th:each="category : ${allCategories}"
-                th:text="${category.categoryName}"
-                th:value="${category.categoryId}">
-
-                </option>
+                        th:value="${category.categoryId}"
+                        th:text="${category.categoryName}"></option>
             </select>
         </div>
 

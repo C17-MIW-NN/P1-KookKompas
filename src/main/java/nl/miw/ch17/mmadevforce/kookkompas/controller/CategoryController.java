@@ -47,14 +47,6 @@ public class CategoryController {
         return "redirect:/category/all";
     }
 
-//    @PostMapping("/category/save")
-//    public String saveOrUpdateCategory(@ModelAttribute("formCategory") Category categoryToBeSaved, BindingResult result) {
-//        if (!result.hasErrors()) {
-//            categoryRepository.save(categoryToBeSaved);
-//        }
-//        return "redirect:/category/all";
-//    }
-
     @GetMapping("/category/delete/{categoryId}")
     public String deleteCategory(@PathVariable("categoryId") Long categoryId) {
         categoryRepository.deleteById(categoryId);

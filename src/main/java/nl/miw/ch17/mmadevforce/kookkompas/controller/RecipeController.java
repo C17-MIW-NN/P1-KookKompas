@@ -73,11 +73,23 @@ public class RecipeController {
         if (recipeFromForm.getRecipeId() != null) {
             recipeToBeSaved = recipeRepository.findById(recipeFromForm.getRecipeId()).orElseThrow();
             recipeToBeSaved.setTitle(recipeFromForm.getTitle());
+            recipeToBeSaved.setDescription(recipeFromForm.getDescription());
         } else {
             recipeToBeSaved = new Recipe();
             recipeToBeSaved.setTitle(recipeFromForm.getTitle());
+            recipeToBeSaved.setDescription(recipeFromForm.getDescription());
         }
 
+        Set<Category> categories = new HashSet<>();
+        if (recipeFromForm.getCategories() != null) {
+            for (Category c : recipeFromForm.getCategories()) {
+                Category category = categoryRepository.findById(c.getCategoryId())
+                        .orElseThrow(() -> new RuntimeException("Category not found: " + c.getCategoryId()));
+                categories.add(category);
+            }
+        }
+
+        recipeToBeSaved.setCategories(categories);
 
         // Recipe opslaan
         recipeRepository.save(recipeToBeSaved);

@@ -24,8 +24,9 @@
         <tr th:each="recipe : ${recipes}">
             <td><a th:href="@{/recipe/detail/{title}(title = ${recipe.title})}"
                    th:text="${recipe.title}"></a></td>
-            <td><a th:each="category : ${recipe.categories}"
-                   th:text="${category.categoryName}"></a>
+            <td><!--/*@thymesVar id="category" type="nl.miw.ch17.mmadevforce.kookkompas.model.Category"*/-->
+            <span th:each="category : ${recipe.categories}"
+                   th:text="${category.categoryName} + ' '"></span>
             </td>
             <td><a th:href="@{/recipe/edit/{title}(title = ${recipe.title})}" class="btn btn-sm btn-primary">
                     <i class="bi bi-pencil"></i>
