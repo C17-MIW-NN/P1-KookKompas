@@ -1,12 +1,19 @@
 package nl.miw.ch17.mmadevforce.kookkompas.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 
 /**
  * @author Manon Kuipers
  * Doel methode
  */
+@Entity
 public class ShoppingListItem {
+
+    @Id @GeneratedValue
+    private long shoppingListId;
+
     private String ingredientName;
     private double amount;
     private String unit;
@@ -42,5 +49,13 @@ public class ShoppingListItem {
 
     public void setUnit(String unit) {
         this.unit = unit;
+    }
+
+    public long getShoppingListId() {
+        return shoppingListId;
+    }
+
+    public void setShoppingListId(long shoppingListId) {
+        this.shoppingListId = shoppingListId;
     }
 }
