@@ -3,6 +3,7 @@ package nl.miw.ch17.mmadevforce.kookkompas.model;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author MMA Dev Force
@@ -29,6 +30,16 @@ public class Recipe {
     @ManyToMany
     private List<Category> categories;
 
+    @ManyToMany
+    private Set<Category> categorySet;
+
+    public Set<Category> getCategorySet() {
+        return categorySet;
+    }
+
+    public void setCategorySet(Set<Category> categorySet) {
+        this.categorySet = categorySet;
+    }
 
     public Recipe(String title, int servings, List<RecipeIngredient> recipeingredients) {
         this.title = title;

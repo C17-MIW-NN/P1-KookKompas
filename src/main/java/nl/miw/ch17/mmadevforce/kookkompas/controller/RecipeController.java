@@ -1,6 +1,8 @@
 package nl.miw.ch17.mmadevforce.kookkompas.controller;
 
+import nl.miw.ch17.mmadevforce.kookkompas.model.Category;
 import nl.miw.ch17.mmadevforce.kookkompas.model.Recipe;
+import nl.miw.ch17.mmadevforce.kookkompas.repositories.CategoryRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.RecipeRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,7 +13,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * @author Arjen Zijlstra
@@ -22,9 +26,11 @@ import java.util.Optional;
 public class RecipeController {
 
     private final RecipeRepository recipeRepository;
+    private final CategoryRepository categoryRepository;
 
-    public RecipeController(RecipeRepository recipeRepository) {
+    public RecipeController(RecipeRepository recipeRepository, CategoryRepository categoryRepository) {
         this.recipeRepository = recipeRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     @GetMapping({"/recipe/all", "/"})
@@ -37,9 +43,7 @@ public class RecipeController {
 
     @GetMapping("/recipe/add")
     public String showRecipeForm(Model datamodel) {
-        datamodel.addAttribute("formRecipe", new Recipe());
-
-        return "recipeForm";
+        return showRecipeForm(datamodel, new Recipe());
     }
 
     @GetMapping("/recipe/edit/{title}")
@@ -48,11 +52,16 @@ public class RecipeController {
         Optional<Recipe> optionalRecipe = recipeRepository.findByTitle(title);
 
         if (optionalRecipe.isPresent()) {
-            datamodel.addAttribute("formRecipe", optionalRecipe.get());
-            return "recipeForm";
+            return showRecipeForm(datamodel, optionalRecipe.get());
         }
 
         return "redirect:/recipe/all";
+    }
+
+    private String showRecipeForm(Model datamodel, Recipe recipe) {
+        datamodel.addAttribute("formRecipe", recipe);
+        datamodel.addAttribute("allCategories", categoryRepository.findAll());
+        return "recipeForm";
     }
 
     @PostMapping("/recipe/save")
@@ -68,6 +77,7 @@ public class RecipeController {
             recipeToBeSaved = new Recipe();
             recipeToBeSaved.setTitle(recipeFromForm.getTitle());
         }
+
 
         // Recipe opslaan
         recipeRepository.save(recipeToBeSaved);
