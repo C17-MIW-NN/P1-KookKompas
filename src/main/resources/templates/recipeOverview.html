@@ -28,7 +28,10 @@
                    th:text="${category.categoryName}"></a>
             </td>
             <td><a th:href="@{/recipe/detail/{title}(title = ${recipe.title})}">Edit</a>
-                <a th:href="@{/recipe/delete/{recipeId}(recipeId = ${recipe.recipeId})}">Delete</a></td>
+                <a th:href="@{/recipe/delete/{recipeId}(recipeId = ${recipe.recipeId})}">Delete</a>
+                <a th:href="@{/shoppinglist/add/{recipeId}(recipeId=${recipe.recipeId})}"
+                   class="btn btn-sm btn-success">Add to shoppinglist</a>
+            </td>
         </tr>
         </tbody>
 
