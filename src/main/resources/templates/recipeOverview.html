@@ -11,7 +11,7 @@
 <div class="container">
 
     <div class="cards-container">
-        <div class="card" style="width: 400px" th:each="recipe : ${recipes}">
+        <div class="card bg-light" style="width: 400px" th:each="recipe : ${recipes}">
             <a th:href="@{/recipe/detail/{title}(title = ${recipe.title})}">
                 <img class="card-img-top card-img" style="height: 300px" th:src="${recipe.coverImageUrl}" alt="Cover Image"></a>
             <div class="card-body"><!--/*@thymesVar id="category" type="nl.miw.ch17.mmadevforce.kookkompas.model.Category"*/-->
@@ -21,12 +21,12 @@
                       th:text="${category.categoryName} + ' '"></span>
                 <p class="card-text" th:href="@{/recipe/detail/{title}(title = ${recipe.title})}"
                    th:text="${recipe.description}"></p>
-                <div><a th:href="@{/recipe/edit/{title}(title = ${recipe.title})}" class="btn btn-sm btn-primary">
+                <div><a th:href="@{/recipe/edit/{title}(title = ${recipe.title})}" class="btn btn-sm btn-primary btn-blue">
                     <i class="bi bi-pencil"></i></a>
-                    <a th:href="@{/recipe/delete/{recipeId}(recipeId = ${recipe.recipeId})}" class="btn btn-sm btn-danger">
+                    <a th:href="@{/recipe/delete/{recipeId}(recipeId = ${recipe.recipeId})}" class="btn btn-sm btn-danger btn-red">
                     <i class="bi bi-trash"></i></a>
                     <a th:href="@{/shoppinglist/add/{recipeId}(recipeId=${recipe.recipeId})}"
-                       class="btn btn-sm btn-success">Voeg toe aan boodschappenlijst</a>
+                       class="btn btn-sm btn-green">Voeg toe aan boodschappenlijst</a>
                 </div>
             </div>
         </div>

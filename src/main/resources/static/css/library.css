@@ -89,5 +89,34 @@
     color: black;
 }
 
+.btn-green {
+    background-color: #007A1D;
+    color: white;
+}
+
+.btn-red {
+    background-color: #B80000;
+    color: white;
+}
+
+.btn-blue {
+    background-color: #0071B8;
+    color: white;
+}
+
+.btn-green:hover {
+    background-color: #005213;
+    color: white;
+}
+
+.btn-red:hover {
+    background-color: #520000;
+    color: white;
+}
+
+.btn-blue:hover {
+    background-color: #003252;
+    color: white;
+}
 
 
