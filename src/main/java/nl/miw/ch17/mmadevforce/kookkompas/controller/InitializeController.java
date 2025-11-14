@@ -111,19 +111,22 @@ public class InitializeController {
         try (Scanner input = new Scanner(categoryFile.getInputStream())) {
             if (input.hasNextLine()) input.nextLine();
 
-            while(input.hasNextLine()) {
+            while (input.hasNextLine()) {
                 String line = input.nextLine().trim();
                 if (!line.isEmpty()) {
-                    String[] parts = line.split(",", 2);
+                    String[] parts = line.split(",", 3);
                     String recipeTitle = parts[0].trim();
                     String categoriesString = parts[1].replaceAll("^\"|\"$", "").trim();
+                    String description = parts[2].replaceAll("^\"|\"$", "").trim();
 
                     Recipe recipe = recipeRepository.findByTitle(recipeTitle)
                             .orElseGet(() -> recipeRepository.save(new Recipe(recipeTitle)));
 
+                    recipe.setDescription(description);
+
                     Set<Category> categorySet = new HashSet<>();
 
-                    String[] categoryNames = categoriesString.split(",");
+                    String[] categoryNames = categoriesString.split(";");
                     for (String categoryName : categoryNames) {
                         String cleanName = categoryName.trim();
                         Category category = categoryRepository.findByCategoryName(cleanName)
