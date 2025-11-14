@@ -16,28 +16,28 @@
     <div th:fragment="navbar">
         <nav class="navbar navbar-expand-lg custom-navbar" data-bs-theme="dark">
             <div class="container-fluid">
-                <a class="navbar-brand" th:href="@{/recipe/all}"><img th:src="@{/images/KookKompasLogo.png}" alt="KookKompas" style="height:90px;"></a>
+                <a class="navbar-brand" th:href="@{/homepage}"><img th:src="@{/images/KookKompasLogo.png}" alt="KookKompas" style="height:90px;"></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item fs-5">
-                            <a class="nav-link active" th:href="@{/recipe/all}">Recipes</a>
+                            <a class="nav-link active" th:href="@{/recipe/all}">Recepten</a>
                         </li>
                         <li class="nav-item fs-5">
-                            <a class="nav-link active" th:href="@{/ingredient/all}">Ingredients</a>
+                            <a class="nav-link active" th:href="@{/ingredient/all}">Ingrediënten</a>
                         </li>
                         <li class="nav-item fs-5">
-                            <a class="nav-link active" th:href="@{/category/all}">Category</a>
+                            <a class="nav-link active" th:href="@{/category/all}">Categorieën</a>
                         </li>
                         <li class="nav-item fs-5">
-                            <a class="nav-link active" th:href="@{/shoppinglist/all}">Shopping list</a>
+                            <a class="nav-link active" th:href="@{/shoppinglist/all}">Boodschappenlijst</a>
                         </li>
                     </ul>
                     <form class="d-flex" role="search" th:action="@{/recipe/search}" method="get">
-                        <input class="form-control me-2" type="search" name="query" placeholder="Search" aria-label="Search"/>
-                        <button class="btn btn-success" type="submit">Search</button>
+                        <input class="form-control me-2" type="search" name="query" placeholder="Voer zoekterm in" aria-label="Search"/>
+                        <button class="btn btn-success" type="submit">Zoeken</button>
                     </form>
                 </div>
             </div>

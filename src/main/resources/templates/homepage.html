@@ -9,8 +9,22 @@
 <div th:replace="~{fragments/general :: navbar}"></div>
 
 <div class="container">
-    <h1>Welkom bij KookKompas!</h1>
+    <h1 style="text-align: center; margin-top: 40px;">Welkom bij KookKompas!</h1>
 </div>
+
+<div style="text-align: center; margin: 40px 0;">
+    <img src="/images/paella.jpg" alt="paella" style="max-width: 70%; height: auto;">
+</div>
+
+<div class="d-flex flex-column justify-content-center align-items-center" style="height: 20vh;">
+    <h2>Vind hier de lekkerste recepten</h2>
+    <form class="d-flex mt-3" role="search" th:action="@{/recipe/search}" method="get" style="width: 50%;">
+        <input class="form-control me-2" type="search" name="query" placeholder="Voer zoekterm in" aria-label="Search"/>
+        <button class="btn btn-success" type="submit">Zoeken</button>
+    </form>
+</div>
+
+
 
 
 
