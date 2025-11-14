@@ -81,11 +81,13 @@
     gap: 25px;
 }
 
-.btn-green {
-    background-color: #eaffef;
+.card-img {
+    object-fit: cover;
 }
 
-
+.card-h2 {
+    color: black;
+}
 
 
 
