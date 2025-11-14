@@ -98,29 +98,26 @@ public class RecipeController {
             }
         }
 
+        recipeToBeSaved.setCategories(categories);
+
         // Huidige stappen wissen
         recipeToBeSaved.getSteps().clear();
 
         // Nieuwe stappen uit formulier toevoegen
-        int stepNum = 1;
         if (recipeFromForm.getSteps() != null) {
+            int stepNum = 1;
             for (RecipeStep s : recipeFromForm.getSteps()) {
-
-                // Lege stappen overslaan
-                if (s.getStepDescription() == null || s.getStepDescription().isBlank()) {
-                    continue;
-                }
+                // lege stappen overslaan
+                if (s.getStepDescription() == null || s.getStepDescription().isBlank()) continue;
 
                 RecipeStep newStep = new RecipeStep();
-                newStep.setStepNumber(stepNum++);
                 newStep.setStepDescription(s.getStepDescription());
+                newStep.setStepNumber(stepNum++);
                 newStep.setRecipe(recipeToBeSaved);
 
                 recipeToBeSaved.getSteps().add(newStep);
             }
         }
-
-        recipeToBeSaved.setCategories(categories);
 
         // Recipe opslaan
         recipeRepository.save(recipeToBeSaved);
