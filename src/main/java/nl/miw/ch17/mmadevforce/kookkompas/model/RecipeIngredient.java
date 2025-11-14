@@ -32,8 +32,8 @@ public class RecipeIngredient {
     }
 
     //METHOD ADD AMOUNT
-    public int addPerson(int servings) {
-        return servings++;
+    public double getScaledAmount(int currentServings, int defaultServings) {
+        return ingredientAmount * currentServings / defaultServings;
     }
 
     public int decreasePerson(int servings) {

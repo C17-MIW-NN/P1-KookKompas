@@ -2,6 +2,7 @@ package nl.miw.ch17.mmadevforce.kookkompas.controller;
 
 import nl.miw.ch17.mmadevforce.kookkompas.model.Category;
 import nl.miw.ch17.mmadevforce.kookkompas.model.Recipe;
+import nl.miw.ch17.mmadevforce.kookkompas.model.RecipeIngredient;
 import nl.miw.ch17.mmadevforce.kookkompas.model.RecipeStep;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.CategoryRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.RecipeRepository;
@@ -155,6 +156,39 @@ public class RecipeController {
         datamodel.addAttribute("recipes", results);
         datamodel.addAttribute("query", query);
         return "recipeSearchResults";
+    }
+
+    @GetMapping("/recipe/{recipeId}")
+    public String showRecipe(@PathVariable Long recipeId, @RequestParam(required = false) Integer servings, Model model) {
+        Recipe recipe = recipeRepository.findById(recipeId).orElseThrow();
+        int currentServings = (servings != null) ? servings : recipe.getServings();
+
+        model.addAttribute("recipe", recipe);
+        model.addAttribute("currentServings", currentServings);
+
+        List<RecipeIngredient> scaledIngredients = recipe.getRecipeingredients().stream().map(recipeingredient -> {
+            double scaled = recipeingredient.getIngredientAmount() * currentServings / recipe.getServings();
+            recipeingredient.setIngredientAmount(scaled);
+            return recipeingredient;
+        }).toList();
+
+        model.addAttribute("scaledIngredients", scaledIngredients);
+
+        return "recipeDetails";
+    }
+
+    @PostMapping("/recipe/{recipeId}/decrease")
+    public String decrease(@PathVariable Long recipeId, @RequestParam int currentServings) {
+        if (currentServings > 1) {
+            currentServings--;
+        }
+        return "redirect:/recipe/" + recipeId + "?servings=" + currentServings;
+    }
+
+    @PostMapping("/recipe/{recipeId}/increase")
+    public String increase(@PathVariable Long recipeId, @RequestParam int currentServings) {
+        //int newServings = currentServings + 1;
+        return "redirect:/recipe/" + recipeId + "?servings=" + (currentServings + 1);
     }
 
 }

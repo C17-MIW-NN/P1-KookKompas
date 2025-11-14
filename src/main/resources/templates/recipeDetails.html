@@ -19,26 +19,34 @@
             <h2>Ingrediënten</h2>
 
             <div class="mb-2">
-                <form th:action="@{/recipe/decrease}" method="post" style="display:inline;">
+                <form th:action="@{|/recipe/${recipe.recipeId}/decrease|}" method="post" style="display:inline;">
                     <input type="hidden" name="currentServings" th:value="${currentServings}">
                     <button type="submit" class="btn btn-sm btn-outline-secondary">less</button>
                 </form>
 
                 <span th:text="${currentServings}"></span>
 
-                <form th:action="@{/recipe/increase}" method="post" style="display:inline;">
+                <form th:action="@{|/recipe/${recipe.recipeId}/increase|}" method="post" style="display:inline;">
                     <input type="hidden" name="currentServings" th:value="${currentServings}">
                     <button type="submit" class="btn btn-sm btn-outline-secondary">more</button>
                 </form>
             </div>
 
             <ul class="ingredients-list">
-                <li th:each="recipeIngredient : ${ingredients}">
+                <li th:each="recipeIngredient : ${recipe.recipeingredients}">
                     <span th:text="${recipeIngredient.ingredientAmount}"></span>
                     <span th:text="${recipeIngredient.unit}"></span>
                     <span th:text="${recipeIngredient.ingredient.name}"></span>
                 </li>
             </ul>
+
+<!--            <ul class="ingredients-list">-->
+<!--                <li th:each="recipeIngredient : ${ingredients}">-->
+<!--                    <span th:text="${recipeIngredient.ingredientAmount}"></span>-->
+<!--                    <span th:text="${recipeIngredient.unit}"></span>-->
+<!--                    <span th:text="${recipeIngredient.ingredient.name}"></span>-->
+<!--                </li>-->
+<!--            </ul>-->
 
         </div>
 
