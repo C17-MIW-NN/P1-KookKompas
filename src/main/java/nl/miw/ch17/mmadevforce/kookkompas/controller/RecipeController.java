@@ -120,7 +120,12 @@ public class RecipeController {
 
     @GetMapping("/recipe/search")
     public String searchRecipes(@RequestParam("query") String query, Model datamodel) {
-        List<Recipe> results =recipeRepository.findByTitleContainingIgnoreCase(query);
+        List<Recipe> titleResults = recipeRepository.findByTitleContainingIgnoreCase(query);
+        List<Recipe> ingredientResults =
+                recipeRepository.findDistinctByRecipeingredients_Ingredient_NameContainingIgnoreCase(query);
+        Set<Recipe> results = new HashSet<>();
+        results.addAll(titleResults);
+        results.addAll(ingredientResults);
         datamodel.addAttribute("recipes", results);
         datamodel.addAttribute("query", query);
         return "recipeSearchResults";
