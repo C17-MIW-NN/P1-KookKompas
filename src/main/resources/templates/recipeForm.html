@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head th:replace="~{fragments/general :: baseheader(~{:: title})}">
-    <title>Add new recipe</title>
+    <title>Voeg nieuw recept toe</title>
 </head>
 
 <body>
@@ -9,23 +9,23 @@
 <div th:replace="~{fragments/general :: navbar}"></div>
 
 <div class="container">
-    <h1>Add new recipe</h1>
+    <h1>Voeg nieuw recept toe</h1>
 
     <form th:action="@{/recipe/save}" method="post" th:object="${formRecipe}">
 
         <div class="form-group">
-            <label for="recipeName">Name</label>
+            <label for="recipeName">Naam</label>
             <input type="hidden" th:field="*{recipeId}">
             <input class="form-control" type="text" id="recipeName" th:field="*{title}">
         </div>
 
         <div class="form-group">
-            <label for="recipeDescription">Description</label>
+            <label for="recipeDescription">Beschrijving</label>
             <textarea class="form-control" id="recipeDescription" type="text" th:field="*{description}"></textarea>
         </div>
 
         <div class="form-group">
-            Category
+            Categorie
             <select th:field="*{categories}" multiple="multiple">
                 <option th:each="category : ${allCategories}"
                         th:value="${category.categoryId}"
@@ -34,7 +34,7 @@
         </div>
 
         <div class="form-group">
-            <label for="coverImageUrl">Cover Image URL</label>
+            <label for="coverImageUrl">Afbeelding URL</label>
             <input type="text" class="form-control" id="coverImageUrl" th:field="*{coverImageUrl}">
         </div>
 
@@ -51,7 +51,7 @@
             <table id="stepsTable">
                 <thead>
                     <tr>
-                        <th>Steps</th>
+                        <th>Stappen</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -60,15 +60,15 @@
                         <td>
                             <input type="text" th:field="*{steps[__${iStat.index}__].stepDescription}" required>
                         </td>
-                        <td><button type="button" class="delete-step">Delete</button></td>
+                        <td><button type="button" class="delete-step">Verwijder</button></td>
                     </tr>
                 </tbody>
             </table>
 
-            <button type="button" id="addStep" style="margin-top:5px;">Add Step</button>
+            <button type="button" id="addStep" style="margin-top:5px;">Voeg stap toe</button>
         </div>
 
-        <input type="submit" value="Save recipe">
+        <input type="submit" value="Sla recept op">
 
     </form>
 
