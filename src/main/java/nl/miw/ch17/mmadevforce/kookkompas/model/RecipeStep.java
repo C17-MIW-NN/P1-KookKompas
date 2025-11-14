@@ -15,6 +15,7 @@ public class RecipeStep {
     private Long recipeStepId;
 
     private int stepNumber;
+    
     private String stepDescription;
 
     @ManyToOne

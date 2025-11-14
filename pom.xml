@@ -60,6 +60,7 @@
 			<scope>test</scope>
 		</dependency>
 
+
         <!-- dependencies for bootstrap -->
         <dependency>
             <groupId>org.webjars</groupId>
