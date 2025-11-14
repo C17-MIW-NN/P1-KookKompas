@@ -12,7 +12,7 @@ import java.util.Set;
 
 @Entity
 public class Recipe {
-    private final int DEFAULT_MINIMUM_SERVINGS = 2;
+    private final int DEFAULT_MINIMUM_SERVINGS = 4;
 
     @Id @GeneratedValue
     private Long recipeId;
