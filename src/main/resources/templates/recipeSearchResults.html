@@ -9,7 +9,7 @@
 <div th:replace="~{fragments/general :: navbar}"></div>
 
 <div class="container">
-    <h1>Search results for "<span th:text="${query}"></span>"</h1>
+    <h1>Zoekresultaten voor "<span th:text="${query}"></span>"</h1>
 
     <ul>
         <li th:each="recipe : ${recipes}">
