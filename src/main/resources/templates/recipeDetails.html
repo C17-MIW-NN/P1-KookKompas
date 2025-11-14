@@ -33,10 +33,10 @@
             </div>
 
             <ul class="ingredients-list">
-                <li th:each="recipeIngredient : ${recipe.recipeingredients}">
-                    <span th:text="${recipeIngredient.ingredientAmount}"></span>
-                    <span th:text="${recipeIngredient.unit}"></span>
-                    <span th:text="${recipeIngredient.ingredient.name}"></span>
+                <li th:each="recipeingredient : ${scaledIngredients}">
+                    <span th:text="${recipeingredient.ingredientAmount}"></span>
+                    <span th:text="${recipeingredient.unit}"></span>
+                    <span th:text="${recipeingredient.ingredient.name}"></span>
                 </li>
             </ul>
 
