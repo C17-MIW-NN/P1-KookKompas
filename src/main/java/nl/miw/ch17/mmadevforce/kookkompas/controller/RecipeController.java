@@ -2,6 +2,7 @@ package nl.miw.ch17.mmadevforce.kookkompas.controller;
 
 import nl.miw.ch17.mmadevforce.kookkompas.model.Category;
 import nl.miw.ch17.mmadevforce.kookkompas.model.Recipe;
+import nl.miw.ch17.mmadevforce.kookkompas.model.RecipeStep;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.CategoryRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.RecipeRepository;
 import org.springframework.stereotype.Controller;
@@ -43,7 +44,16 @@ public class RecipeController {
 
     @GetMapping("/recipe/add")
     public String showRecipeForm(Model datamodel) {
-        return showRecipeForm(datamodel, new Recipe());
+
+        Recipe recipe = new Recipe();
+
+        // Standaard één lege stap toevoegen
+        RecipeStep step = new RecipeStep();
+        step.setStepNumber(1);
+        step.setRecipe(recipe);
+        recipe.getSteps().add(step);
+
+        return showRecipeForm(datamodel, recipe);
     }
 
     @GetMapping("/recipe/edit/{title}")
@@ -86,6 +96,28 @@ public class RecipeController {
                 Category category = categoryRepository.findById(c.getCategoryId())
                         .orElseThrow(() -> new RuntimeException("Category not found: " + c.getCategoryId()));
                 categories.add(category);
+            }
+        }
+
+        // Huidige stappen wissen
+        recipeToBeSaved.getSteps().clear();
+
+        // Nieuwe stappen uit formulier toevoegen
+        int stepNum = 1;
+        if (recipeFromForm.getSteps() != null) {
+            for (RecipeStep s : recipeFromForm.getSteps()) {
+
+                // Lege stappen overslaan
+                if (s.getStepDescription() == null || s.getStepDescription().isBlank()) {
+                    continue;
+                }
+
+                RecipeStep newStep = new RecipeStep();
+                newStep.setStepNumber(stepNum++);
+                newStep.setStepDescription(s.getStepDescription());
+                newStep.setRecipe(recipeToBeSaved);
+
+                recipeToBeSaved.getSteps().add(newStep);
             }
         }
 

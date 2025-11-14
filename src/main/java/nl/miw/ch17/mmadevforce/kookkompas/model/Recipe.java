@@ -2,6 +2,7 @@ package nl.miw.ch17.mmadevforce.kookkompas.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -24,8 +25,8 @@ public class Recipe {
     @OneToMany(mappedBy = "recipe")
     private List<RecipeIngredient> recipeingredients;
 
-    @OneToMany(mappedBy = "recipe")
-    private List<RecipeStep> steps;
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RecipeStep> steps = new ArrayList<>();
 
     @ManyToMany
     private Set<Category> categories;

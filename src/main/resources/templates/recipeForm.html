@@ -42,16 +42,108 @@
 <!--            </div>-->
 <!--        </div>-->
 
-<!--        <div class="form-group">-->
-<!--            <label for="recipeSteps">Steps</label>-->
-<!--            <div id="recipeSteps"></div>-->
-<!--        </div>-->
+        <div class="form-group mt-4">
+            <label>Steps</label>
+
+            <table id="stepsTable">
+                <thead>
+                <tr>
+                    <th>Step</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="step, iStat : *{steps}" class="step-row" data-index="${iStat.index}">
+                    <td th:text="${iStat.index + 1}"></td>
+                    <td>
+                        <input th:field="*{steps[__${iStat.index}__].stepDescription}">
+                    </td>
+                    <td>
+                        <button type="button" class="delete-step">Delete</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <button type="button" id="addStep" style="margin-top:5px;">Add Step</button>
+        </div>
 
         <input type="submit" value="Save recipe">
 
     </form>
 
 </div>
+
+<script>
+    (function() {
+
+        const container = document.getElementById("stepsContainer");
+        const template = document.getElementById("stepTemplate").innerHTML;
+
+        function reindex() {
+            const rows = container.querySelectorAll(".step-row");
+
+            rows.forEach((row, i) => {
+                row.dataset.index = i;
+
+                // Update label
+                row.querySelector("label").textContent = "Step " + (i + 1);
+
+                // Update textarea name attribute
+                const textarea = row.querySelector("textarea");
+                textarea.name = "steps[" + i + "].stepDescription";
+            });
+
+            updateButtons();
+        }
+
+        function updateButtons() {
+            const rows = container.querySelectorAll(".step-row");
+
+            rows.forEach((row, i) => {
+                const addBtn = row.querySelector(".add-step");
+                const deleteBtn = row.querySelector(".delete-step");
+
+                // Delete mag niet uit bij enige step
+                deleteBtn.disabled = (rows.length === 1);
+
+                // Alleen laatste step krijgt een Add-button
+                addBtn.style.display = (i === rows.length - 1) ? "inline-block" : "none";
+            });
+        }
+
+
+        // Add step
+        container.addEventListener("click", e => {
+            if (!e.target.matches(".add-step")) return;
+
+            const index = container.querySelectorAll(".step-row").length;
+
+            const html = template
+                .replace(/__INDEX__/g, index)
+                .replace(/__NUMBER__/g, index + 1);
+
+            container.insertAdjacentHTML("beforeend", html);
+            reindex();
+        });
+
+        // Delete step
+        container.addEventListener("click", e => {
+            if (!e.target.matches(".delete-step")) return;
+
+            const rows = container.querySelectorAll(".step-row");
+            if (rows.length === 1) return; // minstens 1 step verplicht
+
+            e.target.closest(".step-row").remove();
+            reindex();
+        });
+
+        // Initial state
+        updateButtons();
+
+    })();
+</script>
 
 <div th:replace="~{fragments/general :: footer}"></div>
 <div th:replace="~{fragments/general :: bottomScripts}"></div>
