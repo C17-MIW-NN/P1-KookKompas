@@ -151,7 +151,7 @@ public class RecipeController {
     public String searchRecipes(@RequestParam("query") String query, Model datamodel) {
         List<Recipe> titleResults = recipeRepository.findByTitleContainingIgnoreCase(query);
         List<Recipe> ingredientResults =
-                recipeRepository.findDistinctByRecipeingredients_Ingredient_NameContainingIgnoreCase(query);
+                recipeRepository.findDistinctByRecipeingredients_Ingredient_NameIgnoreCase(query);
         Set<Recipe> results = new HashSet<>();
         results.addAll(titleResults);
         results.addAll(ingredientResults);
