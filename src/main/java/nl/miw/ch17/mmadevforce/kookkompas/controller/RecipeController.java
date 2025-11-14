@@ -79,10 +79,12 @@ public class RecipeController {
             recipeToBeSaved = recipeRepository.findById(recipeFromForm.getRecipeId()).orElseThrow();
             recipeToBeSaved.setTitle(recipeFromForm.getTitle());
             recipeToBeSaved.setDescription(recipeFromForm.getDescription());
+            recipeToBeSaved.setCoverImageUrl(recipeFromForm.getCoverImageUrl());
         } else {
             recipeToBeSaved = new Recipe();
             recipeToBeSaved.setTitle(recipeFromForm.getTitle());
             recipeToBeSaved.setDescription(recipeFromForm.getDescription());
+            recipeToBeSaved.setCoverImageUrl(recipeFromForm.getCoverImageUrl());
         }
 
         Set<Category> categories = new HashSet<>();

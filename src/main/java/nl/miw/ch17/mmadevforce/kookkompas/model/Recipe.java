@@ -21,6 +21,7 @@ public class Recipe {
     private String description;
     private int preparationTime;
     private int servings = DEFAULT_MINIMUM_SERVINGS;
+    private String coverImageUrl;
 
     @OneToMany(mappedBy = "recipe")
     private List<RecipeIngredient> recipeingredients;
@@ -119,4 +120,11 @@ public class Recipe {
         this.steps = steps;
     }
 
+    public String getCoverImageUrl() {
+        return coverImageUrl;
+    }
+
+    public void setCoverImageUrl(String coverImageUrl) {
+        this.coverImageUrl = coverImageUrl;
+    }
 }
