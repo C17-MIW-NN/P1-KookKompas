@@ -24,7 +24,7 @@
                     <button type="submit" class="btn btn-sm btn-outline-secondary">less</button>
                 </form>
 
-                <span th:text="${currentServings}" style="margin: 0 10px; font-weight: bold; color:red;"></span>
+                <span th:text="${recipe.servings}"></span>
 
                 <form th:action="@{|/recipe/${recipe.recipeId}/increase|}" method="post" style="display:inline;">
                     <input type="hidden" name="currentServings" th:value="${currentServings}">
