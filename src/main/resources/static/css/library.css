@@ -69,6 +69,22 @@
 }
 
 
+.container {
+    padding: 50px 0;
+}
+
+.cards-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 25px;
+}
+
+.btn-green {
+    background-color: #eaffef;
+}
+
 
 
 

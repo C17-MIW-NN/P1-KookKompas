@@ -9,38 +9,28 @@
 <div th:replace="~{fragments/general :: navbar}"></div>
 
 <div class="container">
-    <h1>Overview of all recipes</h1>
 
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Title</th>
-            <th>Category</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
+    <div class="cards-container">
+        <div class="card" style="width: 400px" th:each="recipe : ${recipes}">
+            <img class="card-img-top" th:src="${recipe.coverImageUrl}" alt="Cover Image">
+            <div class="card-body"><!--/*@thymesVar id="category" type="nl.miw.ch17.mmadevforce.kookkompas.model.Category"*/-->
+                <h3 class="card-title" th:href="@{/recipe/detail/{title}(title = ${recipe.title})}"
+                   th:text="${recipe.title}"></h3>
+                <span th:each="category : ${recipe.categories}"
+                      th:text="${category.categoryName} + ' '"></span>
+                <p class="card-text" th:href="@{/recipe/detail/{title}(title = ${recipe.title})}"
+                   th:text="${recipe.description}"></p>
+                <div><a th:href="@{/recipe/edit/{title}(title = ${recipe.title})}" class="btn btn-sm btn-primary">
+                    <i class="bi bi-pencil"></i></a>
+                    <a th:href="@{/recipe/delete/{recipeId}(recipeId = ${recipe.recipeId})}" class="btn btn-sm btn-danger">
+                    <i class="bi bi-trash"></i></a>
+                    <a th:href="@{/shoppinglist/add/{recipeId}(recipeId=${recipe.recipeId})}"
+                       class="btn btn-sm btn-success">Add to shoppinglist</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        <tbody>
-        <tr th:each="recipe : ${recipes}">
-            <td><a th:href="@{/recipe/detail/{title}(title = ${recipe.title})}"
-                   th:text="${recipe.title}"></a></td>
-            <td><!--/*@thymesVar id="category" type="nl.miw.ch17.mmadevforce.kookkompas.model.Category"*/-->
-            <span th:each="category : ${recipe.categories}"
-                   th:text="${category.categoryName} + ' '"></span>
-            </td>
-            <td><a th:href="@{/recipe/edit/{title}(title = ${recipe.title})}" class="btn btn-sm btn-primary">
-                    <i class="bi bi-pencil"></i>
-                </a>
-                <a th:href="@{/recipe/delete/{recipeId}(recipeId = ${recipe.recipeId})}" class="btn btn-sm btn-danger">
-                    <i class="bi bi-trash"></i>
-                </a>
-                <a th:href="@{/shoppinglist/add/{recipeId}(recipeId=${recipe.recipeId})}"
-                   class="btn btn-sm btn-success">Add to shoppinglist</a>
-            </td>
-        </tr>
-        </tbody>
-
-    </table>
     <br>
     <a th:href="@{/recipe/add}" class="btn btn-sm btn-success">Add a new recipe</a>
     <br>

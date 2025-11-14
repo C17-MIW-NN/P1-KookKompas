@@ -11,6 +11,8 @@
 <div class="container">
     <h1><span th:text="${recipe.title}"></span></h1>
 
+    <img th:src="${recipe.coverImageUrl}" class="card-img-top" alt="Cover Image">
+
     <p><span th:text="${recipe.description}"></span></p>
 
     <div class="row">
