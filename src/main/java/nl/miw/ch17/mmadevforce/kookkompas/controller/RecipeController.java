@@ -62,6 +62,10 @@ public class RecipeController {
 
         if (optionalRecipe.isPresent()) {
             return showRecipeForm(datamodel, optionalRecipe.get());
+
+            recipe.getSteps().size(); // trigger JPA lazy load
+
+            return showRecipeForm(datamodel, recipe);
         }
 
         return "redirect:/recipe/all";
