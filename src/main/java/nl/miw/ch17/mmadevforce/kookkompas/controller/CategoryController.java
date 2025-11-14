@@ -49,7 +49,11 @@ public class CategoryController {
 
     @GetMapping("/category/delete/{categoryId}")
     public String deleteCategory(@PathVariable("categoryId") Long categoryId) {
-        categoryRepository.deleteById(categoryId);
+        Category category = categoryRepository.findById(categoryId).orElse(null);
+        if (category != null) {
+            recipeRepository.findAll().forEach(recipe -> recipe.getCategories().remove(category));
+            categoryRepository.delete(category);
+        }
         return "redirect:/category/all";
     }
 

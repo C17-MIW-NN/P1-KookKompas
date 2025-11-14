@@ -1,9 +1,6 @@
 package nl.miw.ch17.mmadevforce.kookkompas.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 /**
  * @author Melanie van der Vlies
@@ -14,8 +11,6 @@ public class RecipeIngredient {
 
     @Id @GeneratedValue
     private Long recipeIngredientId;
-    private Long recipeId;
-    private Long ingredientId;
 
     private double ingredientAmount;
     private String unit;
@@ -50,22 +45,6 @@ public class RecipeIngredient {
 
     public void setRecipeIngredientId(Long recipeIngredientId) {
         this.recipeIngredientId = recipeIngredientId;
-    }
-
-    public Long getRecipeId() {
-        return recipeId;
-    }
-
-    public void setRecipeId(Long recipeId) {
-        this.recipeId = recipeId;
-    }
-
-    public Long getIngredientId() {
-        return ingredientId;
-    }
-
-    public void setIngredientId(Long ingredientId) {
-        this.ingredientId = ingredientId;
     }
 
     public double getIngredientAmount() {
