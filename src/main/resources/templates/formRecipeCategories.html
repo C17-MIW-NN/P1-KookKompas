@@ -9,7 +9,9 @@
     <div th:replace="~{fragments/general :: navbar}"></div>
 
     <div class="container">
-        <h1>Voeg categorieën toe</h1>
+        <h1 th:if="${formCategory.categoryId == null}">Voeg nieuw categorie toe</h1>
+        <h1 th:unless="${formCategory.categoryId == null}" th:text="|Bewerk ${formCategory.categoryName}|"></h1>
+
         <form th:action="@{/category/save}" method="post" th:object="${formCategory}">
             <input type="hidden" th:field="*{categoryId}">
             Categorie: <input type="text" th:field="*{categoryName}">

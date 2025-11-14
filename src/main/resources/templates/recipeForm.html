@@ -9,7 +9,8 @@
 <div th:replace="~{fragments/general :: navbar}"></div>
 
 <div class="container">
-    <h1>Voeg nieuw recept toe</h1>
+    <h1 th:if="${formRecipe.recipeId == null}">Voeg nieuw recept toe</h1>
+    <h1 th:unless="${formRecipe.recipeId == null}" th:text="|Bewerk ${formRecipe.title}|"></h1>
 
     <form th:action="@{/recipe/save}" method="post" th:object="${formRecipe}">
 
