@@ -1,4 +1,4 @@
-recipeTitle,categoryName,description
-Pasta Bolognese,"dinner;italian;pasta","Een klassieke Italiaanse pasta met rijke tomatensaus"
-Groenteburger,"dinner;vegetarian","Vegetarische burger met veel groenten"
-Vegan Lasagna Bolognese,"dinner;vegan","Lasagna zonder vlees, volledig plantaardig"
+recipeTitle,coverImageUrl,categoryName,description
+Pasta Bolognese,/images/pasta_bolognese.jpg,"dinner;italian;pasta","Een klassieke Italiaanse pasta met rijke tomatensaus"
+Groenteburger,/images/groenteburger.jpg,"dinner;vegetarian","Vegetarische burger met veel groenten"
+Vegan Lasagna Bolognese,/images/vegetarische-lasagne.jpg,"dinner;vegan","Lasagna zonder vlees, volledig plantaardig"

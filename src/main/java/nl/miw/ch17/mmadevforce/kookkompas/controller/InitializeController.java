@@ -114,15 +114,17 @@ public class InitializeController {
             while (input.hasNextLine()) {
                 String line = input.nextLine().trim();
                 if (!line.isEmpty()) {
-                    String[] parts = line.split(",", 3);
+                    String[] parts = line.split(",", 4);
                     String recipeTitle = parts[0].trim();
-                    String categoriesString = parts[1].replaceAll("^\"|\"$", "").trim();
-                    String description = parts[2].replaceAll("^\"|\"$", "").trim();
+                    String imgUrl = parts[1].replaceAll("^\"|\"$", "").trim();
+                    String categoriesString = parts[2].replaceAll("^\"|\"$", "").trim();
+                    String description = parts[3].replaceAll("^\"|\"$", "").trim();
 
                     Recipe recipe = recipeRepository.findByTitle(recipeTitle)
                             .orElseGet(() -> recipeRepository.save(new Recipe(recipeTitle)));
 
                     recipe.setDescription(description);
+                    recipe.setCoverImageUrl(imgUrl);
 
                     Set<Category> categorySet = new HashSet<>();
 

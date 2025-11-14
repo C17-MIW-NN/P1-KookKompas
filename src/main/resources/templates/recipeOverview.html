@@ -12,7 +12,7 @@
 
     <div class="cards-container">
         <div class="card" style="width: 400px" th:each="recipe : ${recipes}">
-            <img class="card-img-top" th:src="${recipe.coverImageUrl}" alt="Cover Image">
+            <img class="card-img-top" style="height: 300px"  th:src="${recipe.coverImageUrl}" alt="Cover Image">
             <div class="card-body"><!--/*@thymesVar id="category" type="nl.miw.ch17.mmadevforce.kookkompas.model.Category"*/-->
                 <h3 class="card-title" th:href="@{/recipe/detail/{title}(title = ${recipe.title})}"
                    th:text="${recipe.title}"></h3>
