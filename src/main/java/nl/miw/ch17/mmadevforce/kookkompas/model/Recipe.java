@@ -51,9 +51,9 @@ public class Recipe {
     public Recipe() {
     }
 
-    public int addPerson(int servingsCurrent) {
-        return servingsCurrent++;
-    }
+//    public int addPerson(int servingsCurrent) {
+//        return servingsCurrent++;
+//    }
 
     public int decreasePerson(int servingsCurrent) {
         if (servingsCurrent > 1) {

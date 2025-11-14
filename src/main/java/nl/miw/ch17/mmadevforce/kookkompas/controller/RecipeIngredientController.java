@@ -17,6 +17,7 @@ import java.util.Optional;
  * Handle requests reguarding recipes and their ingredients
  */
 @Controller
+@RequestMapping("/recipe")
 public class RecipeIngredientController {
     private final RecipeIngredientRepository recipeIngredientRepository;
     private final RecipeRepository recipeRepository;
@@ -80,14 +81,14 @@ public class RecipeIngredientController {
         return "redirect:/recipe/detail/{title}";
     }
 
-    @PostMapping("/{recipeId}/increase")
-    public String increaseServings(@PathVariable Long recipeId, @RequestParam int currentServings) {
-        return "redirect:/recipe/{recipeId}/";
-    }
-
-    @PostMapping("/{recipeId}/decrease")
-    public String decreaseServings(@PathVariable Long recipeId, @RequestParam int currentServings) {
-        if (currentServings > 1) currentServings--;
-        return "redirect:/recipe/{recipeId}/";
-    }
+//    @PostMapping("/{recipeId}/increase")
+//    public String increaseServings(@PathVariable Long recipeId, @RequestParam int currentServings) {
+//        return "redirect:/recipe/{recipeId}/";
+//    }
+//
+//    @PostMapping("/{recipeId}/decrease")
+//    public String decreaseServings(@PathVariable Long recipeId, @RequestParam int currentServings) {
+//        if (currentServings > 1) currentServings--;
+//        return "redirect:/recipe/{recipeId}/";
+//    }
 }
