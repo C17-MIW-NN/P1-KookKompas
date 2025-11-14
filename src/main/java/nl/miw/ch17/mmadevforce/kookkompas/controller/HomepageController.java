@@ -24,7 +24,7 @@ public class HomepageController {
         this.categoryRepository = categoryRepository;
     }
 
-    @GetMapping
+    //@GetMapping
 
 
 }
