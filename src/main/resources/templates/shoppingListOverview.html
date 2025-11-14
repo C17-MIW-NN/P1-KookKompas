@@ -14,12 +14,16 @@
     <table class="table table-striped">
         <thead>
         <tr>
+            <th>✔</th>
             <th>Ingredient</th>
             <th>Amount</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="item : ${shoppingList}">
+            <td>
+                <input type="checkbox" class="check-item"/>
+            </td>
             <td th:text="${item.ingredientName}"></td>
             <td th:text="${item.amount + ' ' + item.unit}"></td>
         </tr>
@@ -33,6 +37,21 @@
 
 <div th:replace="~{fragments/general :: footer}"></div>
 <div th:replace="~{fragments/general :: bottomScripts}"></div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll(".check-item").forEach(function(checkbox) {
+            checkbox.addEventListener("change", function() {
+                const row = this.closest("tr");
+                if (this.checked) {
+                    row.classList.add("strikethrough");
+                } else {
+                    row.classList.remove("strikethrough");
+                }
+            });
+        });
+    });
+</script>
 
 </body>
 </html>
