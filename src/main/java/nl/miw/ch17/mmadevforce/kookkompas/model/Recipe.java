@@ -22,7 +22,7 @@ public class Recipe {
     private int preparationTime;
     private int servings = DEFAULT_MINIMUM_SERVINGS;
 
-    @OneToMany(mappedBy = "recipe")
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecipeIngredient> recipeingredients;
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -52,9 +52,6 @@ public class Recipe {
     public Recipe() {
     }
 
-//    public int addPerson(int servingsCurrent) {
-//        return servingsCurrent++;
-//    }
 
     public int decreasePerson(int servingsCurrent) {
         if (servingsCurrent > 1) {

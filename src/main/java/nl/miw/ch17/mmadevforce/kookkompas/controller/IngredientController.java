@@ -1,11 +1,14 @@
 package nl.miw.ch17.mmadevforce.kookkompas.controller;
 
 import nl.miw.ch17.mmadevforce.kookkompas.model.Ingredient;
+import nl.miw.ch17.mmadevforce.kookkompas.model.Recipe;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.IngredientRepository;
+import nl.miw.ch17.mmadevforce.kookkompas.repositories.RecipeRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -17,9 +20,11 @@ import java.util.Optional;
 public class IngredientController {
 
     private final IngredientRepository ingredientRepository;
+    private final RecipeRepository recipeRepository;
 
-    public IngredientController(IngredientRepository ingredientRepository) {
+    public IngredientController(IngredientRepository ingredientRepository, RecipeRepository recipeRepository) {
         this.ingredientRepository = ingredientRepository;
+        this.recipeRepository = recipeRepository;
     }
 
     @GetMapping("/all")
@@ -55,7 +60,17 @@ public class IngredientController {
 
     @GetMapping("/delete/{ingredientId}")
     public String deleteIngredient(@PathVariable("ingredientId") Long ingredientId) {
-        ingredientRepository.deleteById(ingredientId);
+        Ingredient ingredient = ingredientRepository.findById(ingredientId).orElse(null);
+        if (ingredient != null) {
+            List<Recipe> recipesWithIngredient = recipeRepository.findByRecipeingredientsIngredient(ingredient);
+            recipesWithIngredient.forEach(recipe -> {
+                recipe.getRecipeingredients()
+                        .removeIf(recipeIngredient ->
+                                recipeIngredient.getIngredient().getIngredientId()
+                                        .equals(ingredient.getIngredientId()));
+            });
+            ingredientRepository.delete(ingredient);
+        }
         return "redirect:/ingredient/all";
     }
 
