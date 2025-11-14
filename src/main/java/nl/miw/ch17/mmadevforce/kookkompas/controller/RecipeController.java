@@ -128,17 +128,32 @@ public class RecipeController {
         return "redirect:/recipe/all";
     }
 
+
     @GetMapping("/recipe/detail/{title}")
-    public String showRecipeDetailpage(@PathVariable("title") String title, Model datamodel) {
-        Optional<Recipe> recipeToShow = recipeRepository.findByTitle(title);
+    public String showRecipeDetailpage(@PathVariable("title") String title,
+                                       @RequestParam(required = false) Integer servings,
+                                       Model model) {
+        Recipe recipe = recipeRepository.findByTitle(title)
+                .orElseThrow(() -> new RuntimeException("Recipe not found: " + title));
 
-        if (recipeToShow.isEmpty()) {
-            return "redirect:/recipe/all";
-        }
+        // Default servings uit recept, of queryparameter
+        int currentServings = (servings != null) ? servings : recipe.getServings();
 
-        Recipe recipe = recipeToShow.get();
-        datamodel.addAttribute("recipe", recipe);
-        datamodel.addAttribute("ingredients", recipe.getRecipeingredients());
+        model.addAttribute("recipe", recipe);
+        model.addAttribute("currentServings", currentServings);
+
+        // scaledIngredients berekenen
+        List<RecipeIngredient> scaledIngredients = recipe.getRecipeingredients().stream()
+                .map(ri -> {
+                    double scaled = ri.getIngredientAmount() * currentServings / recipe.getServings();
+                    RecipeIngredient copy = new RecipeIngredient();
+                    copy.setIngredient(ri.getIngredient());
+                    copy.setUnit(ri.getUnit());
+                    copy.setIngredientAmount(scaled);
+                    return copy;
+                }).toList();
+
+        model.addAttribute("scaledIngredients", scaledIngredients);
 
         return "recipeDetails";
     }
@@ -156,37 +171,17 @@ public class RecipeController {
         return "recipeSearchResults";
     }
 
-    @GetMapping("/recipe/{recipeId}")
-    public String showRecipe(@PathVariable Long recipeId, @RequestParam(required = false) Integer servings, Model model) {
-        Recipe recipe = recipeRepository.findById(recipeId).orElseThrow();
-        int currentServings = (servings != null) ? servings : recipe.getServings();
-
-        model.addAttribute("recipe", recipe);
-        model.addAttribute("currentServings", currentServings);
-
-        List<RecipeIngredient> scaledIngredients = recipe.getRecipeingredients().stream().map(recipeingredient -> {
-            double scaled = recipeingredient.getIngredientAmount() * currentServings / recipe.getServings();
-            recipeingredient.setIngredientAmount(scaled);
-            return recipeingredient;
-        }).toList();
-
-        model.addAttribute("scaledIngredients", scaledIngredients);
-
-        return "recipeDetails";
-    }
-
-    @PostMapping("/recipe/{recipeId}/decrease")
-    public String decrease(@PathVariable Long recipeId, @RequestParam int currentServings) {
+    @PostMapping("/recipe/detail/{title}/decrease")
+    public String decrease(@PathVariable("title") String title, @RequestParam int currentServings) {
         if (currentServings > 1) {
             currentServings--;
         }
-        return "redirect:/recipe/" + recipeId + "?servings=" + currentServings;
+        return "redirect:/recipe/detail/" + title + "?servings=" + currentServings;
     }
 
-    @PostMapping("/recipe/{recipeId}/increase")
-    public String increase(@PathVariable Long recipeId, @RequestParam int currentServings) {
-        //int newServings = currentServings + 1;
-        return "redirect:/recipe/" + recipeId + "?servings=" + (currentServings + 1);
+    @PostMapping("/recipe/detail/{title}/increase")
+    public String increase(@PathVariable("title") String title, @RequestParam int currentServings) {
+        return "redirect:/recipe/detail/" + title + "?servings=" + (currentServings + 1);
     }
 
 }
