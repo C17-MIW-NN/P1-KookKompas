@@ -24,7 +24,7 @@ public class HomepageController {
         this.categoryRepository = categoryRepository;
     }
 
-    @WebServlet("/KookKompas/home")
+    @GetMapping
 
 
 }
