@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head th:replace="~{fragments/general :: baseheader(~{:: title})}">
-    <title>ingredientOverview</title>
+    <title>Ingrediënten overzicht</title>
 </head>
 
 <body>
@@ -9,13 +9,13 @@
 <div th:replace="~{fragments/general :: navbar}"></div>
 
 <div class="container">
-    <h1>Overview of all the ingredients</h1>
+    <h1>Overzicht van alle ingrediënten</h1>
 
     <table class="table">
         <thead>
         <tr>
-            <th>Name</th>
-            <th>Actions</th>
+            <th>Naam</th>
+            <th>Acties</th>
         </tr>
         </thead>
         <tbody>
@@ -34,7 +34,7 @@
         </tbody>
     </table>
 
-    <a th:href="@{/ingredient/add}" class="btn btn-sm btn-success">Add a new ingredient</a>
+    <a th:href="@{/ingredient/add}" class="btn btn-sm btn-success">Maak nieuw ingrediënt</a>
 
 
 </div>

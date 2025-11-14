@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head th:replace="~{fragments/general :: baseheader(~{:: title})}">
-    <title>recipeOverview</title>
+    <title>Recepten Overzicht</title>
 </head>
 
 <body>
@@ -25,14 +25,14 @@
                     <a th:href="@{/recipe/delete/{recipeId}(recipeId = ${recipe.recipeId})}" class="btn btn-sm btn-danger">
                     <i class="bi bi-trash"></i></a>
                     <a th:href="@{/shoppinglist/add/{recipeId}(recipeId=${recipe.recipeId})}"
-                       class="btn btn-sm btn-success">Add to shoppinglist</a>
+                       class="btn btn-sm btn-success">Voeg toe aan boodschappenlijst</a>
                 </div>
             </div>
         </div>
     </div>
 
     <br>
-    <a th:href="@{/recipe/add}" class="btn btn-sm btn-success">Add a new recipe</a>
+    <a th:href="@{/recipe/add}" class="btn btn-sm btn-success">Maak nieuw recept</a>
     <br>
 </div>
 

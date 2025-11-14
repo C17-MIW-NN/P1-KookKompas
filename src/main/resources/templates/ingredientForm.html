@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head th:replace="~{fragments/general :: baseheader(~{:: title})}">
-    <title>Add new ingredient</title>
+    <title>Voeg nieuw ingrediënt toe</title>
 </head>
 
 <body>
@@ -10,13 +10,13 @@
 
 <div class="container">
 
-    <h1 th:if="${formIngredient.ingredientId == null}">Add a new ingredient</h1>
+    <h1 th:if="${formIngredient.ingredientId == null}">Voeg nieuw ingrediënt toe</h1>
     <h1 th:unless="${formIngredient.ingredientId == null}" th:text="|Edit ${formIngredient.name}|"></h1>
 
     <form th:action="@{/ingredient/save}" method="post" th:object="${formIngredient}">
         <input type="hidden" th:field="*{ingredientId}">
-        Name: <input type="text" th:field="*{name}">
-        <input type="submit" value="Save ingredient">
+        Ingrediënt naam: <input type="text" th:field="*{name}">
+        <input type="submit" value="Sla ingrediënt op">
     </form>
 
 </div>
