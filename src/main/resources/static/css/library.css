@@ -53,6 +53,14 @@
     color: gray;
 }
 
+.custom-navbar {
+    background-color: #d2e5d7 !important;
+}
+
+.custom-navbar .nav-link {
+    color: #1a1a1a !important;
+}
+
 
 
 
