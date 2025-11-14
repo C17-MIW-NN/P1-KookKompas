@@ -24,7 +24,7 @@
                     <button type="submit" class="btn btn-sm btn-outline-secondary">less</button>
                 </form>
 
-                <span th:text="${currentServings}"></span>
+                <span th:text="${currentServings}" style="margin: 0 10px; font-weight: bold; color:red;"></span>
 
                 <form th:action="@{|/recipe/${recipe.recipeId}/increase|}" method="post" style="display:inline;">
                     <input type="hidden" name="currentServings" th:value="${currentServings}">
@@ -33,10 +33,10 @@
             </div>
 
             <ul class="ingredients-list">
-                <li th:each="recipeIngredient : ${recipe.recipeingredients}">
-                    <span th:text="${recipeIngredient.ingredientAmount}"></span>
-                    <span th:text="${recipeIngredient.unit}"></span>
-                    <span th:text="${recipeIngredient.ingredient.name}"></span>
+                <li th:each="recipeingredient : ${scaledIngredients}">
+                    <span th:text="${recipeingredient.ingredientAmount}"></span>
+                    <span th:text="${recipeingredient.unit}"></span>
+                    <span th:text="${recipeingredient.ingredient.name}"></span>
                 </li>
             </ul>
 
