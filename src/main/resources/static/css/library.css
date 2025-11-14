@@ -61,6 +61,10 @@
     color: #1a1a1a !important;
 }
 
+.login-btn {
+    background-color: #6dab7d !important;
+}
+
 .footer {
     margin-top: 150px;
     width: 100%;
