@@ -118,6 +118,14 @@ public class RecipeController {
         return "recipeDetails";
     }
 
+    @GetMapping("/recipe/search")
+    public String searchRecipes(@RequestParam("query") String query, Model datamodel) {
+        List<Recipe> results =recipeRepository.findByTitleContainingIgnoreCase(query);
+        datamodel.addAttribute("recipes", results);
+        datamodel.addAttribute("query", query);
+        return "recipeSearchResults";
+    }
+
     @GetMapping("/recipe/{recipeId}")
     public String showRecipe(@PathVariable Long recipeId, @RequestParam(required = false) Integer servings, Model model) {
         Recipe recipe = recipeRepository.findById(recipeId).orElseThrow();
