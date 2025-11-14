@@ -3,6 +3,7 @@ package nl.miw.ch17.mmadevforce.kookkompas.controller;
 import nl.miw.ch17.mmadevforce.kookkompas.model.Category;
 import nl.miw.ch17.mmadevforce.kookkompas.model.Recipe;
 import nl.miw.ch17.mmadevforce.kookkompas.model.RecipeIngredient;
+import nl.miw.ch17.mmadevforce.kookkompas.model.RecipeStep;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.CategoryRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.RecipeRepository;
 import org.springframework.stereotype.Controller;
@@ -42,7 +43,16 @@ public class RecipeController {
 
     @GetMapping("/recipe/add")
     public String showRecipeForm(Model datamodel) {
-        return showRecipeForm(datamodel, new Recipe());
+
+        Recipe recipe = new Recipe();
+
+        // Standaard één lege stap toevoegen
+        RecipeStep step = new RecipeStep();
+        step.setStepNumber(1);
+        step.setRecipe(recipe);
+        recipe.getSteps().add(step);
+
+        return showRecipeForm(datamodel, recipe);
     }
 
     @GetMapping("/recipe/edit/{title}")
@@ -89,6 +99,25 @@ public class RecipeController {
         }
 
         recipeToBeSaved.setCategories(categories);
+
+        // Huidige stappen wissen
+        recipeToBeSaved.getSteps().clear();
+
+        // Nieuwe stappen uit formulier toevoegen
+        if (recipeFromForm.getSteps() != null) {
+            int stepNum = 1;
+            for (RecipeStep s : recipeFromForm.getSteps()) {
+                // lege stappen overslaan
+                if (s.getStepDescription() == null || s.getStepDescription().isBlank()) continue;
+
+                RecipeStep newStep = new RecipeStep();
+                newStep.setStepDescription(s.getStepDescription());
+                newStep.setStepNumber(stepNum++);
+                newStep.setRecipe(recipeToBeSaved);
+
+                recipeToBeSaved.getSteps().add(newStep);
+            }
+        }
 
         // Recipe opslaan
         recipeRepository.save(recipeToBeSaved);
