@@ -43,17 +43,20 @@
 <!--        </div>-->
 
         <div class="form-group">
-            <label>Steps</label>
-
             <table id="stepsTable">
                 <thead>
-                <tr>
-                    <th>Step</th>
-                    <th>Description</th>
-                    <th></th>
-                </tr>
+                    <tr>
+                        <th>Steps</th>
+                    </tr>
                 </thead>
                 <tbody>
+                    <tr th:each="step, iStat : *{steps}" class="step-row" data-index="${iStat.index}">
+                        <td th:text="${iStat.index + 1}"></td>
+                        <td>
+                            <input type="text" th:field="*{steps[__${iStat.index}__].stepDescription}" required>
+                        </td>
+                        <td><button type="button" class="delete-step">Delete</button></td>
+                    </tr>
                 </tbody>
             </table>
 

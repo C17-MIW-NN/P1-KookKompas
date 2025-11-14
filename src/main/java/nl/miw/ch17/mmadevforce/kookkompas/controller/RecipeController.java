@@ -46,12 +46,6 @@ public class RecipeController {
 
         Recipe recipe = new Recipe();
 
-        // Standaard één lege stap toevoegen
-        RecipeStep step = new RecipeStep();
-        step.setStepNumber(1);
-        step.setRecipe(recipe);
-        recipe.getSteps().add(step);
-
         return showRecipeForm(datamodel, recipe);
     }
 
@@ -61,7 +55,9 @@ public class RecipeController {
         Optional<Recipe> optionalRecipe = recipeRepository.findByTitle(title);
 
         if (optionalRecipe.isPresent()) {
-            return showRecipeForm(datamodel, optionalRecipe.get());
+            Recipe recipe = optionalRecipe.get();
+            recipe.getSteps().size();
+            return showRecipeForm(datamodel, recipe);
         }
 
         return "redirect:/recipe/all";
