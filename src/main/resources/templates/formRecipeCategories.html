@@ -15,6 +15,7 @@
         <form th:action="@{/category/save}" method="post" th:object="${formCategory}">
             <input type="hidden" th:field="*{categoryId}">
             Categorie: <input type="text" th:field="*{categoryName}">
+            Kleur: <input type="text" th:field="*{categoryColor}">
             <input type="submit" value="Sla categorie op">
         </form>
     </div>

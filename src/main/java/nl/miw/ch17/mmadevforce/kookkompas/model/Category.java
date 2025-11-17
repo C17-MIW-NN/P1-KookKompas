@@ -17,6 +17,12 @@ public class Category {
     @Column(unique = true)
     private String categoryName;
 
+    private String categoryColor;
+
+    public Category(String categoryName, String categoryColor) {
+        this.categoryName = categoryName;
+        this.categoryColor = categoryColor;
+    }
 
     public Category(String categoryName) {
         this.categoryName = categoryName;
@@ -43,4 +49,11 @@ public class Category {
         this.categoryName = categoryName;
     }
 
+    public String getCategoryColor() {
+        return categoryColor;
+    }
+
+    public void setCategoryColor(String categoryColor) {
+        this.categoryColor = categoryColor;
+    }
 }
