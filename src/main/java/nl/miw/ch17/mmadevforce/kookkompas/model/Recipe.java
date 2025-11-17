@@ -32,6 +32,8 @@ public class Recipe {
     @ManyToMany
     private Set<Category> categories;
 
+
+
     public Set<Category> getCategories() {
         return categories;
     }

@@ -5,6 +5,7 @@ import nl.miw.ch17.mmadevforce.kookkompas.model.Recipe;
 import nl.miw.ch17.mmadevforce.kookkompas.model.RecipeIngredient;
 import nl.miw.ch17.mmadevforce.kookkompas.model.RecipeStep;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.CategoryRepository;
+import nl.miw.ch17.mmadevforce.kookkompas.repositories.IngredientRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.RecipeRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,10 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Arjen Zijlstra
@@ -27,10 +25,12 @@ public class RecipeController {
 
     private final RecipeRepository recipeRepository;
     private final CategoryRepository categoryRepository;
+    private final IngredientRepository ingredientRepository;
 
-    public RecipeController(RecipeRepository recipeRepository, CategoryRepository categoryRepository) {
+    public RecipeController(RecipeRepository recipeRepository, CategoryRepository categoryRepository, IngredientRepository ingredientRepository) {
         this.recipeRepository = recipeRepository;
         this.categoryRepository = categoryRepository;
+        this.ingredientRepository = ingredientRepository;
     }
 
     @GetMapping({"/recipe/all", "/"})
@@ -66,6 +66,7 @@ public class RecipeController {
     private String showRecipeForm(Model datamodel, Recipe recipe) {
         datamodel.addAttribute("formRecipe", recipe);
         datamodel.addAttribute("allCategories", categoryRepository.findAll());
+        datamodel.addAttribute("ingredients", ingredientRepository.findAll());
         return "recipeForm";
     }
 
@@ -97,6 +98,21 @@ public class RecipeController {
         }
 
         recipeToBeSaved.setCategories(categories);
+
+        if (recipeToBeSaved.getRecipeingredients() == null) {
+            recipeToBeSaved.setRecipeingredients(new ArrayList<>());
+        } else {
+            recipeToBeSaved.getRecipeingredients().clear();
+        }
+
+        recipeToBeSaved.getRecipeingredients().clear();
+        if (recipeFromForm.getRecipeingredients() != null) {
+            for (RecipeIngredient recipeIngredient : recipeFromForm.getRecipeingredients()) {
+                if (recipeIngredient.getIngredient() == null) continue;
+                recipeIngredient.setRecipe(recipeToBeSaved);
+                recipeToBeSaved.getRecipeingredients().add(recipeIngredient);
+            }
+        }
 
         // Huidige stappen wissen
         recipeToBeSaved.getSteps().clear();

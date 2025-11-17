@@ -3,6 +3,7 @@ package nl.miw.ch17.mmadevforce.kookkompas;
 import nl.miw.ch17.mmadevforce.kookkompas.controller.RecipeController;
 import nl.miw.ch17.mmadevforce.kookkompas.model.Recipe;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.CategoryRepository;
+import nl.miw.ch17.mmadevforce.kookkompas.repositories.IngredientRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.RecipeRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,9 +29,10 @@ public class RecipeTest {
         //Arrange
         RecipeRepository recipeRepository = Mockito.mock(RecipeRepository.class);
         CategoryRepository categoryRepository = Mockito.mock(CategoryRepository.class);
+        IngredientRepository ingredientRepository = Mockito.mock(IngredientRepository.class);
         Model model = Mockito.mock(Model.class);
 
-        RecipeController controller = new RecipeController(recipeRepository, categoryRepository);
+        RecipeController controller = new RecipeController(recipeRepository, categoryRepository, ingredientRepository);
 
         Recipe recipe = new Recipe();
         recipe.setTitle("Pasta");
@@ -56,9 +58,10 @@ public class RecipeTest {
         //Arrange
         RecipeRepository recipeRepository = Mockito.mock(RecipeRepository.class);
         CategoryRepository categoryRepository = Mockito.mock(CategoryRepository.class);
+        IngredientRepository ingredientRepository = Mockito.mock(IngredientRepository.class);
         Model model = Mockito.mock(Model.class);
 
-        RecipeController controller = new RecipeController(recipeRepository, categoryRepository);
+        RecipeController controller = new RecipeController(recipeRepository, categoryRepository, ingredientRepository);
 
         Recipe recipe = new Recipe();
         recipe.setTitle("pasta");
@@ -84,9 +87,10 @@ public class RecipeTest {
         //Arrange
         RecipeRepository recipeRepository = Mockito.mock(RecipeRepository.class);
         CategoryRepository categoryRepository = Mockito.mock(CategoryRepository.class);
+        IngredientRepository ingredientRepository = Mockito.mock(IngredientRepository.class);
         Model model = Mockito.mock(Model.class);
 
-        RecipeController controller = new RecipeController(recipeRepository, categoryRepository);
+        RecipeController controller = new RecipeController(recipeRepository, categoryRepository, ingredientRepository);
 
         Mockito.when(recipeRepository.findByTitleContainingIgnoreCase("Patsa"))
                 .thenReturn(List.of());
@@ -109,9 +113,10 @@ public class RecipeTest {
         //Arrange
         RecipeRepository recipeRepository = Mockito.mock(RecipeRepository.class);
         CategoryRepository categoryRepository = Mockito.mock(CategoryRepository.class);
+        IngredientRepository ingredientRepository = Mockito.mock(IngredientRepository.class);
         Model model = Mockito.mock(Model.class);
 
-        RecipeController controller = new RecipeController(recipeRepository, categoryRepository);
+        RecipeController controller = new RecipeController(recipeRepository, categoryRepository, ingredientRepository);
 
         Recipe recipe = new Recipe();
         recipe.setTitle("pasta");
@@ -137,9 +142,10 @@ public class RecipeTest {
         //Arrange
         RecipeRepository recipeRepository = Mockito.mock(RecipeRepository.class);
         CategoryRepository categoryRepository = Mockito.mock(CategoryRepository.class);
+        IngredientRepository ingredientRepository = Mockito.mock(IngredientRepository.class);
         Model model = Mockito.mock(Model.class);
 
-        RecipeController controller = new RecipeController(recipeRepository, categoryRepository);
+        RecipeController controller = new RecipeController(recipeRepository, categoryRepository, ingredientRepository);
 
         Mockito.when(recipeRepository.findByTitleContainingIgnoreCase("@"))
                 .thenReturn(List.of());
