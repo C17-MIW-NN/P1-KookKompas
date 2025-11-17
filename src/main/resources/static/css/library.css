@@ -87,6 +87,7 @@
 
 .card-img {
     object-fit: cover;
+    border-radius: 0;
 }
 
 .card-h2 {
