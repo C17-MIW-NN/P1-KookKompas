@@ -16,7 +16,7 @@
     <div th:fragment="navbar">
         <nav class="navbar navbar-expand-lg custom-navbar" data-bs-theme="dark">
             <div class="container-fluid">
-                <a class="navbar-brand" th:href="@{/homepage}"><img th:src="@{/images/KookKompasLogo.png}" alt="KookKompas" style="height:90px;"></a>
+                <a class="navbar-brand" th:href="@{/homepage}"><img th:src="@{/images/KookKompasLogo.png}" alt="KookKompas" style="height:85px;"></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -35,6 +35,10 @@
                             <a class="nav-link active" th:href="@{/shoppinglist/all}">Boodschappenlijst</a>
                         </li>
                     </ul>
+                    <form class="d-flex ms-auto me-3" role="search" th:action="@{/recipe/search}" method="get">
+                            <input class="form-control me-2" type="search" name="query" placeholder="Voer zoekterm in" aria-label="Search"/>
+                            <button class="btn btn-success" type="submit">Zoeken</button>
+                    </form>
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item fs-5">
                             <button type="button" class="btn login-btn btn-lg"><a class="nav-link active" th:href="@{/login}">
