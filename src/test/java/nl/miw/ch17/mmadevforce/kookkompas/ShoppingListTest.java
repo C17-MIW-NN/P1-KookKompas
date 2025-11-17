@@ -73,4 +73,97 @@ public class ShoppingListTest {
         assertThat(items.get(0).getAmount()).isEqualTo(2.0);
         assertThat(result).isEqualTo("redirect:/shoppinglist/all");
     }
+
+    @Test
+    @DisplayName("Adding existing ingredient with unit combination to shopping list")
+    void testAddingWhenIngredientNameAndUnitExists() {
+        ShoppingListItem existingItem = new ShoppingListItem();
+        existingItem.setIngredientName("Tomaat");
+        existingItem.setUnit("stuk");
+        existingItem.setAmount(1.0);
+        shoppingListItemRepository.save(existingItem);
+
+        Ingredient ingredient = ingredientRepository.findByName("Tomaat")
+                .orElseGet(() -> ingredientRepository.save(new Ingredient("Tomaat")));
+
+        RecipeIngredient recipeIngredient = new RecipeIngredient();
+        recipeIngredient.setIngredient(ingredient);
+        recipeIngredient.setUnit("stuk");
+        recipeIngredient.setIngredientAmount(2.0);
+
+        Recipe recipe = new Recipe();
+        recipe.setTitle("Salade");
+        recipe.setRecipeingredients(List.of(recipeIngredient));
+
+        recipe = recipeRepository.save(recipe);
+        shoppingListController.addRecipeToShoppingList(recipe.getRecipeId());
+
+        List<ShoppingListItem> items = shoppingListItemRepository.findAll();
+        assertThat(items).hasSize(1);
+        assertThat(items.get(0).getAmount()).isEqualTo(3.0);
+    }
+
+    @Test
+    @DisplayName("Adding ingredient with same name but different unit to shopping list")
+    void testAddingWhenIngredientExistsButUnitIsNew() {
+        ShoppingListItem existingItem = new ShoppingListItem();
+        existingItem.setIngredientName("Tomaat");
+        existingItem.setUnit("gram");
+        existingItem.setAmount(100.0);
+        shoppingListItemRepository.save(existingItem);
+
+        Ingredient ingredient = ingredientRepository.findByName("Tomaat")
+                .orElseGet(() -> ingredientRepository.save(new Ingredient("Tomaat")));
+
+        RecipeIngredient recipeIngredient = new RecipeIngredient();
+        recipeIngredient.setIngredient(ingredient);
+        recipeIngredient.setUnit("stuk");
+        recipeIngredient.setIngredientAmount(2.0);
+
+        Recipe recipe = new Recipe();
+        recipe.setTitle("Salade");
+        recipe.setRecipeingredients(List.of(recipeIngredient));
+
+        recipe = recipeRepository.save(recipe);
+        shoppingListController.addRecipeToShoppingList(recipe.getRecipeId());
+
+        List<ShoppingListItem> items = shoppingListItemRepository.findAll();
+        assertThat(items).hasSize(2);
+        assertThat(items).anyMatch(item ->
+                item.getIngredientName().equals("Tomaat") && item.getUnit().equals("gram"));
+        assertThat(items).anyMatch(item ->
+                item.getIngredientName().equals("Tomaat") && item.getUnit().equals("stuk"));
+    }
+
+    @Test
+    @DisplayName("Adding ingredient with same unit but different name to shopping list")
+    void testAddingWhenUnitExistsButIngredientIsNew() {
+        ShoppingListItem existingItem = new ShoppingListItem();
+        existingItem.setIngredientName("Komkommer");
+        existingItem.setUnit("stuk");
+        existingItem.setAmount(1.0);
+        shoppingListItemRepository.save(existingItem);
+
+        Ingredient ingredient = ingredientRepository.findByName("Tomaat")
+                .orElseGet(() -> ingredientRepository.save(new Ingredient("Tomaat")));
+
+        RecipeIngredient recipeIngredient = new RecipeIngredient();
+        recipeIngredient.setIngredient(ingredient);
+        recipeIngredient.setUnit("stuk");
+        recipeIngredient.setIngredientAmount(2.0);
+
+        Recipe recipe = new Recipe();
+        recipe.setTitle("Salade");
+        recipe.setRecipeingredients(List.of(recipeIngredient));
+
+        recipe = recipeRepository.save(recipe);
+        shoppingListController.addRecipeToShoppingList(recipe.getRecipeId());
+
+        List<ShoppingListItem> items = shoppingListItemRepository.findAll();
+        assertThat(items).hasSize(2);
+        assertThat(items).anyMatch(item ->
+                item.getIngredientName().equals("Komkommer") && item.getUnit().equals("stuk"));
+        assertThat(items).anyMatch(item ->
+                item.getIngredientName().equals("Tomaat") && item.getUnit().equals("stuk"));
+    }
 }
