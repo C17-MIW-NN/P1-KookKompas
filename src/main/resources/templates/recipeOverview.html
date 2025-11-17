@@ -18,7 +18,7 @@
                 <a th:href="@{/recipe/detail/{title}(title = ${recipe.title})}" class="text-decoration-none text-black"><h2 class="card-title text-decoration-none"
                    th:text="${recipe.title}"></h2></a>
                 <span th:each="category : ${recipe.categories}"
-                      th:text="${category.categoryName} + ' '"></span>
+                      th:text="${category.categoryName}" th:style="'background-color:' + ${category.categoryColor} + '; padding: 2px 4px; border-radius: 4px; color: white; margin-right: 4px;'"></span>
                 <p class="card-text" th:href="@{/recipe/detail/{title}(title = ${recipe.title})}"
                    th:text="${recipe.description}"></p>
                 <div><a th:href="@{/recipe/edit/{title}(title = ${recipe.title})}" class="btn btn-sm btn-primary btn-blue">
