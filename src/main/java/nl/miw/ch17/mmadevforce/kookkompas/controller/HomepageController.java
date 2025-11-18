@@ -28,6 +28,7 @@ public class HomepageController {
     @GetMapping("/homepage")
     public String home(Model model) {
         model.addAttribute("welcomeMessage", "Welkom bij KookKompas!");
+        model.addAttribute("recipes", recipeRepository.findAll());
         return "homepage";
     }
 
