@@ -9,57 +9,61 @@
 <div th:replace="~{fragments/general :: navbar}"></div>
 
 <div class="container my-5">
-    <div class="row mb-4">
-        <div class="col-md-4">
-            <img th:src="${recipe.coverImageUrl}" class="img-fluid rounded" alt="Cover Image">
-        </div>
-
-        <div class="col-md-8 d-flex flex-column justify-content-center">
-            <h1 th:text="${recipe.title}" class="mb-3"></h1>
-            <p th:text="${recipe.description}"></p>
-        </div>
+    <div class="text-center mb-5">
+        <h1 th:text="${recipe.title}" class="display-4 fw-bold"></h1>
+        <p th:text="${recipe.description}" class="lead"></p>
+    </div>
+    <div class="text-center mb-5">
+        <img th:src="${recipe.coverImageUrl}" class="img-fluid rounded shadow-lg" style="max-height: 400px; object-fit: cover;" alt="Cover Image">
     </div>
 
-    <div class="row">
+    <div class="row g-4">
 
-        <div class="col-md-3 bordered-block">
-            <h2>Ingrediënten</h2>
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h2 class="card-title">Ingrediënten</h2>
 
-            <div class="mb-2">
-                <form th:action="@{|/recipe/detail/${recipe.title}/decrease|}" method="post" style="display:inline;">
-                    <input type="hidden" name="currentServings" th:value="${currentServings}">
-                    <button type="submit" class="btn btn-link p-0">
-                    <i class="bi bi-dash-circle fs-3 text-dark"></i>
-                    </button>
-                </form>
+                    <div class="d-flex algin-items-center mb-3">
+                        <form th:action="@{|/recipe/detail/${recipe.title}/decrease|}" method="post" style="display:inline;">
+                            <input type="hidden" name="currentServings" th:value="${currentServings}">
+                            <button type="submit" class="btn btn-link p-0">
+                            <i class="bi bi-dash-circle fs-3 text-dark"></i>
+                            </button>
+                        </form>
 
-                <span th:text="${currentServings}"></span>
+                        <span class="mx-3 fs-5 fw-bold" th:text="${currentServings}"></span>
 
-                <form th:action="@{|/recipe/detail/${recipe.title}/increase|}" method="post" style="display:inline;">
-                    <input type="hidden" name="currentServings" th:value="${currentServings}">
-                    <button type="submit" class="btn btn-link p-0">
-                        <i class="bi bi-plus-circle fs-3 text-dark"></i>
-                    </button>
-                </form>
+                        <form th:action="@{|/recipe/detail/${recipe.title}/increase|}" method="post" style="display:inline;">
+                        <input type="hidden" name="currentServings" th:value="${currentServings}">
+                        <button type="submit" class="btn btn-link p-0">
+                            <i class="bi bi-plus-circle fs-3 text-dark"></i>
+                        </button>
+                        </form>
+                    </div>
+
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item" th:each="recipeingredient : ${scaledIngredients}">
+                            <span th:text="${recipeingredient.ingredientAmount}"></span>
+                            <span th:text="${recipeingredient.unit}"></span>
+                            <span th:text="${recipeingredient.ingredient.name}"></span>
+                        </li>
+                    </ul>
+                </div>
             </div>
-
-            <ul class="ingredients-list">
-                <li th:each="recipeingredient : ${scaledIngredients}">
-                    <span th:text="${recipeingredient.ingredientAmount}"></span>
-                    <span th:text="${recipeingredient.unit}"></span>
-                    <span th:text="${recipeingredient.ingredient.name}"></span>
-                </li>
-            </ul>
-
         </div>
 
-        <div class="col-md-9">
-            <h2>Bereidingswijze</h2>
-            <ol class="preparation-list">
-                <li th:each="recipeStep : ${recipe.steps}">
-                    <span th:text="${recipeStep.stepDescription}"></span>
-                </li>
-            </ol>
+        <div class="col-md-8">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h2>Bereidingswijze</h2>
+                    <ol class="preparation-list">
+                        <li th:each="recipeStep : ${recipe.steps}">
+                            <span th:text="${recipeStep.stepDescription}"></span>
+                        </li>
+                    </ol>
+                </div>
+            </div>
         </div>
     </div>
     
