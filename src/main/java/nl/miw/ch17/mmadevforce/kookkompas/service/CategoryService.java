@@ -42,5 +42,4 @@ public class CategoryService {
         return categoryRepository.findByCategoryName(categoryName);
     }
 
-
 }

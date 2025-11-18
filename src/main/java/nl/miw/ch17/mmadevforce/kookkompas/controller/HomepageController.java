@@ -1,9 +1,6 @@
 package nl.miw.ch17.mmadevforce.kookkompas.controller;
 
-import jakarta.servlet.annotation.WebServlet;
-import nl.miw.ch17.mmadevforce.kookkompas.repositories.CategoryRepository;
-import nl.miw.ch17.mmadevforce.kookkompas.repositories.IngredientRepository;
-import nl.miw.ch17.mmadevforce.kookkompas.repositories.RecipeRepository;
+import nl.miw.ch17.mmadevforce.kookkompas.service.HomepageService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,23 +11,17 @@ import org.springframework.web.bind.annotation.GetMapping;
  */
 @Controller
 public class HomepageController {
+    private final HomepageService homepageService;
 
-    private final RecipeRepository recipeRepository;
-    private final IngredientRepository ingredientRepository;
-    private final CategoryRepository categoryRepository;
-
-    public HomepageController(RecipeRepository recipeRepository, IngredientRepository ingredientRepository, CategoryRepository categoryRepository) {
-        this.recipeRepository = recipeRepository;
-        this.ingredientRepository = ingredientRepository;
-        this.categoryRepository = categoryRepository;
+    public HomepageController(HomepageService homepageService) {
+        this.homepageService = homepageService;
     }
 
     @GetMapping("/homepage")
     public String home(Model model) {
         model.addAttribute("welcomeMessage", "Welkom bij KookKompas!");
-        model.addAttribute("recipes", recipeRepository.findAll());
+        model.addAttribute("recipes", homepageService.findAllRecipes());
         return "homepage";
     }
-
 
 }
