@@ -1,8 +1,7 @@
 package nl.miw.ch17.mmadevforce.kookkompas.controller;
 
 import nl.miw.ch17.mmadevforce.kookkompas.model.Category;
-import nl.miw.ch17.mmadevforce.kookkompas.repositories.CategoryRepository;
-import nl.miw.ch17.mmadevforce.kookkompas.repositories.RecipeRepository;
+import nl.miw.ch17.mmadevforce.kookkompas.service.CategoryService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,17 +17,15 @@ import java.util.Optional;
  */
 @Controller
 public class CategoryController {
-    private final CategoryRepository categoryRepository;
-    private final RecipeRepository recipeRepository;
+    private final CategoryService categoryService;
 
-    public CategoryController(CategoryRepository categoryRepository, RecipeRepository recipeRepository) {
-        this.categoryRepository = categoryRepository;
-        this.recipeRepository = recipeRepository;
+    public CategoryController(CategoryService categoryService) {
+        this.categoryService = categoryService;
     }
 
     @GetMapping("/category/all")
     public String showRecipeCategories(Model viewmodel) {
-        viewmodel.addAttribute("categories", categoryRepository.findAll());
+        viewmodel.addAttribute("categories", categoryService.findAllCategories());
         viewmodel.addAttribute("formRecipeCategories", new Category());
         return "categoryOverview";
     }
@@ -41,28 +38,28 @@ public class CategoryController {
 
     @PostMapping("/category/save")
     public String saveOrUpdateCategory(@ModelAttribute("formCategory") Category categoryToBeSaved) {
-        categoryRepository.save(categoryToBeSaved);
-        return "redirect:/category/all";
+        categoryService.saveCategory(categoryToBeSaved);
+        return getRedirectCategoryAll();
     }
 
     @GetMapping("/category/delete/{categoryId}")
     public String deleteCategory(@PathVariable("categoryId") Long categoryId) {
-        Category category = categoryRepository.findById(categoryId).orElse(null);
-        if (category != null) {
-            recipeRepository.findAll().forEach(recipe -> recipe.getCategories().remove(category));
-            categoryRepository.delete(category);
-        }
-        return "redirect:/category/all";
+        categoryService.deleteCategory(categoryId);
+        return getRedirectCategoryAll();
     }
 
     @GetMapping("/category/edit/{categoryName}")
     public String showEditCategoryForm(@PathVariable("categoryName") String categoryName, Model viewmodel) {
-        Optional<Category> optionalCategory = categoryRepository.findByCategoryName(categoryName);
+        Optional<Category> optionalCategory = categoryService.findByCategoryName(categoryName);
 
         if (optionalCategory.isPresent()) {
             viewmodel.addAttribute("formCategory", optionalCategory.get());
             return "formRecipeCategories";
         }
+        return getRedirectCategoryAll();
+    }
+
+    private static String getRedirectCategoryAll() {
         return "redirect:/category/all";
     }
 
