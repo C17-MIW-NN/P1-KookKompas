@@ -1,9 +1,6 @@
 package nl.miw.ch17.mmadevforce.kookkompas.controller;
 
-import nl.miw.ch17.mmadevforce.kookkompas.model.Category;
-import nl.miw.ch17.mmadevforce.kookkompas.model.Recipe;
-import nl.miw.ch17.mmadevforce.kookkompas.model.RecipeIngredient;
-import nl.miw.ch17.mmadevforce.kookkompas.model.RecipeStep;
+import nl.miw.ch17.mmadevforce.kookkompas.model.*;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.CategoryRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.IngredientRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.RecipeRepository;
@@ -14,6 +11,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Arjen Zijlstra
@@ -46,6 +44,19 @@ public class RecipeController {
 
         Recipe recipe = new Recipe();
 
+        // Voor elk ingrediënt een lege RecipeIngredient toevoegen
+        List<Ingredient> allIngredients = ingredientRepository.findAll();
+        List<RecipeIngredient> recipeIngredients = new ArrayList<>();
+        for (Ingredient ing : allIngredients) {
+            RecipeIngredient ri = new RecipeIngredient();
+            ri.setIngredient(null); // nog niet gekozen
+            ri.setIngredientAmount(null);
+            ri.setUnit(null);
+            recipeIngredients.add(ri);
+        }
+        recipe.setRecipeingredients(recipeIngredients);
+
+
         return showRecipeForm(datamodel, recipe);
     }
 
@@ -56,7 +67,33 @@ public class RecipeController {
 
         if (optionalRecipe.isPresent()) {
             Recipe recipe = optionalRecipe.get();
+            recipe.getRecipeingredients().size();
             recipe.getSteps().size();
+
+            List<Ingredient> allIngredients = ingredientRepository.findAll();
+            List<RecipeIngredient> recipeIngredients = new ArrayList<>();
+
+            for (Ingredient ing : allIngredients) {
+                // kijken of dit ingrediënt al in het recept zit
+                RecipeIngredient existing = recipe.getRecipeingredients().stream()
+                        .filter(ri -> ri.getIngredient() != null &&
+                                ri.getIngredient().getIngredientId().equals(ing.getIngredientId()))
+                        .findFirst()
+                        .orElse(null);
+
+                if (existing != null) {
+                    existing.setIngredient(ing);
+                    recipeIngredients.add(existing); // bestaande hoeveelheid + eenheid
+                } else {
+                    RecipeIngredient ri = new RecipeIngredient();
+                    ri.setIngredient(null); // niet gekozen
+                    ri.setIngredientAmount(null);
+                    ri.setUnit(null);
+                    recipeIngredients.add(ri);
+                }
+            }
+            recipe.setRecipeingredients(recipeIngredients);
+
             return showRecipeForm(datamodel, recipe);
         }
 
@@ -163,7 +200,9 @@ public class RecipeController {
         // scaledIngredients berekenen
         List<RecipeIngredient> scaledIngredients = recipe.getRecipeingredients().stream()
                 .map(ri -> {
-                    double scaled = ri.getIngredientAmount() * currentServings / recipe.getServings();
+                    Double amount = ri.getIngredientAmount();
+                    double scaled = (amount != null ? amount : 0.0) * currentServings / recipe.getServings();
+
                     RecipeIngredient copy = new RecipeIngredient();
                     copy.setIngredient(ri.getIngredient());
                     copy.setUnit(ri.getUnit());
