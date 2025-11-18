@@ -38,8 +38,7 @@ public class IngredientController {
         ingredientService.saveIngredient(ingredientToBeSaved);
         return getRedirectIngredientAll();
     }
-
-
+    
     @GetMapping("/edit/{name}")
     public String showEditIngredientForm(@PathVariable("name") String name, Model datamodel) {
         Optional<Ingredient> optionalIngredient = ingredientService.findByIngredientName(name);
