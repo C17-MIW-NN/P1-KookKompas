@@ -41,22 +41,29 @@
 
         <div class="form-group">
             <label>Ingrediënten</label>
-            <div th:each="ingredient, iter : ${ingredients}">
-                <input type="checkbox" class="ingredient-checkbox"
-                       th:value="${ingredient.ingredientId}"
-                       th:field="*{recipeingredients[__${iter.index}__].ingredient}" />
-                <span th:text="${ingredient.name}"></span><br>
+
+            <h3>Geselecteerd</h3>
+            <div id="selectedIngredients" class="ingredients-grid"></div>
+
+            <h3>Niet geselecteerd</h3>
+            <div id="unselectedIngredients" class="ingredients-grid">
+                <div th:each="ingredient, iter : ${ingredients}" class="ingredient-item">
+                    <input type="checkbox" class="ingredient-checkbox"
+                        th:value="${ingredient.ingredientId}"
+                        th:field="*{recipeingredients[__${iter.index}__].ingredient}" />
+                    <span th:text="${ingredient.name}"></span><br>
 
                 <!-- Altijd renderen, maar standaard verbergen -->
 
-                <div class="ingredient-extra"
-                     th:style="${formRecipe.recipeingredients[__${iter.index}__].ingredient != null ? 'display:inline;' : 'display:none;'}">
-                    <input type="text"
-                           th:field="*{recipeingredients[__${iter.index}__].ingredientAmount}"
-                           placeholder="Hoeveelheid" />
-                    <input type="text"
-                           th:field="*{recipeingredients[__${iter.index}__].unit}"
-                           placeholder="Eenheid" />
+                    <div class="ingredient-extra"
+                        th:style="${formRecipe.recipeingredients[__${iter.index}__].ingredient != null ? 'display:inline;' : 'display:none;'}">
+                        <input type="text"
+                            th:field="*{recipeingredients[__${iter.index}__].ingredientAmount}"
+                            placeholder="Hoeveelheid" />
+                        <input type="text"
+                            th:field="*{recipeingredients[__${iter.index}__].unit}"
+                            placeholder="Eenheid" />
+                    </div>
                 </div>
             </div>
         </div>
@@ -132,17 +139,36 @@
 </script>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
+        const selectedContainer = document.getElementById("selectedIngredients");
+        const unselectedContainer = document.getElementById("unselectedIngredients");
+
         document.querySelectorAll(".ingredient-checkbox").forEach(cb => {
-            const extraFields = cb.parentElement.querySelector(".ingredient-extra");
+            const item = cb.closest(".ingredient-item");
+            const extraFields = item.querySelector(".ingredient-extra");
+
+            // Initieel plaatsen
             if (cb.checked) {
+                selectedContainer.appendChild(item);
                 extraFields.style.display = "inline";
+            } else {
+                unselectedContainer.appendChild(item);
+                extraFields.style.display = "none";
             }
+
+            // Live verplaatsen bij verandering
             cb.addEventListener("change", e => {
-                extraFields.style.display = e.target.checked ? "inline" : "none";
+                if (e.target.checked) {
+                    selectedContainer.appendChild(item);
+                    extraFields.style.display = "inline";
+                } else {
+                    unselectedContainer.appendChild(item);
+                    extraFields.style.display = "none";
+                }
             });
         });
     });
 </script>
+
 
 
 <div th:replace="~{fragments/general :: footer}"></div>

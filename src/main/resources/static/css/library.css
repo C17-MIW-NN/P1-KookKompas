@@ -124,4 +124,17 @@
     color: white;
 }
 
+.ingredients-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 kolommen */
+    gap: 15px; /* ruimte tussen de kolommen */
+}
+
+.ingredient-item {
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+
 
