@@ -2,9 +2,6 @@ package nl.miw.ch17.mmadevforce.kookkompas.controller;
 
 import nl.miw.ch17.mmadevforce.kookkompas.model.Recipe;
 import nl.miw.ch17.mmadevforce.kookkompas.model.RecipeIngredient;
-import nl.miw.ch17.mmadevforce.kookkompas.repositories.IngredientRepository;
-import nl.miw.ch17.mmadevforce.kookkompas.repositories.RecipeIngredientRepository;
-import nl.miw.ch17.mmadevforce.kookkompas.repositories.RecipeRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.service.RecipeIngredientService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
