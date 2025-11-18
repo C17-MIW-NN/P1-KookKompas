@@ -5,8 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 
 /**
- * @author Manon Kuipers
- * Doel methode
+ * @author MMA Dev Force
+ * Information regarding shoppinglistitems
  */
 @Entity
 public class ShoppingListItem {

@@ -6,8 +6,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
 /**
- * @author Manon Kuipers
- * Doel methode
+ * @author MMA Dev Force
+ * Information regarding recipesteps
  */
 @Entity
 public class RecipeStep {
@@ -27,10 +27,6 @@ public class RecipeStep {
 
     public void setRecipeStepId(Long recipeStepId) {
         this.recipeStepId = recipeStepId;
-    }
-
-    public int getStepNumber() {
-        return stepNumber;
     }
 
     public void setStepNumber(int stepNumber) {
