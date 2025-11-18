@@ -26,8 +26,8 @@
         </div>
 
         <div class="form-group">
-            Categorie
-            <select th:field="*{categories}" multiple="multiple">
+            <label for="categories">Categorie</label>
+            <select id="categories" th:field="*{categories}" multiple="multiple">
                 <option th:each="category : ${allCategories}"
                         th:value="${category.categoryId}"
                         th:text="${category.categoryName}"></option>
@@ -40,26 +40,35 @@
         </div>
 
         <div class="form-group">
-            <label>Ingredients</label>
-            <div th:each="ingredient, iter : ${ingredients}">
-                <input type="checkbox" class="ingredient-checkbox"
-                       th:field="*{recipeingredients[__${iter.index}__].ingredient}"
-                       th:value="${ingredient.ingredientId}" />
-                <span th:text="${ingredient.name}"></span><br>
-                <div class="ingredient-extra" style="display:none;">
-                    <input type="text" th:field="*{recipeingredients[__${iter.index}__].ingredientAmount}" placeholder="Hoeveelheid">
-                    <input type="text" th:field="*{recipeingredients[__${iter.index}__].unit}" placeholder="Eenheid">
+            <label>Ingrediënten</label>
+
+            <h3>Geselecteerd</h3>
+            <div id="selectedIngredients" class="ingredients-grid"></div>
+
+            <h3>Niet geselecteerd</h3>
+            <div id="unselectedIngredients" class="ingredients-grid">
+                <div th:each="ingredient, iter : ${ingredients}" class="ingredient-item">
+                    <input type="checkbox" class="ingredient-checkbox"
+                        th:value="${ingredient.ingredientId}"
+                        th:field="*{recipeingredients[__${iter.index}__].ingredient}" />
+                    <span th:text="${ingredient.name}"></span><br>
+
+                    <div class="ingredient-extra"
+                        th:style="${formRecipe.recipeingredients[__${iter.index}__].ingredient != null ? 'display:inline;' : 'display:none;'}">
+                        <input type="text"
+                            th:field="*{recipeingredients[__${iter.index}__].ingredientAmount}"
+                            placeholder="Hoeveelheid" />
+                        <input type="text"
+                            th:field="*{recipeingredients[__${iter.index}__].unit}"
+                            placeholder="Eenheid" />
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="form-group">
+            <label for="stepsTable">Stappen</label>
             <table id="stepsTable">
-                <thead>
-                    <tr>
-                        <th>Stappen</th>
-                    </tr>
-                </thead>
                 <tbody>
                     <tr th:each="step, iStat : *{steps}" class="step-row" data-index="${iStat.index}">
                         <td th:text="${iStat.index + 1}"></td>
@@ -121,23 +130,36 @@
         // Init call
         reindex();
     })();
-    (function() {
-        document.addEventListener("DOMContentLoaded", () => {
-            document.querySelectorAll(".ingredient-checkbox").forEach(cb => {
-                cb.addEventListener("change", e => {
-                    const extraFields = e.target.closest("div").querySelector(".ingredient-extra");
-                    if (e.target.checked) {
-                        extraFields.style.display = "inline";
-                    } else {
-                        extraFields.style.display = "none";
-                    }
-                });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const selectedContainer = document.getElementById("selectedIngredients");
+        const unselectedContainer = document.getElementById("unselectedIngredients");
+
+        document.querySelectorAll(".ingredient-checkbox").forEach(cb => {
+            const item = cb.closest(".ingredient-item");
+            const extraFields = item.querySelector(".ingredient-extra");
+
+            if (cb.checked) {
+                selectedContainer.appendChild(item);
+                extraFields.style.display = "inline";
+            } else {
+                unselectedContainer.appendChild(item);
+                extraFields.style.display = "none";
+            }
+
+            cb.addEventListener("change", e => {
+                if (e.target.checked) {
+                    selectedContainer.appendChild(item);
+                    extraFields.style.display = "inline";
+                } else {
+                    unselectedContainer.appendChild(item);
+                    extraFields.style.display = "none";
+                }
             });
         });
-    })();
+    });
 </script>
-
-
 
 <div th:replace="~{fragments/general :: footer}"></div>
 <div th:replace="~{fragments/general :: bottomScripts}"></div>

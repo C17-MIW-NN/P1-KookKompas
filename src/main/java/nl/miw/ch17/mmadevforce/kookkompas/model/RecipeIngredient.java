@@ -12,7 +12,7 @@ public class RecipeIngredient {
     @Id @GeneratedValue
     private Long recipeIngredientId;
 
-    private double ingredientAmount;
+    private Double ingredientAmount;
     private String unit;
 
     @ManyToOne
@@ -47,11 +47,11 @@ public class RecipeIngredient {
         this.recipeIngredientId = recipeIngredientId;
     }
 
-    public double getIngredientAmount() {
+    public Double getIngredientAmount() {
         return ingredientAmount;
     }
 
-    public void setIngredientAmount(double ingredientAmount) {
+    public void setIngredientAmount(Double ingredientAmount) {
         this.ingredientAmount = ingredientAmount;
     }
 

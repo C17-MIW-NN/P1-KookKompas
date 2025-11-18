@@ -8,25 +8,51 @@
 
 <div th:replace="~{fragments/general :: navbar}"></div>
 
+    <div style="text-align: center; margin-top: 0px;">
+        <div style="position: relative; width: 100%; margin: 0; padding: 0;">
+            <img src="/images/paella.jpg" alt="paella" style="width: 100%; height: 400px; object-fit: cover; display: block; filter: brightness(35%); margin: 0;">
+
+            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 70%; text-align: center;">
+                <h1 style="text-align: center; color: white; margin: 0 0 45px 0; font-size: 50px;">Welkom bij KookKompas!</h1>
+                <h2 style="color: white; font-size: 25px;">Navigeer naar de lekkerste recepten</h2>
+                    <form class="d-flex mt-4 justify-content-center" role="search" th:action="@{/recipe/search}" method="get">
+                    <div class="input-group" style="max-width: 400px;">
+                        <span class="input-group-text bg-white">
+                            <i class="bi bi-search"></i>
+                        </span>
+                        <input class="form-control" type="search" name="query" placeholder="Voer zoekterm in" aria-label="Search"/>
+                        <button class="btn btn-success" type="submit">Zoeken</button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 <div class="container">
-    <h1 style="text-align: center; margin-top: 20px; margin-bottom: 0px;">Welkom bij KookKompas!</h1>
+    <div>
+        <h2 style="text-align: center; margin: 40px 0 10px 0;">Recepten van de week</h2>
+    </div>
+
+    <div class="cards-container" style="display: flex; flex-warp: wrap; justify-content: center; gap: 20px; padding: 20px 0;">
+        <div class="card bg-light" style="width: 300px" th:each="recipe : ${recipes}">
+        <a th:href="@{/recipe/detail/{title}(title = ${recipe.title})}">
+            <img class="card-img-top card-img rounded-top" style="height: 200px; object-fit: cover;" th:src="${recipe.coverImageUrl}" alt="Cover Image" ></a>
+        <div class="card-body"><!--/*@thymesVar id="category" type="nl.miw.ch17.mmadevforce.kookkompas.model.Category"*/-->
+            <a th:href="@{/recipe/detail/{title}(title = ${recipe.title})}" class="text-decoration-none text-black"><h2 class="card-title text-decoration-none"
+                                                                                                                    th:text="${recipe.title}"></h2></a>
+            <span th:each="category : ${recipe.categories}"
+              th:text="${category.categoryName}" th:style="'background-color:' + ${category.categoryColor} + '; padding: 3px 6px; border-radius: 4px; color: white; margin-right:6px;'"></span>
+            <p class="card-text py-2" th:href="@{/recipe/detail/{title}(title = ${recipe.title})}"
+                th:text="${recipe.description}"></p>
+            <div>
+                <a th:href="@{/shoppinglist/add/{recipeId}(recipeId=${recipe.recipeId})}"
+               class="btn btn-sm btn-green">Voeg toe aan boodschappenlijst</a>
+            </div>
+        </div>
+        </div>
+    </div>
 </div>
-
-<div style="text-align: center; margin: -20px 0 20px 0;">
-    <img src="/images/paella.jpg" alt="paella" style="width: 90%; height: auto;">
-</div>
-
-<div class="d-flex flex-column justify-content-center align-items-center" style="height: 20vh;">
-    <h2>Vind hier de lekkerste recepten</h2>
-    <form class="d-flex mt-3" role="search" th:action="@{/recipe/search}" method="get" style="width: 50%;">
-        <input class="form-control me-2" type="search" name="query" placeholder="Voer zoekterm in" aria-label="Search"/>
-        <button class="btn btn-success" type="submit">Zoeken</button>
-    </form>
-</div>
-
-
-
-
 
 <div th:replace="~{fragments/general :: footer}"></div>
 <div th:replace="~{fragments/general :: bottomScripts}"></div>
