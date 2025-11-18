@@ -8,23 +8,28 @@
 
 <div th:replace="~{fragments/general :: navbar}"></div>
 
-<div class="container">
-    <h1 style="text-align: center; margin: 5px 0;">Welkom bij KookKompas!</h1>
-
     <div style="text-align: center; margin-top: 0px;">
-        <div style="position: relative; display: inline-block; width: 90%; margin-top: 5px;">
-            <img src="/images/paella.jpg" alt="paella" style="width: 100%; height: 400px; object-fit: cover; display: block; filter: brightness(50%);">
+        <div style="position: relative; width: 100%; margin: 0; padding: 0;">
+            <img src="/images/paella.jpg" alt="paella" style="width: 100%; height: 400px; object-fit: cover; display: block; filter: brightness(35%); margin: 0;">
 
             <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 70%; text-align: center;">
-                <h2 style="color: white;">Navigeer naar de lekkerste recepten</h2>
-                <form class="d-flex mt-4 justify-content-center" role="search" th:action="@{/recipe/search}" method="get">
-                    <input class="form-control me-2" type="search" name="query" placeholder="Voer zoekterm in" aria-label="Search"/>
-                    <button class="btn btn-success" type="submit">Zoeken</button>
-                </form>
+                <h1 style="text-align: center; color: white; margin: 0 0 45px 0; font-size: 50px;">Welkom bij KookKompas!</h1>
+                <h2 style="color: white; font-size: 25px;">Navigeer naar de lekkerste recepten</h2>
+                    <form class="d-flex mt-4 justify-content-center" role="search" th:action="@{/recipe/search}" method="get">
+                    <div class="input-group" style="max-width: 400px;">
+                        <span class="input-group-text bg-white">
+                            <i class="bi bi-search"></i>
+                        </span>
+                        <input class="form-control" type="search" name="query" placeholder="Voer zoekterm in" aria-label="Search"/>
+                        <button class="btn btn-success" type="submit">Zoeken</button>
+                    </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 
+<div class="container">
     <div>
         <h2 style="text-align: center; margin: 40px 0 10px 0;">Recepten van de week</h2>
     </div>
