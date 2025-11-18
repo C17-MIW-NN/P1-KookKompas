@@ -1,12 +1,10 @@
 package nl.miw.ch17.mmadevforce.kookkompas.controller;
 
 import nl.miw.ch17.mmadevforce.kookkompas.model.Category;
-import nl.miw.ch17.mmadevforce.kookkompas.model.RecipeIngredient;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.CategoryRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.RecipeRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +14,7 @@ import java.util.Optional;
 
 /**
  * @author MMA Dev Force
- *
+ * Handles requests regarding recipe categories
  */
 @Controller
 public class CategoryController {
