@@ -5,6 +5,7 @@ import nl.miw.ch17.mmadevforce.kookkompas.model.Recipe;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.CategoryRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.IngredientRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.RecipeRepository;
+import nl.miw.ch17.mmadevforce.kookkompas.service.RecipeService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -26,28 +27,23 @@ public class RecipeTest {
     @Test
     @DisplayName("test search terms with capitalized letter")
     void testSearchTermsWithCapitalizedLetter() {
-        //Arrange
-        RecipeRepository recipeRepository = Mockito.mock(RecipeRepository.class);
-        CategoryRepository categoryRepository = Mockito.mock(CategoryRepository.class);
-        IngredientRepository ingredientRepository = Mockito.mock(IngredientRepository.class);
+        // Arrange
+        RecipeService recipeService = Mockito.mock(RecipeService.class);
         Model model = Mockito.mock(Model.class);
 
-        RecipeController controller = new RecipeController(recipeRepository, categoryRepository, ingredientRepository);
+        RecipeController controller = new RecipeController(recipeService);
 
         Recipe recipe = new Recipe();
         recipe.setTitle("Pasta");
 
-        Mockito.when(recipeRepository.findByTitleContainingIgnoreCase("Pasta"))
-                .thenReturn(List.of(recipe));
-        Mockito.when(recipeRepository.findDistinctByRecipeingredients_Ingredient_NameIgnoreCase("Pasta"))
-                .thenReturn(List.of());
+        Mockito.when(recipeService.searchRecipes("Pasta"))
+                .thenReturn(Set.of(recipe));
 
-        //Act
+        // Act
         String viewName = controller.searchRecipes("Pasta", model);
 
-        //Assert
+        // Assert
         assertEquals("recipeSearchResults", viewName);
-
         Mockito.verify(model).addAttribute("recipes", Set.of(recipe));
         Mockito.verify(model).addAttribute("query", "Pasta");
     }
@@ -56,20 +52,15 @@ public class RecipeTest {
     @DisplayName("test search terms with low case letters")
     void testSearchTermsWithLowCaseLetters() {
         //Arrange
-        RecipeRepository recipeRepository = Mockito.mock(RecipeRepository.class);
-        CategoryRepository categoryRepository = Mockito.mock(CategoryRepository.class);
-        IngredientRepository ingredientRepository = Mockito.mock(IngredientRepository.class);
+        RecipeService recipeService = Mockito.mock(RecipeService.class);
         Model model = Mockito.mock(Model.class);
 
-        RecipeController controller = new RecipeController(recipeRepository, categoryRepository, ingredientRepository);
-
+        RecipeController controller = new RecipeController(recipeService);
         Recipe recipe = new Recipe();
         recipe.setTitle("pasta");
 
-        Mockito.when(recipeRepository.findByTitleContainingIgnoreCase("pasta"))
-                .thenReturn(List.of(recipe));
-        Mockito.when(recipeRepository.findDistinctByRecipeingredients_Ingredient_NameIgnoreCase("pasta"))
-                .thenReturn(List.of());
+        Mockito.when(recipeService.searchRecipes("Pasta"))
+                .thenReturn(Set.of(recipe));
 
         //Act
         String viewName = controller.searchRecipes("pasta", model);
@@ -85,17 +76,13 @@ public class RecipeTest {
     @DisplayName("test search terms with spelling mistake")
     void testSearchTermsWithSpellingMistake() {
         //Arrange
-        RecipeRepository recipeRepository = Mockito.mock(RecipeRepository.class);
-        CategoryRepository categoryRepository = Mockito.mock(CategoryRepository.class);
-        IngredientRepository ingredientRepository = Mockito.mock(IngredientRepository.class);
+        RecipeService recipeService = Mockito.mock(RecipeService.class);
         Model model = Mockito.mock(Model.class);
 
-        RecipeController controller = new RecipeController(recipeRepository, categoryRepository, ingredientRepository);
+        RecipeController controller = new RecipeController(recipeService);
 
-        Mockito.when(recipeRepository.findByTitleContainingIgnoreCase("Patsa"))
-                .thenReturn(List.of());
-        Mockito.when(recipeRepository.findDistinctByRecipeingredients_Ingredient_NameIgnoreCase("Patsa"))
-                .thenReturn(List.of());
+        Mockito.when(recipeService.searchRecipes("Patsa"))
+                .thenReturn(Set.of());
 
         //Act
         String viewName = controller.searchRecipes("Patsa", model);
@@ -110,28 +97,23 @@ public class RecipeTest {
     @Test
     @DisplayName("test search terms with one letter")
     void testSearchTermsWithOneLetter() {
-        //Arrange
-        RecipeRepository recipeRepository = Mockito.mock(RecipeRepository.class);
-        CategoryRepository categoryRepository = Mockito.mock(CategoryRepository.class);
-        IngredientRepository ingredientRepository = Mockito.mock(IngredientRepository.class);
+        // Arrange
+        RecipeService recipeService = Mockito.mock(RecipeService.class);
         Model model = Mockito.mock(Model.class);
 
-        RecipeController controller = new RecipeController(recipeRepository, categoryRepository, ingredientRepository);
+        RecipeController controller = new RecipeController(recipeService);
 
         Recipe recipe = new Recipe();
         recipe.setTitle("pasta");
 
-        Mockito.when(recipeRepository.findByTitleContainingIgnoreCase("p"))
-                .thenReturn(List.of(recipe));
-        Mockito.when(recipeRepository.findDistinctByRecipeingredients_Ingredient_NameIgnoreCase("p"))
-                .thenReturn(List.of());
+        Mockito.when(recipeService.searchRecipes("p"))
+                .thenReturn(Set.of(recipe));
 
-        //Act
+        // Act
         String viewName = controller.searchRecipes("p", model);
 
-        //Assert
+        // Assert
         assertEquals("recipeSearchResults", viewName);
-
         Mockito.verify(model).addAttribute("recipes", Set.of(recipe));
         Mockito.verify(model).addAttribute("query", "p");
     }
@@ -139,28 +121,22 @@ public class RecipeTest {
     @Test
     @DisplayName("test search terms with a symbol")
     void testSearchTermsWithSymbol() {
-        //Arrange
-        RecipeRepository recipeRepository = Mockito.mock(RecipeRepository.class);
-        CategoryRepository categoryRepository = Mockito.mock(CategoryRepository.class);
-        IngredientRepository ingredientRepository = Mockito.mock(IngredientRepository.class);
+        // Arrange
+        RecipeService recipeService = Mockito.mock(RecipeService.class);
         Model model = Mockito.mock(Model.class);
 
-        RecipeController controller = new RecipeController(recipeRepository, categoryRepository, ingredientRepository);
+        RecipeController controller = new RecipeController(recipeService);
 
-        Mockito.when(recipeRepository.findByTitleContainingIgnoreCase("@"))
-                .thenReturn(List.of());
-        Mockito.when(recipeRepository.findDistinctByRecipeingredients_Ingredient_NameIgnoreCase("@"))
-                .thenReturn(List.of());
+        Mockito.when(recipeService.searchRecipes("@"))
+                .thenReturn(Set.of());
 
-        //Act
+        // Act
         String viewName = controller.searchRecipes("@", model);
 
-        //Assert
+        // Assert
         assertEquals("recipeSearchResults", viewName);
-
         Mockito.verify(model).addAttribute("recipes", Set.of());
         Mockito.verify(model).addAttribute("query", "@");
     }
-
 }
 
