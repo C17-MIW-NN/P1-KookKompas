@@ -2,11 +2,9 @@ package nl.miw.ch17.mmadevforce.kookkompas.model;
 
 import jakarta.persistence.*;
 
-import java.util.Set;
-
 /**
  * @author MMA Dev Force
- *
+ * Information regarding recipe categories
  */
 @Entity
 public class Category {
@@ -19,19 +17,12 @@ public class Category {
 
     private String categoryColor;
 
-    public Category(String categoryName, String categoryColor) {
-        this.categoryName = categoryName;
-        this.categoryColor = categoryColor;
-    }
-
     public Category(String categoryName) {
         this.categoryName = categoryName;
     }
 
     public Category() {
-
     }
-
 
     public Long getCategoryId() {
         return categoryId;
@@ -53,7 +44,4 @@ public class Category {
         return categoryColor;
     }
 
-    public void setCategoryColor(String categoryColor) {
-        this.categoryColor = categoryColor;
-    }
 }

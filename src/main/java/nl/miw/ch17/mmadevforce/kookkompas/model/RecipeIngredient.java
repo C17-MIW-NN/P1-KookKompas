@@ -3,7 +3,7 @@ package nl.miw.ch17.mmadevforce.kookkompas.model;
 import jakarta.persistence.*;
 
 /**
- * @author Melanie van der Vlies
+ * @author MMA Dev Force
  * The concept to add ingredients to recipe.
  */
 @Entity
@@ -21,23 +21,8 @@ public class RecipeIngredient {
     @ManyToOne
     private Recipe recipe;
 
-
     public RecipeIngredient() {
-
     }
-
-    //METHOD ADD AMOUNT
-    public double getScaledAmount(int currentServings, int defaultServings) {
-        return ingredientAmount * currentServings / defaultServings;
-    }
-
-    public int decreasePerson(int servings) {
-        if (servings > 1) {
-            return servings - 1;
-        }
-        return servings;
-    }
-
 
     public Long getRecipeIngredientId() {
         return recipeIngredientId;

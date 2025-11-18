@@ -8,7 +8,7 @@ import java.util.Set;
 
 /**
  * @author MMA Dev Force
- *
+ * Information regarding recipes of KookKompas
  */
 
 @Entity
@@ -19,7 +19,6 @@ public class Recipe {
     private Long recipeId;
     private String title;
     private String description;
-    private int preparationTime;
     private int servings = DEFAULT_MINIMUM_SERVINGS;
     private String coverImageUrl;
 
@@ -31,8 +30,6 @@ public class Recipe {
 
     @ManyToMany
     private Set<Category> categories;
-
-
 
     public Set<Category> getCategories() {
         return categories;
@@ -55,14 +52,6 @@ public class Recipe {
     public Recipe() {
     }
 
-
-    public int decreasePerson(int servingsCurrent) {
-        if (servingsCurrent > 1) {
-            return servingsCurrent - 1;
-        }
-        return servingsCurrent;
-    }
-
     public String getTitle() {
         return title;
     }
@@ -83,10 +72,6 @@ public class Recipe {
         return servings;
     }
 
-    public void setServings(int servings) {
-        this.servings = servings;
-    }
-
     public List<RecipeIngredient> getRecipeingredients() {
         return recipeingredients;
     }
@@ -103,20 +88,8 @@ public class Recipe {
         this.description = description;
     }
 
-    public int getPreparationTime() {
-        return preparationTime;
-    }
-
-    public void setPreparationTime(int preparationTime) {
-        this.preparationTime = preparationTime;
-    }
-
     public List<RecipeStep> getSteps() {
         return steps;
-    }
-
-    public void setSteps(List<RecipeStep> steps) {
-        this.steps = steps;
     }
 
     public String getCoverImageUrl() {

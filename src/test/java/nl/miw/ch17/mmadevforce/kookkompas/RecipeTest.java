@@ -59,7 +59,7 @@ public class RecipeTest {
         Recipe recipe = new Recipe();
         recipe.setTitle("pasta");
 
-        Mockito.when(recipeService.searchRecipes("Pasta"))
+        Mockito.when(recipeService.searchRecipes("pasta"))
                 .thenReturn(Set.of(recipe));
 
         //Act
