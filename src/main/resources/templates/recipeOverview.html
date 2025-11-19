@@ -12,12 +12,11 @@
 
 <div class="container">
 
-    <div>
-        <button th:each="category : ${categories}"
-              th:text="${category.categoryName}" th:style="${'background-color:' + category.categoryColor +
-                 '; padding: 3px 6px; border-radius: 4px; color: white; margin-right:6px;'}">
-        </button>
-    </div>
+    <button th:each="category : ${categories}"
+          th:text="${category.categoryName}" th:attr="data-category=${category.categoryName}" th:style="${'background-color:' + category.categoryColor +
+             '; padding: 3px 6px; border: none; border-radius: 4px; color: white; margin: 0 6px 20px 0;'}">
+    </button>
+
 
     <div class="cards-container">
         <div class="card bg-light" style="width: 400px">
@@ -31,7 +30,7 @@
                     <div></div>
                 </div>
         </div>
-        <div class="card bg-light" style="width: 400px" th:each="recipe : ${recipes}">
+        <div class="card bg-light" style="width: 400px" th:each="recipe : ${recipes}" th:attr="data-categories=${#strings.listJoin(recipe.categories, ',')}">
             <a th:href="@{/recipe/detail/{title}(title = ${recipe.title})}">
                 <img class="card-img-top card-img rounded-top" style="height: 300px" th:src="${recipe.coverImageUrl}" alt="Cover Image" ></a>
             <div class="card-body"><!--/*@thymesVar id="category" type="nl.miw.ch17.mmadevforce.kookkompas.model.Category"*/-->
@@ -53,6 +52,29 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const buttons = document.querySelectorAll("button[data-category]");
+        const cards = document.querySelectorAll(".card[ data-categories ]");
+
+        buttons.forEach(button => {
+            button.addEventListener("click", () => {
+                const selectedCategory = button.dataset.category;
+
+                cards.forEach(card => {
+                    const categories = card.dataset.categories.split(",");
+
+                    if (categories.includes(selectedCategory)) {
+                        card.style.display = "block";
+                    } else {
+                        card.style.display = "none";
+                    }
+                });
+            });
+        });
+    });
+</script>
 
 <div th:replace="~{fragments/general :: footer}"></div>
 <div th:replace="~{fragments/general :: bottomScripts}"></div>
