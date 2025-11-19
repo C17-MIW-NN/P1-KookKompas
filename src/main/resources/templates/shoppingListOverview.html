@@ -40,6 +40,37 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
+
+        document.querySelectorAll("tbody tr").forEach((row, index) => {
+            row.dataset.originalIndex = index;
+        });
+
+        function reorderRows() {
+            const tbody = document.querySelector("tbody");
+            const rows = Array.from(tbody.querySelectorAll("tr"));
+
+            const unchecked = [];
+            const checked = [];
+
+            rows.forEach(row => {
+                const checkbox = row.querySelector(".check-item");
+                if (checkbox.checked) {
+                    checked.push(row);
+                } else {
+                    unchecked.push(row);
+                }
+            });
+
+            unchecked.sort((a, b) => {
+                return a.dataset.originalIndex - b.dataset.originalIndex;
+            });
+
+            tbody.innerHTML = "";
+            unchecked.forEach(r => tbody.appendChild(r));
+            checked.forEach(r => tbody.appendChild(r));
+
+        }
+
         document.querySelectorAll(".check-item").forEach(function(checkbox) {
             checkbox.addEventListener("change", function() {
                 const row = this.closest("tr");
@@ -48,6 +79,8 @@
                 } else {
                     row.classList.remove("strikethrough");
                 }
+
+                reorderRows();
             });
         });
     });
