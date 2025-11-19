@@ -8,6 +8,7 @@ import java.util.List;
  * @author MMA Dev Force
  * The ingredients that will be used in the recipes.
  */
+
 @Entity
 public class Ingredient {
 
@@ -18,7 +19,7 @@ public class Ingredient {
     private String name;
 
     @OneToMany(mappedBy = "ingredient")
-    private List<RecipeIngredient> recipeingredients;
+    private List<RecipeIngredient> recipeIngredients;
 
     public Ingredient(String name) {
         this.name = name;
