@@ -1,6 +1,7 @@
 package nl.miw.ch17.mmadevforce.kookkompas.controller;
 
 import nl.miw.ch17.mmadevforce.kookkompas.model.*;
+import nl.miw.ch17.mmadevforce.kookkompas.service.CategoryService;
 import nl.miw.ch17.mmadevforce.kookkompas.service.RecipeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,15 +18,18 @@ import java.util.*;
 public class RecipeController {
 
     private final RecipeService recipeService;
+    private final CategoryService categoryService;
 
-    public RecipeController(RecipeService recipeService) {
+    public RecipeController(RecipeService recipeService, CategoryService categoryService) {
         this.recipeService = recipeService;
+        this.categoryService = categoryService;
     }
 
-    @GetMapping({"/recipe/all", "/"})
+    @GetMapping({"/recipe/all"})
     private String showRecipeOverview(Model datamodel) {
 
         datamodel.addAttribute("recipes", recipeService.getAllRecipes());
+        datamodel.addAttribute("categories", categoryService.findAllCategories());
 
         return "recipeOverview";
     }

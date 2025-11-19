@@ -6,6 +6,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -20,17 +21,20 @@ public class InitializeService {
     private final RecipeRepository recipeRepository;
     private final RecipeStepRepository recipeStepRepository;
     private final CategoryRepository categoryRepository;
+    private final CategoryService categoryService;
+
 
     public InitializeService(IngredientRepository ingredientRepository,
                              RecipeIngredientRepository recipeIngredientRepository,
                              RecipeRepository recipeRepository,
                              RecipeStepRepository recipeStepRepository,
-                             CategoryRepository categoryRepository) {
+                             CategoryRepository categoryRepository,CategoryService categoryService) {
         this.ingredientRepository = ingredientRepository;
         this.recipeIngredientRepository = recipeIngredientRepository;
         this.recipeRepository = recipeRepository;
         this.recipeStepRepository = recipeStepRepository;
         this.categoryRepository = categoryRepository;
+        this.categoryService = categoryService;
     }
 
     public void seedDatabaseIfEmpty() {
@@ -43,6 +47,46 @@ public class InitializeService {
         loadCSVFileIngredientList();
         loadCSVFileRecipeSteps();
         loadCSVFileRecipeCategory();
+        loadCSVFileCategoryList();
+    }
+
+    private void loadCSVFileCategoryList() {
+        ClassPathResource categoryListFile = new ClassPathResource("static/CategoryList.csv");
+        try (Scanner input = new Scanner(categoryListFile.getInputStream())) {
+            if (input.hasNextLine()) input.nextLine();
+
+            while (input.hasNextLine()) {
+                String line = input.nextLine().trim();
+                if (!line.isEmpty()) {
+                    importCSVFileCategoryList(line);
+                }
+            }
+
+        } catch (Exception exception) {
+            System.err.println("Categorielijst bestand kon niet geopend worden.");
+            System.err.println(exception.getMessage());
+        }
+    }
+
+    private void importCSVFileCategoryList(String line) {
+        String[] parts = line.split(",", 2);
+        String categoryName = parts[0].trim();
+        String categoryColor = parts[1].trim();
+
+        Optional<Category> optionalCategory = categoryService.findByCategoryName(categoryName);
+
+        if (optionalCategory.isPresent()) {
+            // Bestaande categorie updaten
+            Category existing = optionalCategory.get();
+            existing.setCategoryColor(categoryColor);
+            categoryService.saveCategory(existing);
+        } else {
+            // Nieuwe categorie aanmaken
+            Category newCategory = new Category();
+            newCategory.setCategoryName(categoryName);
+            newCategory.setCategoryColor(categoryColor);
+            categoryService.saveCategory(newCategory);
+        }
     }
 
     private void loadCSVFileRecipeCategory() {
@@ -62,6 +106,7 @@ public class InitializeService {
             System.err.println(exception.getMessage());
         }
     }
+
 
     private void importCSVFileRecipeCategory(String line) {
         String[] parts = line.split(",", 4);
