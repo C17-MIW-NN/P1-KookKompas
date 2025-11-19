@@ -3,6 +3,7 @@ package nl.miw.ch17.mmadevforce.kookkompas.model;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 

@@ -2,6 +2,9 @@ package nl.miw.ch17.mmadevforce.kookkompas.model;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * @author MMA Dev Force
  * Information regarding recipe categories
@@ -16,6 +19,9 @@ public class Category {
     private String categoryName;
 
     private String categoryColor;
+
+    @ManyToMany(mappedBy = "categories")
+    private Set<Recipe> recipes = new HashSet<>();
 
     public Category(String categoryName) {
         this.categoryName = categoryName;
@@ -42,6 +48,10 @@ public class Category {
 
     public String getCategoryColor() {
         return categoryColor;
+    }
+
+    public Set<Recipe> getRecipes() {
+        return recipes;
     }
 
 }
