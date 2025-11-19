@@ -5,6 +5,7 @@ import nl.miw.ch17.mmadevforce.kookkompas.model.Recipe;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.CategoryRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.IngredientRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.RecipeRepository;
+import nl.miw.ch17.mmadevforce.kookkompas.service.CategoryService;
 import nl.miw.ch17.mmadevforce.kookkompas.service.RecipeService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,9 +30,10 @@ public class RecipeTest {
     void testSearchTermsWithCapitalizedLetter() {
         // Arrange
         RecipeService recipeService = Mockito.mock(RecipeService.class);
+        CategoryService categoryService = Mockito.mock(CategoryService.class);
         Model model = Mockito.mock(Model.class);
 
-        RecipeController controller = new RecipeController(recipeService);
+        RecipeController controller = new RecipeController(recipeService, categoryService);
 
         Recipe recipe = new Recipe();
         recipe.setTitle("Pasta");
@@ -53,9 +55,11 @@ public class RecipeTest {
     void testSearchTermsWithLowCaseLetters() {
         //Arrange
         RecipeService recipeService = Mockito.mock(RecipeService.class);
+        CategoryService categoryService = Mockito.mock(CategoryService.class);
+
         Model model = Mockito.mock(Model.class);
 
-        RecipeController controller = new RecipeController(recipeService);
+        RecipeController controller = new RecipeController(recipeService, categoryService);
         Recipe recipe = new Recipe();
         recipe.setTitle("pasta");
 
@@ -77,9 +81,11 @@ public class RecipeTest {
     void testSearchTermsWithSpellingMistake() {
         //Arrange
         RecipeService recipeService = Mockito.mock(RecipeService.class);
+        CategoryService categoryService = Mockito.mock(CategoryService.class);
+
         Model model = Mockito.mock(Model.class);
 
-        RecipeController controller = new RecipeController(recipeService);
+        RecipeController controller = new RecipeController(recipeService, categoryService);
 
         Mockito.when(recipeService.searchRecipes("Patsa"))
                 .thenReturn(Set.of());
@@ -99,9 +105,11 @@ public class RecipeTest {
     void testSearchTermsWithOneLetter() {
         // Arrange
         RecipeService recipeService = Mockito.mock(RecipeService.class);
+        CategoryService categoryService = Mockito.mock(CategoryService.class);
+
         Model model = Mockito.mock(Model.class);
 
-        RecipeController controller = new RecipeController(recipeService);
+        RecipeController controller = new RecipeController(recipeService, categoryService);
 
         Recipe recipe = new Recipe();
         recipe.setTitle("pasta");
@@ -123,9 +131,11 @@ public class RecipeTest {
     void testSearchTermsWithSymbol() {
         // Arrange
         RecipeService recipeService = Mockito.mock(RecipeService.class);
+        CategoryService categoryService = Mockito.mock(CategoryService.class);
+
         Model model = Mockito.mock(Model.class);
 
-        RecipeController controller = new RecipeController(recipeService);
+        RecipeController controller = new RecipeController(recipeService, categoryService);
 
         Mockito.when(recipeService.searchRecipes("@"))
                 .thenReturn(Set.of());

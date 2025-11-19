@@ -13,10 +13,10 @@
 <div class="container">
 
     <div>
-        <span th:each="category : ${categories}"
+        <button th:each="category : ${categories}"
               th:text="${category.categoryName}" th:style="${'background-color:' + category.categoryColor +
                  '; padding: 3px 6px; border-radius: 4px; color: white; margin-right:6px;'}">
-        </span>
+        </button>
     </div>
 
     <div class="cards-container">

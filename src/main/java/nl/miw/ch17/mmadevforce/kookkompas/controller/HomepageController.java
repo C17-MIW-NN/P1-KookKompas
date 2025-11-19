@@ -17,7 +17,7 @@ public class HomepageController {
         this.homepageService = homepageService;
     }
 
-    @GetMapping("/homepage")
+    @GetMapping("/")
     public String home(Model model) {
         model.addAttribute("welcomeMessage", "Welkom bij KookKompas!");
         model.addAttribute("recipes", homepageService.findAllRecipes());

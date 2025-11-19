@@ -44,4 +44,7 @@ public class Category {
         return categoryColor;
     }
 
+    public void setCategoryColor(String categoryColor) {
+        this.categoryColor = categoryColor;
+    }
 }
