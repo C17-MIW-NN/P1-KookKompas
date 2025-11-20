@@ -28,8 +28,9 @@
         <div class="form-group">
             <label for="categories">Categorie</label>
             <div th:each="category : ${allCategories}">
-                <input id="categories" type="checkbox" th:value="${category.categoryIds}"
-                        th:text="${category.categoryName}" th:field="${categoryIds}">
+                <input id="categories" type="checkbox" th:value="${category.categoryId}"
+                        th:text="${category.categoryName}" th:field="${allCategories}">
+                <span th:text="${category.categoryName}"></span>
             </div>
         </div>
 
