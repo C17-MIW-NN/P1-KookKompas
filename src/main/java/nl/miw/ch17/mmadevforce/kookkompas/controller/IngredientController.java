@@ -1,9 +1,11 @@
 package nl.miw.ch17.mmadevforce.kookkompas.controller;
 
+import jakarta.validation.Valid;
 import nl.miw.ch17.mmadevforce.kookkompas.model.Ingredient;
 import nl.miw.ch17.mmadevforce.kookkompas.service.IngredientService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -34,7 +36,14 @@ public class IngredientController {
     }
 
     @PostMapping("/save")
-    public String saveIngredient(@ModelAttribute("formIngredient") Ingredient ingredientToBeSaved){
+    public String saveIngredient(
+            @Valid @ModelAttribute("formIngredient") Ingredient ingredientToBeSaved,
+            BindingResult bindingResult,
+            Model model ) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("formIngredient", ingredientToBeSaved );
+            return "ingredientForm";
+        }
         ingredientService.saveIngredient(ingredientToBeSaved);
         return getRedirectIngredientAll();
     }
