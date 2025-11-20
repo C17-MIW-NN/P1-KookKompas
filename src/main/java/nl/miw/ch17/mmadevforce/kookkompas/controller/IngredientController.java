@@ -3,6 +3,7 @@ package nl.miw.ch17.mmadevforce.kookkompas.controller;
 import jakarta.validation.Valid;
 import nl.miw.ch17.mmadevforce.kookkompas.model.Ingredient;
 import nl.miw.ch17.mmadevforce.kookkompas.service.IngredientService;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -44,7 +45,15 @@ public class IngredientController {
             model.addAttribute("formIngredient", ingredientToBeSaved );
             return "ingredientForm";
         }
-        ingredientService.saveIngredient(ingredientToBeSaved);
+
+        try {
+            ingredientService.saveIngredient(ingredientToBeSaved);
+        } catch (DataIntegrityViolationException e) {
+            bindingResult.rejectValue("name", "duplicate",
+                    "Ingredient naam moet uniek zijn");
+            return "ingredientForm";
+        }
+
         return getRedirectIngredientAll();
     }
     
