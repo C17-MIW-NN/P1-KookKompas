@@ -1,6 +1,7 @@
 package nl.miw.ch17.mmadevforce.kookkompas.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.HashSet;
 import java.util.Set;
