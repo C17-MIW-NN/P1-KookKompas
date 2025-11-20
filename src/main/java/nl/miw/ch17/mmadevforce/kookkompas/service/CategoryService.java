@@ -22,6 +22,10 @@ public class CategoryService {
         this.recipeRepository = recipeRepository;
     }
 
+    public boolean isCategoryNameUnique(String categoryName) {
+        return findByCategoryName(categoryName).isEmpty();
+    }
+
     public List<Recipe> findRecipesByCategoryName(String query) {
 //        List<Category> matchingCategories = categoryRepository.findByCategoryNameContainingIgnoreCase(query);
 //        Set<Recipe> recipes = new HashSet<>();

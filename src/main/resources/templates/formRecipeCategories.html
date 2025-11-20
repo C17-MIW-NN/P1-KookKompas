@@ -14,12 +14,18 @@
 
         <form th:action="@{/category/save}" method="post" th:object="${formCategory}">
             <input type="hidden" th:field="*{categoryId}">
-            Categorie: <input type="text" th:field="*{categoryName}">
-            Kleur: <input type="text" th:field="*{categoryColor}">
-            <input type="submit" value="Sla categorie op">
+            <div class ="mb-3">
+                <label for="categoryName" class="form-label">Categorie: </label>
+                <input type="text" th:field="*{categoryName}" class="form-control" id="categoryName" placeholder="Voer categorienaam in">
+                <div class="text-danger mt-1" th:if="${#fields.hasErrors('categoryName')}" th:errors="*{categoryName}"></div>
+            </div>
+            <div class="mb-3">
+                <label for="categoryColor" class="form-label">Kleur: </label>
+                <input type="text" th:field="*{categoryColor}" class="form-control" id="categoryColor" placeholder="#FFAA00">
+            </div>
+                <button type="submit" class="btn btn-success">Sla categorie op</button>
         </form>
     </div>
-
 
     <div th:replace="~{fragments/general :: footer}"></div>
     <div th:replace="~{fragments/general :: bottomScripts}"></div>

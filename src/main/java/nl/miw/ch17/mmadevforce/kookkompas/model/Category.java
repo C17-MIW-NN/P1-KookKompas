@@ -2,6 +2,7 @@ package nl.miw.ch17.mmadevforce.kookkompas.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,10 +13,15 @@ import java.util.Set;
  */
 @Entity
 public class Category {
+    private static final int MIN_CHARACTERS_CATEGORY = 2;
+    private static final int MAX_CHARACTERS_CATEGORY = 20;
 
     @Id @GeneratedValue
     private Long categoryId;
 
+    @NotBlank(message = "Categorienaam mag niet leeg zijn.")
+    @Size(min = MIN_CHARACTERS_CATEGORY, max = MAX_CHARACTERS_CATEGORY,
+            message = "Categorienaam moet tussen de 2 en 20 tekens lang zijn.")
     @Column(unique = true)
     private String categoryName;
 
