@@ -12,7 +12,7 @@
     <h1 th:if="${formRecipe.recipeId == null}">Voeg nieuw recept toe</h1>
     <h1 th:unless="${formRecipe.recipeId == null}" th:text="|Bewerk ${formRecipe.title}|"></h1>
 
-    <form th:action="@{/recipe/save}" method="post" th:object="${formRecipe}">
+    <form th:action="@{/recipe/save}" method="post" th:object="${formRecipe}" enctype="multipart/form-data">
 
         <div class="form-group">
             <label for="recipeName">Naam</label>
@@ -22,7 +22,7 @@
 
         <div class="form-group">
             <label for="recipeDescription">Beschrijving</label>
-            <textarea class="form-control" id="recipeDescription" type="text" th:field="*{description}"></textarea>
+            <textarea class="form-control" id="recipeDescription" th:field="*{description}"></textarea>
         </div>
 
         <div class="form-group">
@@ -34,9 +34,24 @@
             </select>
         </div>
 
+<!--        <div class="form-group">-->
+<!--            <label for="coverImageUrl">Afbeelding URL</label>-->
+<!--            <input type="text" class="form-control" id="coverImageUrl" th:field="*{coverImageUrl}">-->
+<!--        </div>-->
+
+<!--        <div class="form-group">-->
+<!--            <label for="coverImageFile">Afbeelding uploaden</label>-->
+<!--            <input type="file" class="form-control" id="coverImageFile" name="coverImageFile" accept="image/*">-->
+<!--        </div>-->
+
         <div class="form-group">
-            <label for="coverImageUrl">Afbeelding URL</label>
-            <input type="text" class="form-control" id="coverImageUrl" th:field="*{coverImageUrl}">
+            <label for="imageFile" class="col-form-label">Afbeelding voor het recept</label>
+            <input class="form-control"
+                   th:classappend="${#fields.hasErrors('title')} ? 'is-invalid' : ''"
+                   type="file" id="imageFile" name="coverImageFile" accept="image/*">
+            <span id="imageFileHelp" class="form-text"
+                  th:if="${#fields.hasErrors('coverImageUrl')}"
+                  th:errors="*{coverImageUrl}"></span>
         </div>
 
         <div class="form-group">
@@ -68,12 +83,13 @@
 
         <div class="form-group">
             <label for="stepsTable">Stappen</label>
-            <table id="stepsTable">
+            <table id="stepsTable" style="width: 100%;">
                 <tbody>
                     <tr th:each="step, iStat : *{steps}" class="step-row" data-index="${iStat.index}">
                         <td th:text="${iStat.index + 1}"></td>
                         <td>
-                            <input type="text" th:field="*{steps[__${iStat.index}__].stepDescription}" required>
+                            <input type="text" class="form-control"
+                                   th:field="*{steps[__${iStat.index}__].stepDescription}" required>
                         </td>
                         <td><button type="button" class="delete-step">Verwijder</button></td>
                     </tr>
@@ -83,7 +99,9 @@
             <button type="button" id="addStep" style="margin-top:5px;">Voeg stap toe</button>
         </div>
 
-        <input type="submit" value="Sla recept op">
+        <div class="form-submit-container">
+            <button type="submit" style="margin-top:5px;">Sla recept op</button>
+        </div>
 
     </form>
 
@@ -112,7 +130,7 @@
 
             newRow.innerHTML = `
             <td>${index + 1}</td>
-            <td><input name="steps[${index}].stepDescription" required></td>
+            <td><input class="form-control" name="steps[${index}].stepDescription" required></td>
             <td><button type="button" class="delete-step">Verwijder</button></td>
         `;
 

@@ -22,6 +22,9 @@ public class Recipe {
     private int servings = DEFAULT_MINIMUM_SERVINGS;
     private String coverImageUrl;
 
+//    @OneToOne(cascade = CascadeType.ALL)
+//    private Image coverImageUpload;
+
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecipeIngredient> recipeingredients;
 

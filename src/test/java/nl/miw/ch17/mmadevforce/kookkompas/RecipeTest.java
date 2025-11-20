@@ -6,6 +6,7 @@ import nl.miw.ch17.mmadevforce.kookkompas.repositories.CategoryRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.IngredientRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.RecipeRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.service.CategoryService;
+import nl.miw.ch17.mmadevforce.kookkompas.service.ImageService;
 import nl.miw.ch17.mmadevforce.kookkompas.service.RecipeService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,9 +32,10 @@ public class RecipeTest {
         // Arrange
         RecipeService recipeService = Mockito.mock(RecipeService.class);
         CategoryService categoryService = Mockito.mock(CategoryService.class);
+        ImageService imageService = Mockito.mock(ImageService.class);
         Model model = Mockito.mock(Model.class);
 
-        RecipeController controller = new RecipeController(recipeService, categoryService);
+        RecipeController controller = new RecipeController(recipeService, categoryService, imageService);
 
         Recipe recipe = new Recipe();
         recipe.setTitle("Pasta");
@@ -56,10 +58,11 @@ public class RecipeTest {
         //Arrange
         RecipeService recipeService = Mockito.mock(RecipeService.class);
         CategoryService categoryService = Mockito.mock(CategoryService.class);
+        ImageService imageService = Mockito.mock(ImageService.class);
 
         Model model = Mockito.mock(Model.class);
 
-        RecipeController controller = new RecipeController(recipeService, categoryService);
+        RecipeController controller = new RecipeController(recipeService, categoryService, imageService);
         Recipe recipe = new Recipe();
         recipe.setTitle("pasta");
 
@@ -82,10 +85,11 @@ public class RecipeTest {
         //Arrange
         RecipeService recipeService = Mockito.mock(RecipeService.class);
         CategoryService categoryService = Mockito.mock(CategoryService.class);
+        ImageService imageService = Mockito.mock(ImageService.class);
 
         Model model = Mockito.mock(Model.class);
 
-        RecipeController controller = new RecipeController(recipeService, categoryService);
+        RecipeController controller = new RecipeController(recipeService, categoryService, imageService);
 
         Mockito.when(recipeService.searchRecipes("Patsa"))
                 .thenReturn(Set.of());
@@ -106,10 +110,11 @@ public class RecipeTest {
         // Arrange
         RecipeService recipeService = Mockito.mock(RecipeService.class);
         CategoryService categoryService = Mockito.mock(CategoryService.class);
+        ImageService imageService = Mockito.mock(ImageService.class);
 
         Model model = Mockito.mock(Model.class);
 
-        RecipeController controller = new RecipeController(recipeService, categoryService);
+        RecipeController controller = new RecipeController(recipeService, categoryService, imageService);
 
         Recipe recipe = new Recipe();
         recipe.setTitle("pasta");
@@ -132,10 +137,11 @@ public class RecipeTest {
         // Arrange
         RecipeService recipeService = Mockito.mock(RecipeService.class);
         CategoryService categoryService = Mockito.mock(CategoryService.class);
+        ImageService imageService = Mockito.mock(ImageService.class);
 
         Model model = Mockito.mock(Model.class);
 
-        RecipeController controller = new RecipeController(recipeService, categoryService);
+        RecipeController controller = new RecipeController(recipeService, categoryService, imageService);
 
         Mockito.when(recipeService.searchRecipes("@"))
                 .thenReturn(Set.of());
