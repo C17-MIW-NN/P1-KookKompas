@@ -148,5 +148,6 @@
     margin-top: 10px;
 }
 
-
-
+.category-button.active {
+    background-color: #27187E !important;
+}

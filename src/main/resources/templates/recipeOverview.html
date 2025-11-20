@@ -8,13 +8,12 @@
 
 <div th:replace="~{fragments/general :: navbar}"></div>
 
-
-
 <div class="container">
 
-    <button th:each="category : ${categories}"
-          th:text="${category.categoryName}" th:attr="data-category=${category.categoryName}" th:style="${'background-color:' + category.categoryColor +
-             '; padding: 3px 6px; border: none; border-radius: 4px; color: white; margin: 0 6px 20px 0;'}">
+    <h3>Wat eten we vandaag?</h3>
+
+    <button style="background-color: #00E099; padding: 3px 6px; border: none; border-radius: 4px; color: white; margin: 0 6px 20px 0;" type="button" class="category-button" th:each="category : ${categories}"
+          th:text="${category.categoryName}" th:attr="data-category=${category.categoryName}">
     </button>
 
 
@@ -60,16 +59,26 @@
 
         buttons.forEach(button => {
             button.addEventListener("click", () => {
-                const selectedCategory = button.dataset.category;
+
+                button.classList.toggle("active");
+
+                const activeCategories = Array.from(buttons)
+                    .filter(btn => btn.classList.contains("active"))
+                    .map(btn => btn.dataset.category);
+
+                if (activeCategories.length === 0) {
+                    cards.forEach(card => card.style.display = "block");
+                    return;
+                }
 
                 cards.forEach(card => {
                     const categories = card.dataset.categories.split(",");
 
-                    if (categories.includes(selectedCategory)) {
-                        card.style.display = "block";
-                    } else {
-                        card.style.display = "none";
-                    }
+                    const match = categories.some(cat =>
+                        activeCategories.includes(cat)
+                    );
+
+                    card.style.display = match ? "block" : "none";
                 });
             });
         });
