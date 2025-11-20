@@ -16,7 +16,6 @@ import java.util.*;
 
 @Controller
 public class RecipeController {
-
     private final RecipeService recipeService;
     private final CategoryService categoryService;
 
@@ -27,10 +26,8 @@ public class RecipeController {
 
     @GetMapping({"/recipe/all"})
     private String showRecipeOverview(Model datamodel) {
-
         datamodel.addAttribute("recipes", recipeService.getAllRecipes());
         datamodel.addAttribute("categories", categoryService.findAllCategories());
-
         return "recipeOverview";
     }
 
@@ -61,7 +58,6 @@ public class RecipeController {
         if (optionalRecipe.isPresent()) {
             return showRecipeForm(datamodel, optionalRecipe.get());
         }
-
         return "redirect:/recipe/all";
     }
 
@@ -105,27 +101,29 @@ public class RecipeController {
 
     @GetMapping("/recipe/search")
     public String searchRecipes(@RequestParam("query") String query, Model datamodel) {
-        Set<Recipe> results = recipeService.searchRecipes(query);
-        datamodel.addAttribute("recipes", results);
+
+        Set<Recipe> recipeResults = recipeService.searchRecipes(query);
+        List<Recipe> categoryResults = categoryService.findRecipesByCategoryName(query);
+        Set<Recipe> combined = new HashSet<>(recipeResults);
+
+        if (categoryResults != null) {
+            combined.addAll(categoryResults);
+        }
+
+        datamodel.addAttribute("recipes", combined);
         datamodel.addAttribute("query", query);
         return "recipeSearchResults";
     }
 
     @PostMapping("/recipe/detail/{title}/increase")
-    public String increase(@PathVariable("title") String title,
-                           @RequestParam int currentServings) {
-
+    public String increase(@PathVariable("title") String title, @RequestParam int currentServings) {
         int updatedServings = recipeService.increaseServings(currentServings);
-
         return "redirect:/recipe/detail/" + title + "?servings=" + updatedServings;
     }
 
     @PostMapping("/recipe/detail/{title}/decrease")
-    public String decrease(@PathVariable("title") String title,
-                           @RequestParam int currentServings) {
-
+    public String decrease(@PathVariable("title") String title, @RequestParam int currentServings) {
         int updatedServings = recipeService.decreaseServings(currentServings);
-
         return "redirect:/recipe/detail/" + title + "?servings=" + updatedServings;
     }
 }

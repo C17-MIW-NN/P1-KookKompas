@@ -16,7 +16,6 @@ import java.util.*;
 
 @Service
 public class RecipeService {
-
     private final RecipeRepository recipeRepository;
     private final CategoryRepository categoryRepository;
     private final IngredientRepository ingredientRepository;
@@ -29,6 +28,10 @@ public class RecipeService {
 
     public List<Recipe> getAllRecipes() {
         return recipeRepository.findAll();
+    }
+
+    public List<Recipe> searchByTitle(String query) {
+        return recipeRepository.findByTitleContainingIgnoreCase(query);
     }
 
     public List<Ingredient> getAllIngredients() {
