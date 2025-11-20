@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns: sec="https://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
 <head th:fragment="baseheader(title)">
     <meta charset="UTF-8">
     <title th:replace="${title}">This is the base title</title>
@@ -40,10 +41,16 @@
                             <button class="btn btn-success" type="submit">Zoeken</button>
                     </form>
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item fs-5">
+                        <li class="nav-item fs-5" sec:authorize="isAnonymous()">
                             <button type="button" class="btn login-btn btn-lg"><a class="nav-link active" th:href="@{/login}">
                                 <i class="bi bi-person-circle"></i> Inloggen</a></button>
                         </li>
+                        <li class="nav-item fs-5" sec:authorize="isAuthenticated()">
+                            <button type="button" class="btn login-btn btn-lg"><a class="nav-link active" th:href="@{/logout}">
+                                <i class="bi bi-person-circle"></i> Uitloggen <span sec:authentication="name"></span></a></button>
+                        </li>
+
+
                     </ul>
                 </div>
             </div>

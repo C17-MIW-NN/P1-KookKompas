@@ -22,19 +22,21 @@ public class InitializeService {
     private final RecipeStepRepository recipeStepRepository;
     private final CategoryRepository categoryRepository;
     private final CategoryService categoryService;
+    private final KookKompasUserService kookKompasUserService;
 
 
     public InitializeService(IngredientRepository ingredientRepository,
                              RecipeIngredientRepository recipeIngredientRepository,
                              RecipeRepository recipeRepository,
                              RecipeStepRepository recipeStepRepository,
-                             CategoryRepository categoryRepository,CategoryService categoryService) {
+                             CategoryRepository categoryRepository, CategoryService categoryService, KookKompasUserService kookKompasUserService) {
         this.ingredientRepository = ingredientRepository;
         this.recipeIngredientRepository = recipeIngredientRepository;
         this.recipeRepository = recipeRepository;
         this.recipeStepRepository = recipeStepRepository;
         this.categoryRepository = categoryRepository;
         this.categoryService = categoryService;
+        this.kookKompasUserService = kookKompasUserService;
     }
 
     public void seedDatabaseIfEmpty() {
@@ -44,10 +46,21 @@ public class InitializeService {
     }
 
     public void initializeDB() {
+        makeUser("Admin", "AdminPW");
+
         loadCSVFileIngredientList();
         loadCSVFileRecipeSteps();
         loadCSVFileRecipeCategory();
         loadCSVFileCategoryList();
+    }
+
+    private KookKompasUser makeUser(String username, String password) {
+        KookKompasUser user = new KookKompasUser();
+        user.setUsername(username);
+        user.setPassword(password);
+
+        kookKompasUserService.saveUser(user);
+        return user;
     }
 
     private void loadCSVFileCategoryList() {
