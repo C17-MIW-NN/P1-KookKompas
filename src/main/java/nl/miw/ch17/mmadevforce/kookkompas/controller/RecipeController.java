@@ -82,23 +82,28 @@ public class RecipeController {
     public String saveOrUpdateRecipe(@ModelAttribute("formRecipe") Recipe recipeFromForm,
                                      BindingResult result,
                                      @RequestParam MultipartFile coverImageFile) {
-        System.out.println(recipeFromForm);
+
         try {
-            imageService.saveImage(coverImageFile);
-            recipeFromForm.setCoverImageUrl("/image/" + coverImageFile.getOriginalFilename());
+            if (coverImageFile != null && !coverImageFile.isEmpty()) {
+                imageService.saveImage(coverImageFile);
+                recipeFromForm.setCoverImageUrl("/image/" + coverImageFile.getOriginalFilename());
+            } else if (recipeFromForm.getCoverImageUrl() != null && !recipeFromForm.getCoverImageUrl().isBlank()) {
 
-
+            } else {
+                recipeFromForm.setCoverImageUrl("/images/default.png");
+            }
         } catch (IOException imageError) {
-            result.rejectValue("coverImageFile", "imageNotSaved", "Image not saved");
+            result.rejectValue("coverImageFile", "imageNotSaved", "Afbeelding niet opgeslagen");
         }
 
         if (result.hasErrors()) {
-            return "redirect:/recipe/all";
+            return "recipeForm";
         }
 
         recipeService.saveOrUpdateRecipe(recipeFromForm);
         return "redirect:/recipe/all";
     }
+
 
     @GetMapping("/recipe/delete/{recipeId}")
     public String deleteRecipe(@PathVariable("recipeId") Long recipeId) {

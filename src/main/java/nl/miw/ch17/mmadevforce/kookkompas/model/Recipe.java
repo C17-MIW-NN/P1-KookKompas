@@ -1,6 +1,7 @@
 package nl.miw.ch17.mmadevforce.kookkompas.model;
 
 import jakarta.persistence.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +22,6 @@ public class Recipe {
     private String description;
     private int servings = DEFAULT_MINIMUM_SERVINGS;
     private String coverImageUrl;
-
-//    @OneToOne(cascade = CascadeType.ALL)
-//    private Image coverImageUpload;
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecipeIngredient> recipeingredients;

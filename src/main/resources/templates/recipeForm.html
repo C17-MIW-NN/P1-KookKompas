@@ -34,24 +34,14 @@
             </select>
         </div>
 
-<!--        <div class="form-group">-->
-<!--            <label for="coverImageUrl">Afbeelding URL</label>-->
-<!--            <input type="text" class="form-control" id="coverImageUrl" th:field="*{coverImageUrl}">-->
-<!--        </div>-->
-
-<!--        <div class="form-group">-->
-<!--            <label for="coverImageFile">Afbeelding uploaden</label>-->
-<!--            <input type="file" class="form-control" id="coverImageFile" name="coverImageFile" accept="image/*">-->
-<!--        </div>-->
+        <div class="form-group">
+            <label for="coverImageUrl">Afbeelding URL</label>
+            <input type="text" class="form-control" id="coverImageUrl" th:field="*{coverImageUrl}">
+        </div>
 
         <div class="form-group">
-            <label for="imageFile" class="col-form-label">Afbeelding voor het recept</label>
-            <input class="form-control"
-                   th:classappend="${#fields.hasErrors('title')} ? 'is-invalid' : ''"
-                   type="file" id="imageFile" name="coverImageFile" accept="image/*">
-            <span id="imageFileHelp" class="form-text"
-                  th:if="${#fields.hasErrors('coverImageUrl')}"
-                  th:errors="*{coverImageUrl}"></span>
+            <label for="coverImageFile">Afbeelding uploaden</label>
+            <input type="file" class="form-control" id="coverImageFile" name="coverImageFile" accept="image/*">
         </div>
 
         <div class="form-group">
