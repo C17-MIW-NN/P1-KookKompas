@@ -72,7 +72,6 @@
     margin-top: auto;
 }
 
-
 .container {
     padding: 50px 0;
 }
@@ -153,10 +152,6 @@
     justify-content: center;
     margin-top: 30px;
 }
-
-
-
-
 
 .category-button.active {
     background-color: #27187E !important;

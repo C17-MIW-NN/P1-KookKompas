@@ -21,7 +21,7 @@ public class KookKompasSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeHttpRequests((request) -> request
-                        .requestMatchers("/", "/recipe/all", "/recipe/detail/*", "/recipe/search/*").permitAll()
+                        .requestMatchers("/", "/recipe/all", "/recipe/detail/*", "/recipe/search").permitAll()
                         .requestMatchers("/css/**", "/webjars/**", "/images/**").permitAll()
                         .anyRequest().authenticated()
                 )

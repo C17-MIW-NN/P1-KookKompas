@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns: sec="https://www.thymeleaf.org"
-      xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org">
 <head th:fragment="baseheader(title)">
     <meta charset="UTF-8">
     <title th:replace="${title}">This is the base title</title>
@@ -26,14 +25,17 @@
                         <li class="nav-item fs-5">
                             <a class="nav-link active" th:href="@{/recipe/all}">Recepten</a>
                         </li>
-                        <li class="nav-item fs-5">
+                        <li class="nav-item fs-5" sec:authorize="isAuthenticated()">
                             <a class="nav-link active" th:href="@{/ingredient/all}">Ingrediënten</a>
                         </li>
-                        <li class="nav-item fs-5">
+                        <li class="nav-item fs-5" sec:authorize="isAuthenticated()">
                             <a class="nav-link active" th:href="@{/category/all}">Categorieën</a>
                         </li>
-                        <li class="nav-item fs-5">
+                        <li class="nav-item fs-5" sec:authorize="isAuthenticated()">
                             <a class="nav-link active" th:href="@{/shoppinglist/all}">Boodschappenlijst</a>
+                        </li>
+                        <li class="nav-item fs-5" sec:authorize="isAuthenticated()">
+                            <a class="nav-link active" th:href="@{/user/all}">Gebruikers</a>
                         </li>
                     </ul>
                     <form class="d-flex ms-auto me-3" role="search" th:action="@{/recipe/search}" method="get">
@@ -41,10 +43,6 @@
                             <button class="btn btn-success" type="submit">Zoeken</button>
                     </form>
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item fs-5" sec:authorize="isAuthenticated()">
-                            <button type="button" class="btn login-btn btn-lg"><a class="nav-link active" th:href="@{/user/all}">
-                                <i class="bi bi-person-circle"></i> Gebruikers <span sec:authentication="name"></span></a></button>
-                        </li>
                         <li class="nav-item fs-5" sec:authorize="isAnonymous()">
                             <button type="button" class="btn login-btn btn-lg"><a class="nav-link active" th:href="@{/login}">
                                 <i class="bi bi-person-circle"></i> Inloggen</a></button>
@@ -53,7 +51,6 @@
                             <button type="button" class="btn login-btn btn-lg"><a class="nav-link active" th:href="@{/logout}">
                                 <i class="bi bi-person-circle"></i> Uitloggen <span sec:authentication="name"></span></a></button>
                         </li>
-
                     </ul>
                 </div>
             </div>
