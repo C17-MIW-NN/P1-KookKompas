@@ -1,6 +1,7 @@
 package nl.miw.ch17.mmadevforce.kookkompas.model;
 
 import jakarta.persistence.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.HashSet;

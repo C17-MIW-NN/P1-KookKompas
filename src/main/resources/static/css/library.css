@@ -148,6 +148,16 @@
     margin-top: 10px;
 }
 
+.form-submit-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+
+
+
+
 .category-button.active {
     background-color: #27187E !important;
 }

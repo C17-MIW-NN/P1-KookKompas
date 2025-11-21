@@ -2,11 +2,15 @@ package nl.miw.ch17.mmadevforce.kookkompas.controller;
 
 import nl.miw.ch17.mmadevforce.kookkompas.model.*;
 import nl.miw.ch17.mmadevforce.kookkompas.service.CategoryService;
+import nl.miw.ch17.mmadevforce.kookkompas.service.ImageService;
 import nl.miw.ch17.mmadevforce.kookkompas.service.RecipeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -19,10 +23,12 @@ public class RecipeController {
 
     private final RecipeService recipeService;
     private final CategoryService categoryService;
+    private final ImageService imageService;
 
-    public RecipeController(RecipeService recipeService, CategoryService categoryService) {
+    public RecipeController(RecipeService recipeService, CategoryService categoryService, ImageService imageService) {
         this.recipeService = recipeService;
         this.categoryService = categoryService;
+        this.imageService = imageService;
     }
 
     @GetMapping({"/recipe/all"})
@@ -73,10 +79,31 @@ public class RecipeController {
     }
 
     @PostMapping("/recipe/save")
-    public String saveOrUpdateRecipe(@ModelAttribute("formRecipe") Recipe recipeFromForm) {
+    public String saveOrUpdateRecipe(@ModelAttribute("formRecipe") Recipe recipeFromForm,
+                                     BindingResult result,
+                                     @RequestParam MultipartFile coverImageFile) {
+
+        try {
+            if (coverImageFile != null && !coverImageFile.isEmpty()) {
+                imageService.saveImage(coverImageFile);
+                recipeFromForm.setCoverImageUrl("/image/" + coverImageFile.getOriginalFilename());
+            } else if (recipeFromForm.getCoverImageUrl() != null && !recipeFromForm.getCoverImageUrl().isBlank()) {
+
+            } else {
+                recipeFromForm.setCoverImageUrl("/images/default.png");
+            }
+        } catch (IOException imageError) {
+            result.rejectValue("coverImageFile", "imageNotSaved", "Afbeelding niet opgeslagen");
+        }
+
+        if (result.hasErrors()) {
+            return "recipeForm";
+        }
+
         recipeService.saveOrUpdateRecipe(recipeFromForm);
         return "redirect:/recipe/all";
     }
+
 
     @GetMapping("/recipe/delete/{recipeId}")
     public String deleteRecipe(@PathVariable("recipeId") Long recipeId) {
