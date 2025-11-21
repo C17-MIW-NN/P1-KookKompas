@@ -5,7 +5,6 @@ import nl.miw.ch17.mmadevforce.kookkompas.repositories.CategoryRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.IngredientRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.RecipeRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.*;
 
@@ -43,7 +42,7 @@ public class RecipeService {
         recipeRepository.deleteById(id);
     }
 
-    public Optional<Recipe> getRecipeWithIngredientsByTitle(String title) {
+    public Optional<Recipe> getRecipeWithIngredientsAndCategoriesByTitle(String title) {
         Optional<Recipe> optionalRecipe = recipeRepository.findByTitle(title);
 
         if (optionalRecipe.isPresent()) {

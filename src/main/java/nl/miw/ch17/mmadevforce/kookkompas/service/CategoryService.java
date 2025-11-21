@@ -1,12 +1,12 @@
 package nl.miw.ch17.mmadevforce.kookkompas.service;
 
 import nl.miw.ch17.mmadevforce.kookkompas.model.Category;
+import nl.miw.ch17.mmadevforce.kookkompas.model.Recipe;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.CategoryRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.RecipeRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * @author MMA Dev Force
@@ -20,6 +20,22 @@ public class CategoryService {
     public CategoryService(CategoryRepository categoryRepository, RecipeRepository recipeRepository) {
         this.categoryRepository = categoryRepository;
         this.recipeRepository = recipeRepository;
+    }
+
+    public boolean isCategoryNameUnique(String categoryName) {
+        return findByCategoryName(categoryName).isEmpty();
+    }
+
+    public List<Recipe> findRecipesByCategoryName(String query) {
+//        List<Category> matchingCategories = categoryRepository.findByCategoryNameContainingIgnoreCase(query);
+//        Set<Recipe> recipes = new HashSet<>();
+//
+//        for (Category category : matchingCategories) {
+//            recipes.addAll(recipeRepository.findByCategories_CategoryNameIgnoreCase(category.getCategoryName()));
+//        }
+//
+//        return new ArrayList<>(recipes);
+        return recipeRepository.findByCategories_CategoryNameIgnoreCase(query);
     }
 
     public List<Category> findAllCategories() {
@@ -41,5 +57,16 @@ public class CategoryService {
     public Optional<Category> findByCategoryName(String categoryName) {
         return categoryRepository.findByCategoryName(categoryName);
     }
+
+//    public List<Recipe> findRecipesByCategoryQuery(String query) {
+//        List<Category> matchingCategories = categoryRepository.findByCategoryNameContainingIgnoreCase(query);
+//        Set<Recipe> recipes = new HashSet<>();
+//
+//        for (Category category : matchingCategories) {
+//            recipes.addAll(category.getRecipes());
+//        }
+//
+//        return new ArrayList<>(recipes);
+//    }
 
 }

@@ -27,11 +27,11 @@
 
         <div class="form-group">
             <label for="categories">Categorie</label>
-            <select id="categories" th:field="*{categories}" multiple="multiple">
-                <option th:each="category : ${allCategories}"
-                        th:value="${category.categoryId}"
-                        th:text="${category.categoryName}"></option>
-            </select>
+            <div th:each="category : ${allCategories}">
+                <input id="categories" type="checkbox" th:value="${category.categoryId}"
+                        th:text="${category.categoryName}" th:field="${allCategories}">
+                <span th:text="${category.categoryName}"></span>
+            </div>
         </div>
 
         <div class="form-group">

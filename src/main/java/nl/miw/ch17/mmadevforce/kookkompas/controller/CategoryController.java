@@ -1,15 +1,17 @@
 package nl.miw.ch17.mmadevforce.kookkompas.controller;
 
+import jakarta.validation.Valid;
 import nl.miw.ch17.mmadevforce.kookkompas.model.Category;
+import nl.miw.ch17.mmadevforce.kookkompas.model.Recipe;
 import nl.miw.ch17.mmadevforce.kookkompas.service.CategoryService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * @author MMA Dev Force
@@ -37,7 +39,18 @@ public class CategoryController {
     }
 
     @PostMapping("/category/save")
-    public String saveOrUpdateCategory(@ModelAttribute("formCategory") Category categoryToBeSaved) {
+    public String saveOrUpdateCategory(
+            @Valid @ModelAttribute("formCategory") Category categoryToBeSaved, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("formCategory", categoryToBeSaved);
+            return "formRecipeCategories";
+        }
+
+        if (!categoryService.isCategoryNameUnique(categoryToBeSaved.getCategoryName())) {
+            bindingResult.rejectValue("categoryName", "error.categoryName", "Deze categorie bestaat al.");
+            model.addAttribute("formCategory", categoryToBeSaved);
+            return "formRecipeCategories";
+        }
         categoryService.saveCategory(categoryToBeSaved);
         return getRedirectCategoryAll();
     }
@@ -57,6 +70,14 @@ public class CategoryController {
             return "formRecipeCategories";
         }
         return getRedirectCategoryAll();
+    }
+
+    @GetMapping("/category/search")
+    public String searchRecipesByCategory(@RequestParam("query") String query, Model datamodel) {
+        List<Recipe> recipes = categoryService.findRecipesByCategoryName(query);
+        datamodel.addAttribute("recipes", recipes);
+        datamodel.addAttribute("query", query);
+        return "recipeSearchResults";
     }
 
     private static String getRedirectCategoryAll() {

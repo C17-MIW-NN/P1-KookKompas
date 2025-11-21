@@ -1,6 +1,8 @@
 package nl.miw.ch17.mmadevforce.kookkompas.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
@@ -16,6 +18,7 @@ public class Ingredient {
     private Long ingredientId;
 
     @Column(unique = true)
+    @Size(min = 2, max = 50, message = "Naam moet tussen 2 en 50 tekens zijn")
     private String name;
 
     @OneToMany(mappedBy = "ingredient")

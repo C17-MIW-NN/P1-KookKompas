@@ -158,3 +158,6 @@
 
 
 
+.category-button.active {
+    background-color: #27187E !important;
+}

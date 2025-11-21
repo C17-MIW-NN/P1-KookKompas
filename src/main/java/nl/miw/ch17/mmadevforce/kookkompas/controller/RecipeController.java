@@ -62,7 +62,7 @@ public class RecipeController {
 
     @GetMapping("/recipe/edit/{title}")
     public String showEditRecipeForm(@PathVariable("title") String title, Model datamodel) {
-        Optional<Recipe> optionalRecipe = recipeService.getRecipeWithIngredientsByTitle(title);
+        Optional<Recipe> optionalRecipe = recipeService.getRecipeWithIngredientsAndCategoriesByTitle(title);
 
         if (optionalRecipe.isPresent()) {
             return showRecipeForm(datamodel, optionalRecipe.get());
