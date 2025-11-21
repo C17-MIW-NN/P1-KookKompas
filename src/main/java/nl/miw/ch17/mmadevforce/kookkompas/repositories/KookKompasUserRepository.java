@@ -11,6 +11,7 @@ import java.util.Optional;
  */
 public interface KookKompasUserRepository extends JpaRepository<KookKompasUser, Long> {
     Optional<KookKompasUser> findByUsername(String username);
+    Optional<KookKompasUser> findByUserId(Long userId);
 
     boolean existsByUsername(String username);
 

@@ -1,8 +1,6 @@
 package nl.miw.ch17.mmadevforce.kookkompas.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 /**
  * @author MMA Dev Force
@@ -12,11 +10,17 @@ import jakarta.persistence.Id;
 public class ShoppingListItem {
 
     @Id @GeneratedValue
-    private long shoppingListId;
+    private long shoppingListItemId;
 
     private String ingredientName;
     private double amount;
     private String unit;
+
+    @ManyToOne
+    private ShoppingList shoppingList;
+
+    @ManyToOne
+    private Ingredient ingredient;
 
     public ShoppingListItem(String ingredientName, double amount, String unit) {
         this.ingredientName = ingredientName;
@@ -51,11 +55,23 @@ public class ShoppingListItem {
         this.unit = unit;
     }
 
-    public long getShoppingListId() {
-        return shoppingListId;
+    public long getShoppingListItemId() {
+        return shoppingListItemId;
     }
 
-    public void setShoppingListId(long shoppingListId) {
-        this.shoppingListId = shoppingListId;
+    public void setShoppingListItemId(long shoppingListId) {
+        this.shoppingListItemId = shoppingListId;
+    }
+
+    public void setShoppingList(ShoppingList shoppingList) {
+        this.shoppingList = shoppingList;
+    }
+
+    public Ingredient getIngredient() {
+        return ingredient;
+    }
+
+    public void setIngredient(Ingredient ingredient) {
+        this.ingredient = ingredient;
     }
 }

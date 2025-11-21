@@ -1,6 +1,7 @@
 package nl.miw.ch17.mmadevforce.kookkompas.controller;
 
 import nl.miw.ch17.mmadevforce.kookkompas.service.ShoppingListService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/shoppinglist")
 public class ShoppingListController {
 
+    @Autowired
     private final ShoppingListService shoppingListService;
 
     public ShoppingListController(ShoppingListService shoppingListService) {
@@ -23,7 +25,7 @@ public class ShoppingListController {
 
     @GetMapping("/all")
     public String showShoppingList(Model datamodel) {
-        datamodel.addAttribute("shoppingList", shoppingListService.findAllShoppingListItems());
+        datamodel.addAttribute("shoppingList", shoppingListService.getItemsForLoggedInUser());
         return "shoppingListOverview";
     }
 

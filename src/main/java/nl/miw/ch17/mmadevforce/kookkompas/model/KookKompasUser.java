@@ -1,9 +1,6 @@
 package nl.miw.ch17.mmadevforce.kookkompas.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,6 +22,16 @@ public class KookKompasUser implements UserDetails {
     private String username;
 
     private String password;
+
+    @OneToOne(mappedBy = "kookKompasUser", cascade = CascadeType.ALL)
+    private ShoppingList shoppingList;
+
+    public void createShoppingListIfMissing() {
+        if (shoppingList == null) {
+            shoppingList = new ShoppingList();
+            shoppingList.setKookKompasUser(this);
+        }
+    }
 
     public Long getUserId() {
         return userId;
@@ -78,5 +85,13 @@ public class KookKompasUser implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public ShoppingList getShoppingList() {
+        return shoppingList;
+    }
+
+    public void setShoppingList(ShoppingList shoppingList) {
+        this.shoppingList = shoppingList;
     }
 }

@@ -4,6 +4,8 @@ import nl.miw.ch17.mmadevforce.kookkompas.dto.NewKookKompasUserDTO;
 import nl.miw.ch17.mmadevforce.kookkompas.model.KookKompasUser;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.KookKompasUserRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.service.mappers.KookKompasUserMapper;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -11,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author MMA Dev Force
@@ -27,6 +28,13 @@ public class KookKompasUserService implements UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    public KookKompasUser getLoggedInUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        return kookKompasUserRepository.findByUsername(username).orElseThrow(() -> new IllegalArgumentException("Ingelogde gebruiker niet gevonden"));
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return kookKompasUserRepository.findByUsername(username)
@@ -34,6 +42,7 @@ public class KookKompasUserService implements UserDetailsService {
     }
 
     public void saveUser(KookKompasUser kookKompasUser) {
+        kookKompasUser.createShoppingListIfMissing();
         kookKompasUser.setPassword(passwordEncoder.encode(kookKompasUser.getPassword()));
         kookKompasUserRepository.save(kookKompasUser);
     }
@@ -44,6 +53,10 @@ public class KookKompasUserService implements UserDetailsService {
 
     public boolean usernameInUse(String username) {
         return kookKompasUserRepository.existsByUsername(username);
+    }
+
+    public KookKompasUser save(KookKompasUser kookKompasUser) {
+        return kookKompasUserRepository.save(kookKompasUser);
     }
 
     public void save(NewKookKompasUserDTO userDtoToBeSaved) {

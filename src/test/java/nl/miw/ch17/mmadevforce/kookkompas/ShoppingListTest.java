@@ -1,15 +1,10 @@
 package nl.miw.ch17.mmadevforce.kookkompas;
 
 
+import nl.miw.ch17.mmadevforce.kookkompas.controller.KookKompasUserController;
 import nl.miw.ch17.mmadevforce.kookkompas.controller.ShoppingListController;
-import nl.miw.ch17.mmadevforce.kookkompas.model.Ingredient;
-import nl.miw.ch17.mmadevforce.kookkompas.model.Recipe;
-import nl.miw.ch17.mmadevforce.kookkompas.model.RecipeIngredient;
-import nl.miw.ch17.mmadevforce.kookkompas.model.ShoppingListItem;
-import nl.miw.ch17.mmadevforce.kookkompas.repositories.IngredientRepository;
-import nl.miw.ch17.mmadevforce.kookkompas.repositories.RecipeIngredientRepository;
-import nl.miw.ch17.mmadevforce.kookkompas.repositories.RecipeRepository;
-import nl.miw.ch17.mmadevforce.kookkompas.repositories.ShoppingListItemRepository;
+import nl.miw.ch17.mmadevforce.kookkompas.model.*;
+import nl.miw.ch17.mmadevforce.kookkompas.repositories.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +33,12 @@ public class ShoppingListTest {
 
     @Autowired
     private ShoppingListItemRepository shoppingListItemRepository;
+
+    @Autowired
+    private KookKompasUserRepository kookKompasUserRepository;
+
+    @Autowired
+    private KookKompasUserController kookKompasUserController;
 
     @Autowired
     private ShoppingListController shoppingListController;
