@@ -23,6 +23,10 @@ public class Recipe {
     private String description;
     private int servings = DEFAULT_MINIMUM_SERVINGS;
     private String coverImageUrl;
+    private boolean publicVisible;
+
+    @ManyToOne
+    private KookKompasUser owner;
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecipeIngredient> recipeingredients;
@@ -104,5 +108,21 @@ public class Recipe {
 
     public void setCoverImageUrl(String coverImageUrl) {
         this.coverImageUrl = coverImageUrl;
+    }
+
+    public KookKompasUser getOwner() {
+        return owner;
+    }
+
+    public void setOwner(KookKompasUser owner) {
+        this.owner = owner;
+    }
+
+    public boolean isPublicVisible() {
+        return publicVisible;
+    }
+
+    public void setPublicVisible(boolean publicVisible) {
+        this.publicVisible = publicVisible;
     }
 }

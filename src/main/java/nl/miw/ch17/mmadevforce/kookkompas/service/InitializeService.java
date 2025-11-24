@@ -16,6 +16,8 @@ import java.util.Set;
  */
 @Service
 public class InitializeService {
+    private KookKompasUser adminUser;
+
     private final IngredientRepository ingredientRepository;
     private final RecipeIngredientRepository recipeIngredientRepository;
     private final RecipeRepository recipeRepository;
@@ -45,7 +47,7 @@ public class InitializeService {
     }
 
     public void initializeDB() {
-        makeUser("Admin", "AdminPW");
+        adminUser = makeUser("Admin", "AdminPW");
 
         loadCSVFileIngredientList();
         loadCSVFileRecipeSteps();
@@ -130,7 +132,12 @@ public class InitializeService {
         String description = parts[3].replaceAll("^\"|\"$", "").trim();
 
         Recipe recipe = recipeRepository.findByTitle(recipeTitle)
-                .orElseGet(() -> recipeRepository.save(new Recipe(recipeTitle)));
+                .orElseGet(() -> {
+                    Recipe newRecipe = new Recipe(recipeTitle);
+                    newRecipe.setOwner(adminUser);
+                    newRecipe.setPublicVisible(true);
+                    return recipeRepository.save(newRecipe);
+                });
 
         recipe.setDescription(description);
         recipe.setCoverImageUrl(imgUrl);
@@ -211,7 +218,12 @@ public class InitializeService {
         String unit = parts[3];
 
         Recipe recipe = recipeRepository.findByTitle(recipeTitle)
-                .orElseGet(() -> recipeRepository.save(new Recipe(recipeTitle)));
+                .orElseGet(() -> {
+                    Recipe newRecipe = new Recipe(recipeTitle);
+                    newRecipe.setOwner(adminUser);
+                    newRecipe.setPublicVisible(true);
+                    return recipeRepository.save(newRecipe);
+                });
 
         Ingredient ingredient = ingredientRepository.findByIngredientName(name)
                 .orElseGet(() -> ingredientRepository.save(new Ingredient(name)));
