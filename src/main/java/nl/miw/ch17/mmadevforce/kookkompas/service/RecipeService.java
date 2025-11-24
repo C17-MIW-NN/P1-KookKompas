@@ -106,6 +106,9 @@ public class RecipeService {
             recipeToBeSaved.setCoverImageUrl(recipeFromForm.getCoverImageUrl());
         }
 
+        recipeToBeSaved.setOwner(recipeFromForm.getOwner());
+        recipeToBeSaved.setPublicVisible(recipeFromForm.isPublicVisible());
+
         Set<Category> categories = new HashSet<>();
         if (recipeFromForm.getCategories() != null) {
             for (Category c : recipeFromForm.getCategories()) {

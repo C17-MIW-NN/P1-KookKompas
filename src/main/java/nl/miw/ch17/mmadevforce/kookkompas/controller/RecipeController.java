@@ -119,8 +119,6 @@ public class RecipeController {
         }
 
         recipeService.saveOrUpdateRecipe(recipeFromForm);
-        System.out.println("Owner in form: " + recipeFromForm.getOwner());
-        System.out.println("Current User: " + currentUser.getUserId());
         return "redirect:/recipe/all";
     }
 
