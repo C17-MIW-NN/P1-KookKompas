@@ -19,13 +19,13 @@ public class Ingredient {
 
     @Column(unique = true)
     @Size(min = 2, max = 50, message = "Naam moet tussen 2 en 50 tekens zijn")
-    private String name;
+    private String ingredientName;
 
     @OneToMany(mappedBy = "ingredient")
     private List<RecipeIngredient> recipeIngredients;
 
     public Ingredient(String name) {
-        this.name = name;
+        this.ingredientName = name;
     }
 
     public Ingredient() {
@@ -39,11 +39,11 @@ public class Ingredient {
         this.ingredientId = ingredientId;
     }
 
-    public String getName() {
-        return name;
+    public String getIngredientName() {
+        return ingredientName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setIngredientName(String name) {
+        this.ingredientName = name;
     }
 }

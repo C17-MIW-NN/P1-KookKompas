@@ -32,7 +32,7 @@ public class IngredientService {
     }
 
     public Optional<Ingredient> findByIngredientName(String name) {
-        return ingredientRepository.findByName(name);
+        return ingredientRepository.findByIngredientName(name);
     }
     public void deleteIngredient(Long ingredientId) {
         Ingredient ingredient = ingredientRepository.findById(ingredientId).orElse(null);

@@ -51,7 +51,7 @@ public class ShoppingListTest {
     @DisplayName("Adding a new ingredient with a new unit to an empty shopping list")
     void testAddingWhenNewIngredientNameAndUnit() {
 
-        Ingredient ingredient = ingredientRepository.findByName("Tomaat")
+        Ingredient ingredient = ingredientRepository.findByIngredientName("Tomaat")
                 .orElseGet(() -> ingredientRepository.save(new Ingredient("Tomaat")));
 
         RecipeIngredient recipeIngredient = new RecipeIngredient();
@@ -69,7 +69,7 @@ public class ShoppingListTest {
 
         List<ShoppingListItem> items = shoppingListItemRepository.findAll();
         assertThat(items).hasSize(1);
-        assertThat(items.get(0).getIngredientName()).isEqualTo("Tomaat");
+        assertThat(items.get(0).getIngredient().getIngredientName()).isEqualTo("Tomaat");
         assertThat(items.get(0).getUnit()).isEqualTo("stuk");
         assertThat(items.get(0).getAmount()).isEqualTo(2.0);
         assertThat(result).isEqualTo("redirect:/shoppinglist/all");
@@ -79,12 +79,12 @@ public class ShoppingListTest {
     @DisplayName("Adding existing ingredient with unit combination to shopping list")
     void testAddingWhenIngredientNameAndUnitExists() {
         ShoppingListItem existingItem = new ShoppingListItem();
-        existingItem.setIngredientName("Tomaat");
+        existingItem.getIngredient().setIngredientName("Tomaat");
         existingItem.setUnit("stuk");
         existingItem.setAmount(1.0);
         shoppingListItemRepository.save(existingItem);
 
-        Ingredient ingredient = ingredientRepository.findByName("Tomaat")
+        Ingredient ingredient = ingredientRepository.findByIngredientName("Tomaat")
                 .orElseGet(() -> ingredientRepository.save(new Ingredient("Tomaat")));
 
         RecipeIngredient recipeIngredient = new RecipeIngredient();
@@ -108,12 +108,12 @@ public class ShoppingListTest {
     @DisplayName("Adding ingredient with same name but different unit to shopping list")
     void testAddingWhenIngredientExistsButUnitIsNew() {
         ShoppingListItem existingItem = new ShoppingListItem();
-        existingItem.setIngredientName("Tomaat");
+        //existingItem.setIngredientName("Tomaat");
         existingItem.setUnit("gram");
         existingItem.setAmount(100.0);
         shoppingListItemRepository.save(existingItem);
 
-        Ingredient ingredient = ingredientRepository.findByName("Tomaat")
+        Ingredient ingredient = ingredientRepository.findByIngredientName("Tomaat")
                 .orElseGet(() -> ingredientRepository.save(new Ingredient("Tomaat")));
 
         RecipeIngredient recipeIngredient = new RecipeIngredient();
@@ -131,21 +131,21 @@ public class ShoppingListTest {
         List<ShoppingListItem> items = shoppingListItemRepository.findAll();
         assertThat(items).hasSize(2);
         assertThat(items).anyMatch(item ->
-                item.getIngredientName().equals("Tomaat") && item.getUnit().equals("gram"));
+                item.getIngredient().getIngredientName().equals("Tomaat") && item.getUnit().equals("gram"));
         assertThat(items).anyMatch(item ->
-                item.getIngredientName().equals("Tomaat") && item.getUnit().equals("stuk"));
+                item.getIngredient().getIngredientName().equals("Tomaat") && item.getUnit().equals("stuk"));
     }
 
     @Test
     @DisplayName("Adding ingredient with same unit but different name to shopping list")
     void testAddingWhenUnitExistsButIngredientIsNew() {
         ShoppingListItem existingItem = new ShoppingListItem();
-        existingItem.setIngredientName("Komkommer");
+//        existingItem.setIngredientName("Komkommer");
         existingItem.setUnit("stuk");
         existingItem.setAmount(1.0);
         shoppingListItemRepository.save(existingItem);
 
-        Ingredient ingredient = ingredientRepository.findByName("Tomaat")
+        Ingredient ingredient = ingredientRepository.findByIngredientName("Tomaat")
                 .orElseGet(() -> ingredientRepository.save(new Ingredient("Tomaat")));
 
         RecipeIngredient recipeIngredient = new RecipeIngredient();
@@ -163,8 +163,8 @@ public class ShoppingListTest {
         List<ShoppingListItem> items = shoppingListItemRepository.findAll();
         assertThat(items).hasSize(2);
         assertThat(items).anyMatch(item ->
-                item.getIngredientName().equals("Komkommer") && item.getUnit().equals("stuk"));
+                item.getIngredient().getIngredientName().equals("Komkommer") && item.getUnit().equals("stuk"));
         assertThat(items).anyMatch(item ->
-                item.getIngredientName().equals("Tomaat") && item.getUnit().equals("stuk"));
+                item.getIngredient().getIngredientName().equals("Tomaat") && item.getUnit().equals("stuk"));
     }
 }

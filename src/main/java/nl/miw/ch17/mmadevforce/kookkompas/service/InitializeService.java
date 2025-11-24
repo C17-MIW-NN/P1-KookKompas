@@ -213,7 +213,7 @@ public class InitializeService {
         Recipe recipe = recipeRepository.findByTitle(recipeTitle)
                 .orElseGet(() -> recipeRepository.save(new Recipe(recipeTitle)));
 
-        Ingredient ingredient = ingredientRepository.findByName(name)
+        Ingredient ingredient = ingredientRepository.findByIngredientName(name)
                 .orElseGet(() -> ingredientRepository.save(new Ingredient(name)));
 
         RecipeIngredient recipeIngredient = new RecipeIngredient();

@@ -20,9 +20,9 @@
         </thead>
         <tbody>
         <tr th:each="ingredient : ${ingredients}">
-            <td><a th:text="${ingredient.name}"></a></td>
+            <td><a th:text="${ingredient.ingredientName}"></a></td>
             <td>
-                <a th:href="@{/ingredient/edit/{name}(name = ${ingredient.name})}" class="btn btn-sm btn-primary">
+                <a th:href="@{/ingredient/edit/{name}(name = ${ingredient.ingredientName})}" class="btn btn-sm btn-primary">
                     <i class="bi bi-pencil"></i>
                 </a>
                 <a th:href="@{/ingredient/delete/{ingredientId}(ingredientId = ${ingredient.ingredientId})}"
