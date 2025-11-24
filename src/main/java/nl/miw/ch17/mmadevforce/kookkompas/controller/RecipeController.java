@@ -3,7 +3,10 @@ package nl.miw.ch17.mmadevforce.kookkompas.controller;
 import nl.miw.ch17.mmadevforce.kookkompas.model.*;
 import nl.miw.ch17.mmadevforce.kookkompas.service.CategoryService;
 import nl.miw.ch17.mmadevforce.kookkompas.service.ImageService;
+import nl.miw.ch17.mmadevforce.kookkompas.service.KookKompasUserService;
 import nl.miw.ch17.mmadevforce.kookkompas.service.RecipeService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,17 +27,27 @@ public class RecipeController {
     private final RecipeService recipeService;
     private final CategoryService categoryService;
     private final ImageService imageService;
+    private final KookKompasUserService kookKompasUserService;
 
-    public RecipeController(RecipeService recipeService, CategoryService categoryService, ImageService imageService) {
+    public RecipeController(RecipeService recipeService, CategoryService categoryService, ImageService imageService, KookKompasUserService kookKompasUserService) {
         this.recipeService = recipeService;
         this.categoryService = categoryService;
         this.imageService = imageService;
+        this.kookKompasUserService = kookKompasUserService;
     }
 
     @GetMapping({"/recipe/all"})
     private String showRecipeOverview(Model datamodel) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        datamodel.addAttribute("recipes", recipeService.getAllRecipes());
+        if (authentication != null && authentication.isAuthenticated() &&
+                !"anonymousUser".equals(authentication.getName())) {
+            KookKompasUser currentUser = kookKompasUserService.getLoggedInUser();
+            datamodel.addAttribute("recipes", recipeService.getAllRecipesForUser(currentUser));
+        } else {
+            datamodel.addAttribute("recipes", recipeService.getAllPublicRecipes());
+        }
+
         datamodel.addAttribute("categories", categoryService.findAllCategories());
 
         return "recipeOverview";
@@ -100,7 +113,14 @@ public class RecipeController {
             return "recipeForm";
         }
 
+        KookKompasUser currentUser = kookKompasUserService.getLoggedInUser();
+        if (recipeFromForm.getOwner() == null) {
+            recipeFromForm.setOwner(currentUser);
+        }
+
         recipeService.saveOrUpdateRecipe(recipeFromForm);
+        System.out.println("Owner in form: " + recipeFromForm.getOwner());
+        System.out.println("Current User: " + currentUser.getUserId());
         return "redirect:/recipe/all";
     }
 
@@ -117,6 +137,11 @@ public class RecipeController {
                                        Model model) {
 
         Recipe recipe = recipeService.getRecipeByTitle(title);
+        KookKompasUser currentUser = kookKompasUserService.getLoggedInUser();
+
+        if (!recipe.isPublicVisible() && !recipe.getOwner().equals(currentUser)) {
+            return "redirect:/recipe/all";
+        }
 
         // Default servings uit recept, of queryparameter
         int currentServings = (servings != null) ? servings : recipe.getServings();

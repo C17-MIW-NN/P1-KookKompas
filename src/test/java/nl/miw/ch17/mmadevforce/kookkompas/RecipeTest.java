@@ -7,6 +7,7 @@ import nl.miw.ch17.mmadevforce.kookkompas.repositories.IngredientRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.RecipeRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.service.CategoryService;
 import nl.miw.ch17.mmadevforce.kookkompas.service.ImageService;
+import nl.miw.ch17.mmadevforce.kookkompas.service.KookKompasUserService;
 import nl.miw.ch17.mmadevforce.kookkompas.service.RecipeService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,9 +34,12 @@ public class RecipeTest {
         RecipeService recipeService = Mockito.mock(RecipeService.class);
         CategoryService categoryService = Mockito.mock(CategoryService.class);
         ImageService imageService = Mockito.mock(ImageService.class);
+        KookKompasUserService kookKompasUserService = Mockito.mock(KookKompasUserService.class);
+
         Model model = Mockito.mock(Model.class);
 
-        RecipeController controller = new RecipeController(recipeService, categoryService, imageService);
+        RecipeController controller = new RecipeController(recipeService, categoryService, imageService,
+                kookKompasUserService);
 
         Recipe recipe = new Recipe();
         recipe.setTitle("Pasta");
@@ -59,10 +63,12 @@ public class RecipeTest {
         RecipeService recipeService = Mockito.mock(RecipeService.class);
         CategoryService categoryService = Mockito.mock(CategoryService.class);
         ImageService imageService = Mockito.mock(ImageService.class);
+        KookKompasUserService kookKompasUserService = Mockito.mock(KookKompasUserService.class);
 
         Model model = Mockito.mock(Model.class);
 
-        RecipeController controller = new RecipeController(recipeService, categoryService, imageService);
+        RecipeController controller = new RecipeController(recipeService, categoryService, imageService,
+                kookKompasUserService);
         Recipe recipe = new Recipe();
         recipe.setTitle("pasta");
 
@@ -86,10 +92,12 @@ public class RecipeTest {
         RecipeService recipeService = Mockito.mock(RecipeService.class);
         CategoryService categoryService = Mockito.mock(CategoryService.class);
         ImageService imageService = Mockito.mock(ImageService.class);
+        KookKompasUserService kookKompasUserService = Mockito.mock(KookKompasUserService.class);
 
         Model model = Mockito.mock(Model.class);
 
-        RecipeController controller = new RecipeController(recipeService, categoryService, imageService);
+        RecipeController controller = new RecipeController(recipeService, categoryService, imageService,
+                kookKompasUserService);
 
         Mockito.when(recipeService.searchRecipes("Patsa"))
                 .thenReturn(Set.of());
@@ -111,10 +119,12 @@ public class RecipeTest {
         RecipeService recipeService = Mockito.mock(RecipeService.class);
         CategoryService categoryService = Mockito.mock(CategoryService.class);
         ImageService imageService = Mockito.mock(ImageService.class);
+        KookKompasUserService kookKompasUserService = Mockito.mock(KookKompasUserService.class);
 
         Model model = Mockito.mock(Model.class);
 
-        RecipeController controller = new RecipeController(recipeService, categoryService, imageService);
+        RecipeController controller = new RecipeController(recipeService, categoryService, imageService,
+                kookKompasUserService);
 
         Recipe recipe = new Recipe();
         recipe.setTitle("pasta");
@@ -138,10 +148,12 @@ public class RecipeTest {
         RecipeService recipeService = Mockito.mock(RecipeService.class);
         CategoryService categoryService = Mockito.mock(CategoryService.class);
         ImageService imageService = Mockito.mock(ImageService.class);
+        KookKompasUserService kookKompasUserService = Mockito.mock(KookKompasUserService.class);
 
         Model model = Mockito.mock(Model.class);
 
-        RecipeController controller = new RecipeController(recipeService, categoryService, imageService);
+        RecipeController controller = new RecipeController(recipeService, categoryService, imageService,
+                kookKompasUserService);
 
         Mockito.when(recipeService.searchRecipes("@"))
                 .thenReturn(Set.of());

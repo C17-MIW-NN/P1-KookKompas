@@ -7,6 +7,7 @@ import nl.miw.ch17.mmadevforce.kookkompas.repositories.RecipeRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author MAA Dev Force
@@ -28,6 +29,19 @@ public class RecipeService {
 
     public List<Recipe> getAllRecipes() {
         return recipeRepository.findAll();
+    }
+
+    public List<Recipe> getAllRecipesForUser(KookKompasUser user) {
+        return recipeRepository.findAll().stream()
+                .filter(recipe -> recipe.isPublicVisible() ||
+                        (recipe.getOwner() != null && recipe.getOwner().getUserId().equals(user.getUserId())))
+                .collect(Collectors.toList());
+    }
+
+    public List<Recipe> getAllPublicRecipes() {
+        return recipeRepository.findAll().stream()
+                .filter(Recipe::isPublicVisible)
+                .collect(Collectors.toList());
     }
 
     public List<Ingredient> getAllIngredients() {
