@@ -185,7 +185,7 @@ public class RecipeService {
         if (currentServings <= 1) {
             throw new IllegalArgumentException("Aantal kan niet lager dan 1");
         }
-        return currentServings;
+        return currentServings - 1;
     }
 
 }

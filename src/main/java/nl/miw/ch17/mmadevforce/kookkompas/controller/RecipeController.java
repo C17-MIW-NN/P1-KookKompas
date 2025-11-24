@@ -149,10 +149,17 @@ public class RecipeController {
 
     @PostMapping("/recipe/detail/{title}/decrease")
     public String decrease(@PathVariable("title") String title,
-                           @RequestParam int currentServings) {
+                           @RequestParam int currentServings, Model model) {
 
-        int updatedServings = recipeService.decreaseServings(currentServings);
+        //int updatedServings = recipeService.decreaseServings(currentServings);
+        int updatedServings;
 
+        try {
+            updatedServings = recipeService.decreaseServings(currentServings);
+        } catch (IllegalArgumentException exception) {
+            model.addAttribute("errorMessage", exception.getMessage());
+            return showRecipeDetailpage(title, currentServings, model);
+        }
         return "redirect:/recipe/detail/" + title + "?servings=" + updatedServings;
     }
 }
