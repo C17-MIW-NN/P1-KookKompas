@@ -1,12 +1,13 @@
 package nl.miw.ch17.mmadevforce.kookkompas.service;
 
+import nl.miw.ch17.mmadevforce.kookkompas.model.KookKompasUser;
 import nl.miw.ch17.mmadevforce.kookkompas.model.Recipe;
-import nl.miw.ch17.mmadevforce.kookkompas.repositories.CategoryRepository;
-import nl.miw.ch17.mmadevforce.kookkompas.repositories.IngredientRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.RecipeRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author MMA Dev Force
@@ -16,17 +17,25 @@ import java.util.List;
 public class HomepageService {
 
     private final RecipeRepository recipeRepository;
-    private final IngredientRepository ingredientRepository;
-    private final CategoryRepository categoryRepository;
 
-    public HomepageService(RecipeRepository recipeRepository, IngredientRepository ingredientRepository, CategoryRepository categoryRepository) {
+    public HomepageService(RecipeRepository recipeRepository) {
         this.recipeRepository = recipeRepository;
-        this.ingredientRepository = ingredientRepository;
-        this.categoryRepository = categoryRepository;
     }
 
-    public List<Recipe> findAllRecipes() {
-        return recipeRepository.findAll();
+    public List<Recipe> findRandomPublicRecipes(int count) {
+        List<Recipe> publicRecipes = recipeRepository.findAll().stream()
+                .filter(Recipe::isPublicVisible)
+                .collect(Collectors.toList());
+        Collections.shuffle(publicRecipes);
+        return publicRecipes.stream().limit(count).collect(Collectors.toList());
     }
 
+    public List<Recipe> findRandomRecipesForUser(KookKompasUser user, int count) {
+        List<Recipe> recipes = recipeRepository.findAll().stream()
+                .filter(recipe -> recipe.isPublicVisible() ||
+                        (recipe.getOwner() != null && recipe.getOwner().getUserId().equals(user.getUserId())))
+                .collect(Collectors.toList());
+        Collections.shuffle(recipes);
+        return recipes.stream().limit(count).collect(Collectors.toList());
+    }
 }
