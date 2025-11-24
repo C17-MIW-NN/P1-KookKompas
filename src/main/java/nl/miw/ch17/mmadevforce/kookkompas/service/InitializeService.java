@@ -24,7 +24,6 @@ public class InitializeService {
     private final CategoryService categoryService;
     private final KookKompasUserService kookKompasUserService;
 
-
     public InitializeService(IngredientRepository ingredientRepository,
                              RecipeIngredientRepository recipeIngredientRepository,
                              RecipeRepository recipeRepository,
@@ -81,25 +80,27 @@ public class InitializeService {
         }
     }
 
-    private void importCSVFileCategoryList(String line) {
+
+    public Category importCSVFileCategoryList(String line) {
         String[] parts = line.split(",", 2);
         String categoryName = parts[0].trim();
         String categoryColor = parts[1].trim();
 
         Optional<Category> optionalCategory = categoryService.findByCategoryName(categoryName);
 
+        Category category;
         if (optionalCategory.isPresent()) {
             // Bestaande categorie updaten
-            Category existing = optionalCategory.get();
-            existing.setCategoryColor(categoryColor);
-            categoryService.saveCategory(existing);
+            category = optionalCategory.get();
         } else {
             // Nieuwe categorie aanmaken
-            Category newCategory = new Category();
-            newCategory.setCategoryName(categoryName);
-            newCategory.setCategoryColor(categoryColor);
-            categoryService.saveCategory(newCategory);
+            category = new Category();
+            category.setCategoryName(categoryName);
         }
+
+        category.setCategoryColor(categoryColor);
+        categoryService.saveCategory(category);
+        return category;
     }
 
     private void loadCSVFileRecipeCategory() {
