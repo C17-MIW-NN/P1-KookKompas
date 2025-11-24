@@ -74,6 +74,10 @@ public class Recipe {
         return servings;
     }
 
+    public void setServings(int servings) {
+        this.servings = servings;
+    }
+
     public List<RecipeIngredient> getRecipeingredients() {
         return recipeingredients;
     }
