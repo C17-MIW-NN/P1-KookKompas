@@ -12,7 +12,6 @@ public class ShoppingListItem {
     @Id @GeneratedValue
     private long shoppingListItemId;
 
-    private String ingredientName;
     private double amount;
     private String unit;
 
@@ -22,21 +21,12 @@ public class ShoppingListItem {
     @ManyToOne
     private Ingredient ingredient;
 
-    public ShoppingListItem(String ingredientName, double amount, String unit) {
-        this.ingredientName = ingredientName;
+    public ShoppingListItem(double amount, String unit) {
         this.amount = amount;
         this.unit = unit;
     }
 
     public ShoppingListItem() {
-    }
-
-    public String getIngredientName() {
-        return ingredientName;
-    }
-
-    public void setIngredientName(String ingredientName) {
-        this.ingredientName = ingredientName;
     }
 
     public double getAmount() {

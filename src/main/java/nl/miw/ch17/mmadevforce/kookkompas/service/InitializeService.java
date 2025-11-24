@@ -225,7 +225,7 @@ public class InitializeService {
                     return recipeRepository.save(newRecipe);
                 });
 
-        Ingredient ingredient = ingredientRepository.findByName(name)
+        Ingredient ingredient = ingredientRepository.findByIngredientName(name)
                 .orElseGet(() -> ingredientRepository.save(new Ingredient(name)));
 
         RecipeIngredient recipeIngredient = new RecipeIngredient();

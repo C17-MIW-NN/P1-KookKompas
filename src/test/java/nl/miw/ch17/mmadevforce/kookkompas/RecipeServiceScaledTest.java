@@ -25,7 +25,7 @@ public class RecipeServiceScaledTest {
         recipe.setServings(2);
 
         Ingredient flour = new Ingredient();
-        flour.setName("Flour");
+        flour.setIngredientName("Flour");
 
         RecipeIngredient recipeIngredient = new RecipeIngredient();
         recipeIngredient.setIngredient(flour);
@@ -44,7 +44,7 @@ public class RecipeServiceScaledTest {
 
         // Assert
         assertEquals(200.0, scaled.get(0).getIngredientAmount());
-        assertEquals("Flour", scaled.get(0).getIngredient().getName());
+        assertEquals("Flour", scaled.get(0).getIngredient().getIngredientName());
         assertEquals("g", scaled.get(0).getUnit());
     }
 
@@ -56,7 +56,7 @@ public class RecipeServiceScaledTest {
         recipe.setServings(2);
 
         Ingredient flour = new Ingredient();
-        flour.setName("Flour");
+        flour.setIngredientName("Flour");
 
         RecipeIngredient recipeIngredient = new RecipeIngredient();
         recipeIngredient.setIngredient(flour);
@@ -75,7 +75,7 @@ public class RecipeServiceScaledTest {
 
         // Assert
         assertEquals(0.0, scaled.get(0).getIngredientAmount());
-        assertEquals("Flour", scaled.get(0).getIngredient().getName());
+        assertEquals("Flour", scaled.get(0).getIngredient().getIngredientName());
         assertEquals("g", scaled.get(0).getUnit());
     }
 
@@ -87,7 +87,7 @@ public class RecipeServiceScaledTest {
         recipe.setServings(4);
 
         Ingredient flour = new Ingredient();
-        flour.setName("Flour");
+        flour.setIngredientName("Flour");
 
         RecipeIngredient recipeIngredient = new RecipeIngredient();
         recipeIngredient.setIngredient(flour);
@@ -106,7 +106,7 @@ public class RecipeServiceScaledTest {
 
         // Assert
         assertEquals(100.0, scaled.get(0).getIngredientAmount());
-        assertEquals("Flour", scaled.get(0).getIngredient().getName());
+        assertEquals("Flour", scaled.get(0).getIngredient().getIngredientName());
         assertEquals("g", scaled.get(0).getUnit());
     }
 

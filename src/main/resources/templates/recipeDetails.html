@@ -47,7 +47,7 @@
                         <li class="list-group-item" th:each="recipeingredient : ${scaledIngredients}">
                             <span th:text="${recipeingredient.ingredientAmount}"></span>
                             <span th:text="${recipeingredient.unit}"></span>
-                            <span th:text="${recipeingredient.ingredient.name}"></span>
+                            <span th:text="${recipeingredient.ingredient.ingredientName}"></span>
                         </li>
                     </ul>
                 </div>

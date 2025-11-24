@@ -62,7 +62,7 @@ public class ShoppingListService {
                 ShoppingListItem newItem = new ShoppingListItem();
                 newItem.setShoppingList(shoppingList);
                 newItem.setIngredient(ingredient);
-                newItem.setIngredientName(ingredient.getName());
+                // newItem.setIngredientName(ingredient.getIngredientName());
                 newItem.setAmount(amount);
                 newItem.setUnit(unit);
 

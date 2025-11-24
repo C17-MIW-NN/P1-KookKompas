@@ -56,7 +56,7 @@
                     <input type="checkbox" class="ingredient-checkbox"
                         th:value="${ingredient.ingredientId}"
                         th:field="*{recipeingredients[__${iter.index}__].ingredient}" />
-                    <span th:text="${ingredient.name}"></span><br>
+                    <span th:text="${ingredient.ingredientName}"></span><br>
 
                     <div class="ingredient-extra"
                         th:style="${formRecipe.recipeingredients[__${iter.index}__].ingredient != null ? 'display:inline;' : 'display:none;'}">

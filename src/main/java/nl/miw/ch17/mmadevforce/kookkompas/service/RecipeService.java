@@ -179,7 +179,7 @@ public class RecipeService {
     public Set<Recipe> searchRecipes(String query) {
         List<Recipe> titleResults = recipeRepository.findByTitleContainingIgnoreCase(query);
         List<Recipe> ingredientResults =
-                recipeRepository.findDistinctByRecipeingredients_Ingredient_NameIgnoreCase(query);
+                recipeRepository.findDistinctByRecipeingredients_Ingredient_IngredientNameIgnoreCase(query);
 
         Set<Recipe> results = new HashSet<>();
         results.addAll(titleResults);
