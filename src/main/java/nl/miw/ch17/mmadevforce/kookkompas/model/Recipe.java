@@ -34,11 +34,16 @@ public class Recipe {
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecipeIngredient> recipeingredients;
 
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<RecipeStep> steps = new ArrayList<>();
 
     @ManyToMany
     private Set<Category> categories;
+
+    public void addStep(RecipeStep step) {
+        step.setRecipe(this);
+        this.steps.add(step);
+    }
 
     public void recalculateCookingTime() {
         this.cookingTime = steps.stream().mapToInt(RecipeStep::getCookingTimePerStep).sum();

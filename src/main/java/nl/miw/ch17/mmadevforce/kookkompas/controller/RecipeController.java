@@ -135,13 +135,19 @@ public class RecipeController {
                                        Model model) {
 
         Recipe recipe = recipeService.getRecipeByTitle(title);
-        KookKompasUser currentUser = kookKompasUserService.getLoggedInUser();
 
-        if (!recipe.isPublicVisible() && !recipe.getOwner().equals(currentUser)) {
-            return "redirect:/recipe/all";
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        KookKompasUser currentUser = null;
+        if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getName())) {
+            currentUser = kookKompasUserService.getLoggedInUser();
         }
 
-        // Default servings uit recept, of queryparameter
+        if (!recipe.isPublicVisible()) {
+            if (currentUser == null || !recipe.getOwner().equals(currentUser)) {
+                return "redirect:/recipe/all";
+            }
+        }
+
         int currentServings = (servings != null) ? servings : recipe.getServings();
 
         List<RecipeIngredient> scaledIngredients = recipeService.getScaledIngredients(recipe, currentServings);

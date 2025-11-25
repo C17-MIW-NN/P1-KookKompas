@@ -28,6 +28,10 @@ public class RecipeStep {
         this.recipeStepId = recipeStepId;
     }
 
+    public int getStepNumber() {
+        return stepNumber;
+    }
+
     public void setStepNumber(int stepNumber) {
         this.stepNumber = stepNumber;
     }

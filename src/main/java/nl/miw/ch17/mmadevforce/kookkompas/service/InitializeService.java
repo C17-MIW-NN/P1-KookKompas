@@ -168,6 +168,7 @@ public class InitializeService {
                 if (!line.isEmpty()) {
                     importCSVFileRecipeSteps(line);
                 }
+
             }
 
         } catch (Exception e) {
@@ -178,10 +179,10 @@ public class InitializeService {
 
     private void importCSVFileRecipeSteps(String line) {
         String[] parts = line.split(",", 4);
-        String recipeTitle = parts[0];
-        int stepNumber = Integer.parseInt(parts[1]);
-        int cookingTimePerStep = Integer.parseInt(parts[2]);
-        String stepDescription = parts[3];
+        String recipeTitle = parts[0].trim();
+        int stepNumber = Integer.parseInt(parts[1].trim());
+        int cookingTimePerStep = Integer.parseInt(parts[2].trim());
+        String stepDescription = parts[3].replaceAll("^\"|\"$", "").trim();
 
         Recipe recipe = recipeRepository.findByTitle(recipeTitle)
                 .orElseThrow(() -> new IllegalArgumentException("Recipe not found: " + recipeTitle));
@@ -194,10 +195,11 @@ public class InitializeService {
 
         recipeStepRepository.save(step);
 
-        //recipe.getSteps().add(step);
+        Recipe updatedRecipe = recipeRepository.findByTitle(recipeTitle)
+                .orElseThrow(() -> new IllegalArgumentException("Recipe not found after saving step: " + recipeTitle));
 
-        recipe.recalculateCookingTime();
-        recipeRepository.save(recipe);
+        updatedRecipe.recalculateCookingTime();
+        recipeRepository.save(updatedRecipe);
     }
 
     private void loadCSVFileIngredientList() {
