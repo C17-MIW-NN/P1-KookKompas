@@ -4,6 +4,7 @@ import nl.miw.ch17.mmadevforce.kookkompas.model.Ingredient;
 import nl.miw.ch17.mmadevforce.kookkompas.model.Recipe;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.IngredientRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.RecipeRepository;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,12 +29,20 @@ public class IngredientService {
     }
 
     public Ingredient saveIngredient(Ingredient ingredient) {
+        Optional<Ingredient> existing = ingredientRepository.findByIngredientName(ingredient.getIngredientName());
+
+        if (existing.isPresent() &&
+                (ingredient.getIngredientId() == null ||
+                        !existing.get().getIngredientId().equals(ingredient.getIngredientId()))) {
+            throw new DataIntegrityViolationException("Ingredient name must be unique");
+        }
         return ingredientRepository.save(ingredient);
     }
 
-    public Optional<Ingredient> findByIngredientName(String name) {
-        return ingredientRepository.findByIngredientName(name);
+    public Optional<Ingredient> findByIngredientId(Long ingredientId) {
+        return ingredientRepository.findById(ingredientId);
     }
+
     public void deleteIngredient(Long ingredientId) {
         Ingredient ingredient = ingredientRepository.findById(ingredientId).orElse(null);
 
