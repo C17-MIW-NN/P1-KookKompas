@@ -49,7 +49,7 @@ public class IngredientController {
         try {
             ingredientService.saveIngredient(ingredientToBeSaved);
         } catch (DataIntegrityViolationException e) {
-            bindingResult.rejectValue("name", "duplicate",
+            bindingResult.rejectValue("ingredientName", "duplicate",
                     "Ingredient naam moet uniek zijn");
             return "ingredientForm";
         }
@@ -57,9 +57,9 @@ public class IngredientController {
         return getRedirectIngredientAll();
     }
     
-    @GetMapping("/edit/{name}")
-    public String showEditIngredientForm(@PathVariable("name") String name, Model datamodel) {
-        Optional<Ingredient> optionalIngredient = ingredientService.findByIngredientName(name);
+    @GetMapping("/edit/{ingredientId}")
+    public String showEditIngredientForm(@PathVariable("ingredientId") Long ingredientId, Model datamodel) {
+        Optional<Ingredient> optionalIngredient = ingredientService.findByIngredientId(ingredientId);
 
         if (optionalIngredient.isPresent()) {
             datamodel.addAttribute("formIngredient", optionalIngredient.get());
@@ -78,5 +78,4 @@ public class IngredientController {
     private static String getRedirectIngredientAll() {
         return "redirect:/ingredient/all";
     }
-
 }
