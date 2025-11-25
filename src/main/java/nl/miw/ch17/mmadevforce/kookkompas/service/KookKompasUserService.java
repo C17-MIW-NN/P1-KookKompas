@@ -62,5 +62,4 @@ public class KookKompasUserService implements UserDetailsService {
     public void save(NewKookKompasUserDTO userDtoToBeSaved) {
         saveUser(KookKompasUserMapper.fromDTO(userDtoToBeSaved));
     }
-
 }

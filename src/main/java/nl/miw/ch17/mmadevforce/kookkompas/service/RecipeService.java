@@ -3,7 +3,9 @@ package nl.miw.ch17.mmadevforce.kookkompas.service;
 import nl.miw.ch17.mmadevforce.kookkompas.model.*;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.CategoryRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.IngredientRepository;
+import nl.miw.ch17.mmadevforce.kookkompas.repositories.KookKompasUserRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.RecipeRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
@@ -21,7 +23,7 @@ public class RecipeService {
     private final CategoryRepository categoryRepository;
     private final IngredientRepository ingredientRepository;
 
-    public RecipeService(RecipeRepository recipeRepository, CategoryRepository categoryRepository, IngredientRepository ingredientRepository) {
+    public RecipeService(RecipeRepository recipeRepository, CategoryRepository categoryRepository, IngredientRepository ingredientRepository, KookKompasUserRepository kookKompasUserRepository) {
         this.recipeRepository = recipeRepository;
         this.categoryRepository = categoryRepository;
         this.ingredientRepository = ingredientRepository;
@@ -36,11 +38,14 @@ public class RecipeService {
     }
 
     public List<Recipe> getAllRecipesForUser(KookKompasUser user) {
+        Long userId = user.getUserId();
         return recipeRepository.findAll().stream()
                 .filter(recipe -> recipe.isPublicVisible() ||
-                        (recipe.getOwner() != null && recipe.getOwner().getUserId().equals(user.getUserId())))
+                        (recipe.getOwner() != null && recipe.getOwner().getUserId() != null &&
+                                recipe.getOwner().getUserId().equals(userId)))
                 .collect(Collectors.toList());
     }
+
 
     public List<Recipe> getAllPublicRecipes() {
         return recipeRepository.findAll().stream()
@@ -100,19 +105,25 @@ public class RecipeService {
 
         Recipe recipeToBeSaved;
         if (recipeFromForm.getRecipeId() != null) {
-            recipeToBeSaved = recipeRepository.findById(recipeFromForm.getRecipeId()).orElseThrow();
+            recipeToBeSaved = recipeRepository.findById(recipeFromForm.getRecipeId())
+                    .orElseThrow(() -> new RuntimeException("Recipe not found: " + recipeFromForm.getRecipeId()));
             recipeToBeSaved.setTitle(recipeFromForm.getTitle());
             recipeToBeSaved.setDescription(recipeFromForm.getDescription());
             recipeToBeSaved.setCoverImageUrl(recipeFromForm.getCoverImageUrl());
+            recipeToBeSaved.setPublicVisible(recipeFromForm.isPublicVisible());
         } else {
             recipeToBeSaved = new Recipe();
             recipeToBeSaved.setTitle(recipeFromForm.getTitle());
             recipeToBeSaved.setDescription(recipeFromForm.getDescription());
             recipeToBeSaved.setCoverImageUrl(recipeFromForm.getCoverImageUrl());
+            recipeToBeSaved.setPublicVisible(recipeFromForm.isPublicVisible());
         }
 
-        recipeToBeSaved.setOwner(recipeFromForm.getOwner());
-        recipeToBeSaved.setPublicVisible(recipeFromForm.isPublicVisible());
+        if (recipeFromForm.getOwner() != null) {
+            recipeToBeSaved.setOwner(recipeFromForm.getOwner());
+        } else {
+            throw new RuntimeException("Owner must be set before saving a recipe");
+        }
 
         Set<Category> categories = new HashSet<>();
         if (recipeFromForm.getCategories() != null) {

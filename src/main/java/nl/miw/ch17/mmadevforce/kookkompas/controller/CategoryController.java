@@ -2,8 +2,11 @@ package nl.miw.ch17.mmadevforce.kookkompas.controller;
 
 import jakarta.validation.Valid;
 import nl.miw.ch17.mmadevforce.kookkompas.model.Category;
+import nl.miw.ch17.mmadevforce.kookkompas.model.KookKompasUser;
 import nl.miw.ch17.mmadevforce.kookkompas.model.Recipe;
 import nl.miw.ch17.mmadevforce.kookkompas.service.CategoryService;
+import nl.miw.ch17.mmadevforce.kookkompas.service.KookKompasUserService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,15 +22,17 @@ import java.util.Optional;
 @Controller
 public class CategoryController {
     private final CategoryService categoryService;
+    private final KookKompasUserService kookKompasUserService;
 
-    public CategoryController(CategoryService categoryService) {
+    public CategoryController(CategoryService categoryService, KookKompasUserService kookKompasUserService) {
         this.categoryService = categoryService;
+        this.kookKompasUserService = kookKompasUserService;
     }
 
     @GetMapping("/category/all")
-    public String showRecipeCategories(Model viewmodel) {
-        viewmodel.addAttribute("categories", categoryService.findAllCategories());
-        viewmodel.addAttribute("formRecipeCategories", new Category());
+    public String showRecipeCategories(Model viewmodel,
+                                       @AuthenticationPrincipal KookKompasUser user) {
+        viewmodel.addAttribute("categories", categoryService.getAllCategoriesForUser(user));
         return "categoryOverview";
     }
 
@@ -39,18 +44,23 @@ public class CategoryController {
 
     @PostMapping("/category/save")
     public String saveOrUpdateCategory(
-            @Valid @ModelAttribute("formCategory") Category categoryToBeSaved, BindingResult bindingResult, Model model) {
+            @Valid @ModelAttribute("formCategory") Category categoryToBeSaved,
+            BindingResult bindingResult,
+            Model model,
+            @AuthenticationPrincipal KookKompasUser user)  {
+
         if (bindingResult.hasErrors()) {
             model.addAttribute("formCategory", categoryToBeSaved);
             return "formRecipeCategories";
         }
 
-        if (!categoryService.isCategoryNameUnique(categoryToBeSaved.getCategoryName())) {
+        if (categoryService.isCategoryNameTaken(categoryToBeSaved.getCategoryName(), user)) {
             bindingResult.rejectValue("categoryName", "error.categoryName", "Deze categorie bestaat al.");
             model.addAttribute("formCategory", categoryToBeSaved);
             return "formRecipeCategories";
         }
-        categoryService.saveCategory(categoryToBeSaved);
+
+        categoryService.saveCategoryFromUser(categoryToBeSaved, user);
         return getRedirectCategoryAll();
     }
 

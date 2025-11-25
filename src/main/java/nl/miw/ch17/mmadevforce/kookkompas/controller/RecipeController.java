@@ -39,15 +39,26 @@ public class RecipeController {
     private String showRecipeOverview(Model datamodel) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
+        KookKompasUser currentUser = null;
+
         if (authentication != null && authentication.isAuthenticated() &&
                 !"anonymousUser".equals(authentication.getName())) {
-            KookKompasUser currentUser = kookKompasUserService.getLoggedInUser();
+            currentUser = kookKompasUserService.getLoggedInUser();
             datamodel.addAttribute("recipes", recipeService.getAllRecipesForUser(currentUser));
         } else {
             datamodel.addAttribute("recipes", recipeService.getAllPublicRecipes());
         }
 
+<<<<<<< HEAD
         datamodel.addAttribute("categories", categoryService.findAllCategories());
+=======
+        if (currentUser != null) {
+            datamodel.addAttribute("categories", categoryService.getAllCategoriesForUser(currentUser));
+        } else {
+            datamodel.addAttribute("categories", categoryService.getAllPublicCategories());
+        }
+
+>>>>>>> e4b0e1d32849e59efe38e32304b4a1eaebe09974
         return "recipeOverview";
     }
 

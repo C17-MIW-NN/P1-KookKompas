@@ -49,6 +49,7 @@ public class InitializeService {
 
     public void initializeDB() {
         adminUser = makeUser("Admin", "AdminPW");
+        adminUser = makeUser("Arjen", "ArjenPW");
 
         loadCSVFileIngredientList();
         loadCSVFileRecipeSteps();
@@ -102,8 +103,10 @@ public class InitializeService {
         }
 
         category.setCategoryColor(categoryColor);
-        categoryService.saveCategory(category);
-        return category;
+        category.setPublicVisible(true);
+        category.setOwner(null);
+
+        return categoryService.savePublicCategory(category);
     }
 
     private void loadCSVFileRecipeCategory() {
