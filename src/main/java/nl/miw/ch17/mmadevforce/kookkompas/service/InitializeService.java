@@ -4,6 +4,7 @@ import nl.miw.ch17.mmadevforce.kookkompas.model.*;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.*;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -176,10 +177,11 @@ public class InitializeService {
     }
 
     private void importCSVFileRecipeSteps(String line) {
-        String[] parts = line.split(",");
+        String[] parts = line.split(",", 4);
         String recipeTitle = parts[0];
         int stepNumber = Integer.parseInt(parts[1]);
-        String stepDescription = parts[2];
+        int cookingTimePerStep = Integer.parseInt(parts[2]);
+        String stepDescription = parts[3];
 
         Recipe recipe = recipeRepository.findByTitle(recipeTitle)
                 .orElseThrow(() -> new IllegalArgumentException("Recipe not found: " + recipeTitle));
@@ -188,8 +190,14 @@ public class InitializeService {
         step.setRecipe(recipe);
         step.setStepNumber(stepNumber);
         step.setStepDescription(stepDescription);
+        step.setCookingTimePerStep(cookingTimePerStep);
 
         recipeStepRepository.save(step);
+
+        //recipe.getSteps().add(step);
+
+        recipe.recalculateCookingTime();
+        recipeRepository.save(recipe);
     }
 
     private void loadCSVFileIngredientList() {

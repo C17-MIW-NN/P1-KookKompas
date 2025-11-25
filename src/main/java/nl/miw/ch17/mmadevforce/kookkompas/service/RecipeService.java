@@ -148,11 +148,14 @@ public class RecipeService {
                 RecipeStep newStep = new RecipeStep();
                 newStep.setStepDescription(s.getStepDescription());
                 newStep.setStepNumber(stepNum++);
+                newStep.setCookingTimePerStep(s.getCookingTimePerStep());
                 newStep.setRecipe(recipeToBeSaved);
 
                 recipeToBeSaved.getSteps().add(newStep);
             }
         }
+
+        recipeToBeSaved.recalculateCookingTime();
 
         // Recipe opslaan
         return recipeRepository.save(recipeToBeSaved);

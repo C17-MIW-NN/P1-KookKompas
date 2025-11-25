@@ -13,10 +13,9 @@ import jakarta.persistence.ManyToOne;
 public class RecipeStep {
     @Id @GeneratedValue
     private Long recipeStepId;
-
     private int stepNumber;
-    
     private String stepDescription;
+    private int cookingTimePerStep;
 
     @ManyToOne
     private Recipe recipe;
@@ -47,5 +46,13 @@ public class RecipeStep {
 
     public void setRecipe(Recipe recipe) {
         this.recipe = recipe;
+    }
+
+    public int getCookingTimePerStep() {
+        return cookingTimePerStep;
+    }
+
+    public void setCookingTimePerStep(int cookingTimePerStep) {
+        this.cookingTimePerStep = cookingTimePerStep;
     }
 }

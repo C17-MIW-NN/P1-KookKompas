@@ -40,6 +40,8 @@
                  '; padding: 3px 6px; border-radius: 4px; color: white; margin-right:6px;'}"></span>
                 <p class="card-text py-2" th:href="@{/recipe/detail/{title}(title = ${recipe.title})}"
                    th:text="${recipe.description}"></p>
+                <p><strong>Kooktijd:</strong>
+                    <span th:text="${recipe.cookingTime}"></span> min</p>
                 <div><a th:href="@{/recipe/edit/{title}(title = ${recipe.title})}" class="btn btn-sm btn-primary btn-blue">
                     <i class="bi bi-pencil"></i></a>
                     <a th:href="@{/recipe/delete/{recipeId}(recipeId = ${recipe.recipeId})}" class="btn btn-sm btn-danger btn-red">

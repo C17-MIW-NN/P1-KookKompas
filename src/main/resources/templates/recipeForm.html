@@ -80,12 +80,20 @@
                             <input type="text" class="form-control"
                                    th:field="*{steps[__${iStat.index}__].stepDescription}" required>
                         </td>
+                        <td>
+                            <input type="number" class="form-control" th:field="*{steps[__${iStat.index}__]
+                            .cookingTimePerStep}" placeholder="Kooktijd (minuten)" min="0">
+                        </td>
                         <td><button type="button" class="delete-step">Verwijder</button></td>
                     </tr>
                 </tbody>
             </table>
 
             <button type="button" id="addStep" style="margin-top:5px;">Voeg stap toe</button>
+        </div>
+        <div class="form-group">
+            <label for="cookingTime">Totale kooktijd</label>
+            <input type="number" class="form-control" id="cookingTime" th:field="*{cookingTime}" readonly>
         </div>
 
         <div class="form-group">
@@ -127,6 +135,7 @@
             newRow.innerHTML = `
             <td>${index + 1}</td>
             <td><input class="form-control" name="steps[${index}].stepDescription" required></td>
+            <td><input class="form-control" type="number" name="steps[${index}].cookingTimePerStep" placeholder="Kooktijd (minuten)" min="0"></td>
             <td><button type="button" class="delete-step">Verwijder</button></td>
         `;
 

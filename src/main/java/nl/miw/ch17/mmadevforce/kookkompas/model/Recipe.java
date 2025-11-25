@@ -19,11 +19,14 @@ public class Recipe {
 
     @Id @GeneratedValue
     private Long recipeId;
+
+    //bij title nog validation toevoegen
     private String title;
     private String description;
     private int servings = DEFAULT_MINIMUM_SERVINGS;
     private String coverImageUrl;
     private boolean publicVisible;
+    private int cookingTime;
 
     @ManyToOne
     private KookKompasUser owner;
@@ -36,6 +39,10 @@ public class Recipe {
 
     @ManyToMany
     private Set<Category> categories;
+
+    public void recalculateCookingTime() {
+        this.cookingTime = steps.stream().mapToInt(RecipeStep::getCookingTimePerStep).sum();
+    }
 
     public Set<Category> getCategories() {
         return categories;
@@ -124,5 +131,13 @@ public class Recipe {
 
     public void setPublicVisible(boolean publicVisible) {
         this.publicVisible = publicVisible;
+    }
+
+    public int getCookingTime() {
+        return cookingTime;
+    }
+
+    public void setCookingTime(int cookingTime) {
+        this.cookingTime = cookingTime;
     }
 }
