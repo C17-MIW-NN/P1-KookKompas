@@ -24,19 +24,21 @@
                 <div class="card-body">
                     <h2 class="card-title">Ingrediënten</h2>
 
+                    <span id="originalServings" th:text="${recipe.servings}" style="display:none"></span>
+
                     <div class="d-flex algin-items-center mb-3">
-                        <form th:action="@{|/recipe/detail/${recipe.title}/decrease|}" method="post" style="display:inline;">
-                            <input type="hidden" name="currentServings" th:value="${currentServings}">
-                            <button type="button" id="btnDecrease" class="btn btn-link p-0">
+<!--                        <form th:action="@{|/recipe/detail/${recipe.title}/decrease|}" method="post" style="display:inline;">-->
+<!--                            <input type="hidden" name="currentServings" th:value="${currentServings}">-->
+                            <button id="btnDecrease" class="btn btn-link p-0">
                             <i class="bi bi-dash-circle fs-3 text-dark"></i>
                             </button>
                         </form>
 
                         <span id="servingsDisplay" class="mx-3 fs-5 fw-bold" th:text="${currentServings}"></span>
 
-                        <form th:action="@{|/recipe/detail/${recipe.title}/increase|}" method="post" style="display:inline;">
-                        <input type="hidden" name="currentServings" th:value="${currentServings}">
-                        <button type="button" id="btnIncrease" class="btn btn-link p-0">
+<!--                        <form th:action="@{|/recipe/detail/${recipe.title}/increase|}" method="post" style="display:inline;">-->
+<!--                        <input type="hidden" name="currentServings" th:value="${currentServings}">-->
+                        <button id="btnIncrease" class="btn btn-link p-0">
                             <i class="bi bi-plus-circle fs-3 text-dark"></i>
                         </button>
                         </form>
@@ -44,13 +46,13 @@
 
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item" th:each="recipeingredient : ${scaledIngredients}"
-                            th:data-baseamount="${recipeingredient.ingredientAmount}"
-                            th:data-unit="${recipeingredient.unit}"
-                            th:data-name="${recipeingredient.ingredient.name}">
+                            th:data-baseamount="${recipeingredient.ingredientAmount != null ? recipeingredient.ingredientAmount : 0}"
+                            th:data-unit="${recipeingredient.unit != null ? recipeingredient.unit : ''}"
+                            th:data-name="${recipeingredient.ingredient != null ? recipeingredient.ingredient.name : ''}">
 
-                            <span class="amount" th:text="${recipeingredient.ingredientAmount}"></span>
-                            <span th:text="${recipeingredient.unit}"></span>
-                            <span th:text="${recipeingredient.ingredient.name}"></span>
+                            <span class="amount" th:text="${recipeingredient.ingredientAmount != null ? recipeingredient.ingredientAmount : 0}"></span>
+                            <span th:text="${recipeingredient.unit != null ? recipeingredient.unit : ''}"></span>
+                            <span th:text="${recipeingredient.ingredient != null ? recipeingredient.ingredient.name : ''}"></span>
                         </li>
                     </ul>
                 </div>
@@ -63,7 +65,7 @@
                     <h2>Bereidingswijze</h2>
                     <ol class="preparation-list">
                         <li th:each="recipeStep : ${recipe.steps}">
-                            <span th:text="${recipeStep.stepDescription}"></span>
+                            <span th:text="${recipeStep.stepDescription != null ? recipeStep.stepDescription : ''}"></span>
                         </li>
                     </ol>
                 </div>
@@ -77,35 +79,39 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-        let servings = parseInt(servingsDisplay.textContent) || 4;
+        let servings = parseInt(document.getElementById("servingsDisplay").textContent) || 4;
 
         const servingsDisplay = document.getElementById("servingsDisplay");
         const ingredientsItems = document.querySelectorAll(".list-group-item");
+        const originalServings = parseFloat(document.getElementById("originalServings").textContent) || 1;
 
         function updateIngredients() {
             ingredientsItems.forEach(item => {
-                const baseAmount = parseFloat(item.dataset.baseamount);
-                const amountSpan = item.querySelector(".amount");
+                let baseAmount = parseFloat(item.dataset.baseamount);
+                if (isNaN(baseAmount)) baseAmount = 0;
 
-                const newAmount = (baseAmount * servings).toFixed(2);
+                const amountSpan = item.querySelector(".amount");
+                const newAmount = (baseAmount * servings / originalServings).toFixed(2);
 
                 amountSpan.textContent = newAmount.replace(/\.00$/, "");
             });
         }
 
-        document.getElementById("btnIncrease").onclick = () => {
+        document.getElementById("btnIncrease").addEventListener("click", (event) => {
+            event.preventDefault();
             servings++;
             servingsDisplay.textContent = servings;
             updateIngredients();
-        };
+        });
 
-        document.getElementById("btnDecrease").onclick = () => {
+        document.getElementById("btnDecrease").addEventListener("click", (event) => {
+            event.preventDefault();
             if (servings > 1) {
                 servings--;
                 servingsDisplay.textContent = servings;
                 updateIngredients();
             }
-        };
+        });
     });
 </script>
 
