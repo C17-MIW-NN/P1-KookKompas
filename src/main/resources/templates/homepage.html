@@ -41,7 +41,9 @@
             <a th:href="@{/recipe/detail/{title}(title = ${recipe.title})}" class="text-decoration-none text-black"><h2 class="card-title text-decoration-none"
                                                                                                                     th:text="${recipe.title}"></h2></a>
             <span th:each="category : ${recipe.categories}"
-              th:text="${category.categoryName}" th:style="'background-color:' + ${category.categoryColor} + '; padding: 3px 6px; border-radius: 4px; color: white; margin-right:6px;'"></span>
+                  th:text="${category.categoryName}"
+                  th:style="'background-color:' + ${category.categoryColor}"
+                  class="category-badge"></span>
             <p class="card-text py-2" th:href="@{/recipe/detail/{title}(title = ${recipe.title})}"
                 th:text="${recipe.description}"></p>
             <div>

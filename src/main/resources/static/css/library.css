@@ -156,3 +156,13 @@
 .category-button.active {
     background-color: #27187E !important;
 }
+
+.category-badge {
+    display: inline-block;
+    white-space: nowrap;
+    margin-right: 6px;
+    padding: 3px 6px;
+    border-radius: 4px;
+    color: white;
+}
+

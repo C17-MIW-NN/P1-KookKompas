@@ -32,9 +32,9 @@ public class HomepageController {
         if (authentication != null && authentication.isAuthenticated() &&
                 !"anonymousUser".equals(authentication.getName())) {
             KookKompasUser currentUser = kookKompasUserService.getLoggedInUser();
-            model.addAttribute("recipes", homepageService.findRandomRecipesForUser(currentUser, 4));
+            model.addAttribute("recipes", homepageService.findRandomRecipesForUser(currentUser, 3));
         } else {
-            model.addAttribute("recipes", homepageService.findRandomPublicRecipes(4));
+            model.addAttribute("recipes", homepageService.findRandomPublicRecipes(3));
         }
         return "homepage";
     }
