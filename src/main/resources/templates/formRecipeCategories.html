@@ -23,8 +23,18 @@
                 <label for="categoryColor" class="form-label">Kleur: </label>
                 <input type="text" th:field="*{categoryColor}" class="form-control" id="categoryColor" placeholder="#FFAA00">
             </div>
-                <button type="submit" class="btn btn-success">Sla categorie op</button>
+
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" th:field="*{publicVisible}"/>
+                    Publiek zichtbaar?
+                </label>
+            </div>
+
+            <button type="submit" class="btn btn-success">Sla categorie op</button>
         </form>
+
+
     </div>
 
     <div th:replace="~{fragments/general :: footer}"></div>

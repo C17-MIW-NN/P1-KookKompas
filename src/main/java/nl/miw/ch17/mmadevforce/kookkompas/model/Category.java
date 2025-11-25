@@ -22,10 +22,13 @@ public class Category {
     @NotBlank(message = "Categorienaam mag niet leeg zijn.")
     @Size(min = MIN_CHARACTERS_CATEGORY, max = MAX_CHARACTERS_CATEGORY,
             message = "Categorienaam moet tussen de 2 en 20 tekens lang zijn.")
-    @Column(unique = true)
     private String categoryName;
 
     private String categoryColor;
+    private boolean publicVisible;
+
+    @ManyToOne
+    private KookKompasUser owner;
 
     @ManyToMany(mappedBy = "categories")
     private Set<Recipe> recipes = new HashSet<>();
@@ -69,6 +72,19 @@ public class Category {
         return recipes;
     }
 
+    public boolean isPublicVisible() {
+        return publicVisible;
+    }
 
+    public void setPublicVisible(boolean publicVisible) {
+        this.publicVisible = publicVisible;
+    }
 
+    public KookKompasUser getOwner() {
+        return owner;
+    }
+
+    public void setOwner(KookKompasUser owner) {
+        this.owner = owner;
+    }
 }

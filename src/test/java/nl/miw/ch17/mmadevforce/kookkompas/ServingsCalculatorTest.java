@@ -17,7 +17,7 @@ public class ServingsCalculatorTest {
     void testIncreaseServings() {
         //Arrange
         RecipeService recipeService = new RecipeService(null, null
-                , null);
+                , null,null);
         int currentServings = 3;
 
         //Act
@@ -32,7 +32,7 @@ public class ServingsCalculatorTest {
     void testDecreaseServingsMoreThanOne() {
         //Arrange
         RecipeService recipeService = new RecipeService(null, null
-                , null);
+                , null, null);
         int currentServings = 3;
 
         //Act
@@ -47,7 +47,7 @@ public class ServingsCalculatorTest {
     void testDecreaseServingsThrowsExceptionAtMinimum() {
         //Arrange
         RecipeService recipeService = new RecipeService(null, null
-                , null);
+                , null, null);
         int currentServings = 1;
 
         //Act
