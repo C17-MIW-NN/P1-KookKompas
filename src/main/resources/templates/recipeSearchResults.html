@@ -11,6 +11,7 @@
 <div class="container">
     <h1>Zoekresultaten voor "<span th:text="${query}"></span>"</h1>
 
+    <p th:text=" 'Aantal recepten gevonden: ' + ${#lists.size(recipes)}"></p>
     <ul>
         <li th:each="recipe : ${recipes}">
             <a th:href="@{/recipe/detail/{title}(title=${recipe.title})}"

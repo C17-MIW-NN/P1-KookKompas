@@ -23,7 +23,6 @@ import java.util.*;
 
 @Controller
 public class RecipeController {
-
     private final RecipeService recipeService;
     private final CategoryService categoryService;
     private final ImageService imageService;
@@ -49,7 +48,6 @@ public class RecipeController {
         }
 
         datamodel.addAttribute("categories", categoryService.findAllCategories());
-
         return "recipeOverview";
     }
 
@@ -80,7 +78,6 @@ public class RecipeController {
         if (optionalRecipe.isPresent()) {
             return showRecipeForm(datamodel, optionalRecipe.get());
         }
-
         return "redirect:/recipe/all";
     }
 
@@ -134,8 +131,10 @@ public class RecipeController {
                                        @RequestParam(required = false) Integer servings,
                                        Model model) {
 
-        Recipe recipe = recipeService.getRecipeByTitle(title);
-
+        //Recipe recipe = recipeService.getRecipeByTitle(title);
+        Optional<Recipe> optionalRecipe = recipeService.getRecipeWithIngredientsAndCategoriesByTitle(title);
+        optionalRecipe.ifPresent(r -> r.getSteps().size());
+        Recipe recipe = optionalRecipe.orElseThrow(() -> new RuntimeException("Recipe not found: " + title));
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         KookKompasUser currentUser = null;
         if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getName())) {
@@ -161,18 +160,23 @@ public class RecipeController {
 
     @GetMapping("/recipe/search")
     public String searchRecipes(@RequestParam("query") String query, Model datamodel) {
-        Set<Recipe> results = recipeService.searchRecipes(query);
-        datamodel.addAttribute("recipes", results);
+
+        Set<Recipe> recipeResults = recipeService.searchRecipes(query);
+        List<Recipe> categoryResults = categoryService.findRecipesByCategoryName(query);
+        Set<Recipe> combined = new HashSet<>(recipeResults);
+
+        if (categoryResults != null) {
+            combined.addAll(categoryResults);
+        }
+
+        datamodel.addAttribute("recipes", combined);
         datamodel.addAttribute("query", query);
         return "recipeSearchResults";
     }
 
     @PostMapping("/recipe/detail/{title}/increase")
-    public String increase(@PathVariable("title") String title,
-                           @RequestParam int currentServings) {
-
+    public String increase(@PathVariable("title") String title, @RequestParam int currentServings) {
         int updatedServings = recipeService.increaseServings(currentServings);
-
         return "redirect:/recipe/detail/" + title + "?servings=" + updatedServings;
     }
 
