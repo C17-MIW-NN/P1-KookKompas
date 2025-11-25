@@ -15,7 +15,7 @@
     <form th:action="@{/recipe/save}" method="post" th:object="${formRecipe}" enctype="multipart/form-data">
 
         <div class="form-group">
-            <label for="recipeName">Naam</label>
+            <label for="recipeName">Titel</label>
             <input type="hidden" th:field="*{recipeId}">
             <input class="form-control" type="text" id="recipeName" th:field="*{title}">
         </div>
@@ -25,14 +25,20 @@
             <textarea class="form-control" id="recipeDescription" th:field="*{description}"></textarea>
         </div>
 
-        <div class="form-group">
-            <label for="coverImageUrl">Afbeelding URL</label>
-            <input type="text" class="form-control" id="coverImageUrl" th:field="*{coverImageUrl}">
-        </div>
+        <h4>Kies één van de volgende twee opties:</h4>
+        <div class="indent">
+            <div class="form-group">
+                <label for="coverImageUrl">Afbeelding URL</label>
+                <input type="text" class="form-control" id="coverImageUrl" th:field="*{coverImageUrl}">
+                <small class="form-text text-muted">Gebruik dit veld als je een externe afbeelding wilt linken.</small>
+            </div>
 
-        <div class="form-group">
-            <label for="coverImageFile">Afbeelding uploaden</label>
-            <input type="file" class="form-control" id="coverImageFile" name="coverImageFile" accept="image/*">
+            <div class="form-group">
+                <label for="coverImageFile">Afbeelding uploaden</label>
+                <input type="file" class="form-control" id="coverImageFile" name="coverImageFile" accept="image/*">
+                <small class="form-text text-muted">
+                    Gebruik dit veld als je een afbeelding vanaf je computer wilt uploaden.</small>
+            </div>
         </div>
 
         <div class="form-group">
@@ -97,10 +103,10 @@
         </div>
 
         <div class="form-group">
-            <label>
-                <input type="checkbox" th:field="*{publicVisible}"/>
-                Publiek zichtbaar?
-            </label>
+            <div class="form-check form-switch d-flex align-items-center gap-2">
+                <input class="form-check-input" type="checkbox" th:field="*{publicVisible}" id="publicVisibleSwitch">
+                <label class="form-check-label mb-0" for="publicVisibleSwitch">Publiek zichtbaar?</label>
+            </div>
         </div>
 
         <div class="form-submit-container">
@@ -154,32 +160,41 @@
         reindex();
     })();
 </script>
+
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         const selectedContainer = document.getElementById("selectedIngredients");
         const unselectedContainer = document.getElementById("unselectedIngredients");
 
+        function sortContainer(container) {
+            const items = Array.from(container.children);
+            items.sort((a, b) => {
+                const nameA = a.querySelector("span").textContent.toLowerCase();
+                const nameB = b.querySelector("span").textContent.toLowerCase();
+                return nameA.localeCompare(nameB);
+            });
+            items.forEach(item => container.appendChild(item));
+        }
+
         document.querySelectorAll(".ingredient-checkbox").forEach(cb => {
             const item = cb.closest(".ingredient-item");
             const extraFields = item.querySelector(".ingredient-extra");
 
-            if (cb.checked) {
-                selectedContainer.appendChild(item);
-                extraFields.style.display = "inline";
-            } else {
-                unselectedContainer.appendChild(item);
-                extraFields.style.display = "none";
-            }
-
-            cb.addEventListener("change", e => {
-                if (e.target.checked) {
+            function moveItem(checked) {
+                if (checked) {
                     selectedContainer.appendChild(item);
                     extraFields.style.display = "inline";
+                    sortContainer(selectedContainer);
                 } else {
                     unselectedContainer.appendChild(item);
                     extraFields.style.display = "none";
+                    sortContainer(unselectedContainer);
                 }
-            });
+            }
+
+            moveItem(cb.checked);
+
+            cb.addEventListener("change", e => moveItem(e.target.checked));
         });
     });
 </script>
