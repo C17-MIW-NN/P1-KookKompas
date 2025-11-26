@@ -10,10 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * @author Manon Kuipers
- * Doel methode
+ * @author MMA Dev Force
+ * Handles requests for an image
  */
-
 @Controller
 @RequestMapping("/image")
 public class ImageController {

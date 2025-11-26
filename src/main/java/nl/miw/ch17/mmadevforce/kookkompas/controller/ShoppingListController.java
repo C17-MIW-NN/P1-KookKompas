@@ -44,5 +44,4 @@ public class ShoppingListController {
     private static String getShoppinglistAll() {
         return "redirect:/shoppinglist/all";
     }
-
 }
