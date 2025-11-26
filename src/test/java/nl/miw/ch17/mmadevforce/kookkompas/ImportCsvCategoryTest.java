@@ -18,8 +18,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * @author Arjen Zijlstra
- *
+ * @author MMA Dev Force
+ * Test method for category import function
  */
 
 @ExtendWith(MockitoExtension.class)
@@ -44,13 +44,13 @@ public class ImportCsvCategoryTest {
         when(categoryService.findByCategoryName("ontbijt"))
                 .thenReturn(Optional.of(existingCategory));
 
-        //Act
-        //Category result = testInitialService.importCSVFileCategoryList(line);
+        // Act
+        Category result = testInitialService.importCSVFileCategoryList(line);
 
-        //Assert
-        //assertEquals("ontbijt", result.getCategoryName());
-        //assertEquals("#FFFFFF", result.getCategoryColor());
-        //verify(categoryService).saveCategory(existingCategory);
+        // Assert
+        assertEquals("ontbijt", result.getCategoryName());
+        assertEquals("#FFFFFF", result.getCategoryColor());
+        verify(categoryService).savePublicCategory(existingCategory);
     }
 
     @Test @DisplayName("Testimport for categories via CSV when category does not exist")
@@ -62,13 +62,13 @@ public class ImportCsvCategoryTest {
         when(categoryService.findByCategoryName("Lunch"))
                 .thenReturn(Optional.empty());
 
-        //Act
-        // Category result = testInitialService.importCSVFileCategoryList(line);
+        // Act
+        Category result = testInitialService.importCSVFileCategoryList(line);
 
-        //Assert
-//        assertEquals("Lunch", result.getCategoryName());
-//        assertNotNull(result.getCategoryColor());
-//        assertFalse(result.getCategoryColor().isBlank());
-        //verify(categoryService).saveCategory(result);
+        // Assert
+        assertEquals("Lunch", result.getCategoryName());
+        assertNotNull(result.getCategoryColor());
+        assertFalse(result.getCategoryColor().isBlank());
+        verify(categoryService).savePublicCategory(result);
     }
 }

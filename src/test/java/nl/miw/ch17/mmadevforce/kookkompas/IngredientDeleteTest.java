@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * @author Arjen Zijlstra
+ * @author = MMA Dev Force
  *
  */
 

@@ -19,7 +19,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * @author Manon Kuipers
+ * @author MMA Dev Force
  * Test methods from the ShoppingList class
  */
 @SpringBootTest
