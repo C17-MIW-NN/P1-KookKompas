@@ -22,6 +22,7 @@ import java.util.*;
  */
 
 @Controller
+@RequestMapping("/recipe")
 public class RecipeController {
     private final RecipeService recipeService;
     private final CategoryService categoryService;
@@ -35,24 +36,16 @@ public class RecipeController {
         this.kookKompasUserService = kookKompasUserService;
     }
 
-    @GetMapping({"/recipe/all"})
+    @GetMapping({"/all"})
     private String showRecipeOverview(Model datamodel) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        KookKompasUser user = getCurrentUser();
 
-        KookKompasUser currentUser = null;
-
-        if (authentication != null && authentication.isAuthenticated() &&
-                !"anonymousUser".equals(authentication.getName())) {
-            currentUser = kookKompasUserService.getLoggedInUser();
-            datamodel.addAttribute("recipes", recipeService.getAllRecipesForUser(currentUser));
-        } else {
-            datamodel.addAttribute("recipes", recipeService.getAllPublicRecipes());
-        }
+        addRecipesToModel(datamodel, user);
 
         datamodel.addAttribute("categories", categoryService.findAllCategories());
 
-        if (currentUser != null) {
-            datamodel.addAttribute("categories", categoryService.getAllCategoriesForUser(currentUser));
+        if (user != null) {
+            datamodel.addAttribute("categories", categoryService.getAllCategoriesForUser(user));
         } else {
             datamodel.addAttribute("categories", categoryService.getAllPublicCategories());
         }
@@ -60,7 +53,7 @@ public class RecipeController {
         return "recipeOverview";
     }
 
-    @GetMapping("/recipe/add")
+    @GetMapping("/add")
     public String showRecipeForm(Model datamodel) {
 
         Recipe recipe = new Recipe();
@@ -80,7 +73,7 @@ public class RecipeController {
         return showRecipeForm(datamodel, recipe);
     }
 
-    @GetMapping("/recipe/edit/{title}")
+    @GetMapping("/edit/{title}")
     public String showEditRecipeForm(@PathVariable("title") String title, Model datamodel) {
         Optional<Recipe> optionalRecipe = recipeService.getRecipeWithIngredientsAndCategoriesByTitle(title);
 
@@ -97,24 +90,12 @@ public class RecipeController {
         return "recipeForm";
     }
 
-    @PostMapping("/recipe/save")
+    @PostMapping("/save")
     public String saveOrUpdateRecipe(@ModelAttribute("formRecipe") Recipe recipeFromForm,
                                      BindingResult result,
                                      @RequestParam MultipartFile coverImageFile) {
 
-        try {
-            if (coverImageFile != null && !coverImageFile.isEmpty()) {
-                imageService.saveImage(coverImageFile);
-                recipeFromForm.setCoverImageUrl("/image/" + coverImageFile.getOriginalFilename());
-            } else if (recipeFromForm.getCoverImageUrl() != null && !recipeFromForm.getCoverImageUrl().isBlank()) {
-
-            } else {
-                recipeFromForm.setCoverImageUrl("/images/default.png");
-            }
-        } catch (IOException imageError) {
-            result.rejectValue("coverImageFile", "imageNotSaved", "Afbeelding niet opgeslagen");
-        }
-
+        processCoverImage(recipeFromForm, coverImageFile, result);
         if (result.hasErrors()) {
             return "recipeForm";
         }
@@ -128,46 +109,33 @@ public class RecipeController {
         return "redirect:/recipe/all";
     }
 
-
-    @GetMapping("/recipe/delete/{recipeId}")
+    @GetMapping("/delete/{recipeId}")
     public String deleteRecipe(@PathVariable("recipeId") Long recipeId) {
         recipeService.deleteRecipe(recipeId);
         return "redirect:/recipe/all";
     }
 
-    @GetMapping("/recipe/detail/{title}")
+    @GetMapping("/detail/{title}")
     public String showRecipeDetailpage(@PathVariable("title") String title,
                                        @RequestParam(required = false) Integer servings,
                                        Model model) {
 
         Recipe recipe = recipeService.getRecipeByTitle(title);
-//        Optional<Recipe> optionalRecipe = recipeService.getRecipeWithIngredientsAndCategoriesByTitle(title);
-//        optionalRecipe.ifPresent(r -> r.getSteps().size());
-//        Recipe recipe = optionalRecipe.orElseThrow(() -> new RuntimeException("Recipe not found: " + title));
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        KookKompasUser currentUser = null;
-        if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getName())) {
-            currentUser = kookKompasUserService.getLoggedInUser();
+        KookKompasUser user = getCurrentUser();
+
+        if (!userCanAccess(recipe, user)) {
+            return "redirect:/recipe/all";
         }
 
-        if (!recipe.isPublicVisible()) {
-            if (currentUser == null || !recipe.getOwner().equals(currentUser)) {
-                return "redirect:/recipe/all";
-            }
-        }
+        int currentServings = determineServings(recipe, servings);
+        List<RecipeIngredient> scaled = recipeService.getScaledIngredients(recipe, currentServings);
 
-        int currentServings = (servings != null) ? servings : recipe.getServings();
-
-        List<RecipeIngredient> scaledIngredients = recipeService.getScaledIngredients(recipe, currentServings);
-
-        model.addAttribute("recipe", recipe);
-        model.addAttribute("currentServings", currentServings);
-        model.addAttribute("scaledIngredients", scaledIngredients);
+        addRecipeDetailModelAttributes(model, recipe, currentServings, scaled);
 
         return "recipeDetails";
     }
 
-    @GetMapping("/recipe/search")
+    @GetMapping("/search")
     public String searchRecipes(@RequestParam("query") String query, Model datamodel) {
 
         Set<Recipe> recipeResults = recipeService.searchRecipes(query);
@@ -183,17 +151,17 @@ public class RecipeController {
         return "recipeSearchResults";
     }
 
-    @PostMapping("/recipe/detail/{title}/increase")
-    public String increase(@PathVariable("title") String title, @RequestParam int currentServings) {
+    @PostMapping("/detail/{title}/increase")
+    public String increase(@PathVariable("title") String title,
+                           @RequestParam int currentServings) {
         int updatedServings = recipeService.increaseServings(currentServings);
         return "redirect:/recipe/detail/" + title + "?servings=" + updatedServings;
     }
 
-    @PostMapping("/recipe/detail/{title}/decrease")
+    @PostMapping("/detail/{title}/decrease")
     public String decrease(@PathVariable("title") String title,
                            @RequestParam int currentServings, Model model) {
 
-        //int updatedServings = recipeService.decreaseServings(currentServings);
         int updatedServings;
 
         try {
@@ -203,5 +171,60 @@ public class RecipeController {
             return showRecipeDetailpage(title, currentServings, model);
         }
         return "redirect:/recipe/detail/" + title + "?servings=" + updatedServings;
+    }
+
+    private void addRecipesToModel(Model model, KookKompasUser user) {
+        if (user != null) {
+            model.addAttribute("recipes", recipeService.getAllRecipesForUser(user));
+        } else {
+            model.addAttribute("recipes", recipeService.getAllPublicRecipes());
+        }
+    }
+
+    private void processCoverImage(Recipe recipe, MultipartFile file, BindingResult result) {
+        try {
+            if (file != null && !file.isEmpty()) {
+                imageService.saveImage(file);
+                recipe.setCoverImageUrl("/image/" + file.getOriginalFilename());
+            } else if (recipe.getCoverImageUrl() != null && !recipe.getCoverImageUrl().isBlank()) {
+
+            } else {
+                recipe.setCoverImageUrl("/images/default.png");
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private KookKompasUser getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated() || "anonymousUser".equals(authentication.getName())) {
+            return null;
+        }
+
+        return kookKompasUserService.getLoggedInUser();
+    }
+
+    private boolean userCanAccess(Recipe recipe, KookKompasUser user) {
+        if (recipe.isPublicVisible()) return true;
+        if (user == null) return false;
+        return recipe.getOwner().equals(user);
+    }
+
+    private int determineServings(Recipe recipe, Integer requestedServings) {
+        return (requestedServings != null) ? requestedServings : recipe.getServings();
+    }
+
+    private void addRecipeDetailModelAttributes(
+            Model model,
+            Recipe recipe,
+            int servings,
+            List<RecipeIngredient> scaledIngredients) {
+
+        model.addAttribute("recipe", recipe);
+        model.addAttribute("currentServings", servings);
+        model.addAttribute("scaledIngredients", scaledIngredients);
     }
 }

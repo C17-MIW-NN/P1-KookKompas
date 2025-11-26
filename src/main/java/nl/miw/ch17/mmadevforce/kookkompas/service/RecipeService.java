@@ -5,10 +5,7 @@ import nl.miw.ch17.mmadevforce.kookkompas.repositories.CategoryRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.IngredientRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.KookKompasUserRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.RecipeRepository;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ModelAttribute;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -29,14 +26,6 @@ public class RecipeService {
         this.ingredientRepository = ingredientRepository;
     }
 
-    public List<Recipe> getAllRecipes() {
-        return recipeRepository.findAll();
-    }
-
-    public List<Recipe> searchByTitle(String query) {
-        return recipeRepository.findByTitleContainingIgnoreCase(query);
-    }
-
     public List<Recipe> getAllRecipesForUser(KookKompasUser user) {
         Long userId = user.getUserId();
         return recipeRepository.findAll().stream()
@@ -45,7 +34,6 @@ public class RecipeService {
                                 recipe.getOwner().getUserId().equals(userId)))
                 .collect(Collectors.toList());
     }
-
 
     public List<Recipe> getAllPublicRecipes() {
         return recipeRepository.findAll().stream()
@@ -66,114 +54,27 @@ public class RecipeService {
     }
 
     public Optional<Recipe> getRecipeWithIngredientsAndCategoriesByTitle(String title) {
-        Optional<Recipe> optionalRecipe = recipeRepository.findByTitle(title);
+        Optional<Recipe> optionalRecipe = loadRecipeWithRelations(title);
+        if (optionalRecipe.isEmpty()) return optionalRecipe;
 
-        if (optionalRecipe.isPresent()) {
-            Recipe recipe = optionalRecipe.get();
-            recipe.getSteps().size();
-            recipe.getRecipeingredients().size();
+        Recipe recipe = optionalRecipe.get();
+        List<RecipeIngredient> formIngredients = buildRecipeIngredientFormList(recipe);
+        applyFormIngredientsToRecipe(recipe, formIngredients);
 
-
-            List<Ingredient> allIngredients = ingredientRepository.findAll();
-            List<RecipeIngredient> recipeIngredients = new ArrayList<>();
-
-            for (Ingredient ing : allIngredients) {
-                // kijken of dit ingrediënt al in het recept zit
-                RecipeIngredient existing = recipe.getRecipeingredients().stream()
-                        .filter(ri -> ri.getIngredient() != null &&
-                                ri.getIngredient().getIngredientId().equals(ing.getIngredientId()))
-                        .findFirst()
-                        .orElse(null);
-
-                if (existing != null) {
-                    existing.setIngredient(ing);
-                    recipeIngredients.add(existing); // bestaande hoeveelheid + eenheid
-                } else {
-                    RecipeIngredient ri = new RecipeIngredient();
-                    ri.setIngredient(null); // niet gekozen
-                    ri.setIngredientAmount(null);
-                    ri.setUnit(null);
-                    recipeIngredients.add(ri);
-                }
-            }
-            recipe.setRecipeingredients(recipeIngredients);
-        }
         return optionalRecipe;
     }
 
     public Recipe saveOrUpdateRecipe(Recipe recipeFromForm) {
+        Recipe recipeToBeSaved = loadOrCreateRecipe(recipeFromForm);
+        assignOwner(recipeToBeSaved, recipeFromForm);
 
-        Recipe recipeToBeSaved;
-        if (recipeFromForm.getRecipeId() != null) {
-            recipeToBeSaved = recipeRepository.findById(recipeFromForm.getRecipeId())
-                    .orElseThrow(() -> new RuntimeException("Recipe not found: " + recipeFromForm.getRecipeId()));
-            recipeToBeSaved.setTitle(recipeFromForm.getTitle());
-            recipeToBeSaved.setDescription(recipeFromForm.getDescription());
-            recipeToBeSaved.setCoverImageUrl(recipeFromForm.getCoverImageUrl());
-            recipeToBeSaved.setPublicVisible(recipeFromForm.isPublicVisible());
-        } else {
-            recipeToBeSaved = new Recipe();
-            recipeToBeSaved.setTitle(recipeFromForm.getTitle());
-            recipeToBeSaved.setDescription(recipeFromForm.getDescription());
-            recipeToBeSaved.setCoverImageUrl(recipeFromForm.getCoverImageUrl());
-            recipeToBeSaved.setPublicVisible(recipeFromForm.isPublicVisible());
-        }
+        syncCategories(recipeToBeSaved, recipeFromForm.getCategories());
+        syncIngredients(recipeToBeSaved, recipeFromForm.getRecipeingredients());
+        syncSteps(recipeToBeSaved, recipeFromForm.getSteps());
 
-        if (recipeFromForm.getOwner() != null) {
-            recipeToBeSaved.setOwner(recipeFromForm.getOwner());
-        } else {
-            throw new RuntimeException("Owner must be set before saving a recipe");
-        }
-
-        Set<Category> categories = new HashSet<>();
-        if (recipeFromForm.getCategories() != null) {
-            for (Category c : recipeFromForm.getCategories()) {
-                Category category = categoryRepository.findById(c.getCategoryId())
-                        .orElseThrow(() -> new RuntimeException("Category not found: " + c.getCategoryId()));
-                categories.add(category);
-            }
-        }
-
-        recipeToBeSaved.setCategories(categories);
-
-        if (recipeToBeSaved.getRecipeingredients() == null) {
-            recipeToBeSaved.setRecipeingredients(new ArrayList<>());
-        } else {
-            recipeToBeSaved.getRecipeingredients().clear();
-        }
-
-        recipeToBeSaved.getRecipeingredients().clear();
-        if (recipeFromForm.getRecipeingredients() != null) {
-            for (RecipeIngredient recipeIngredient : recipeFromForm.getRecipeingredients()) {
-                if (recipeIngredient.getIngredient() == null) continue;
-                recipeIngredient.setRecipe(recipeToBeSaved);
-                recipeToBeSaved.getRecipeingredients().add(recipeIngredient);
-            }
-        }
-
-        // Huidige stappen wissen
-        recipeToBeSaved.getSteps().clear();
-
-        // Nieuwe stappen uit formulier toevoegen
-        if (recipeFromForm.getSteps() != null) {
-            int stepNum = 1;
-            for (RecipeStep s : recipeFromForm.getSteps()) {
-                // lege stappen overslaan
-                if (s.getStepDescription() == null || s.getStepDescription().isBlank()) continue;
-
-                RecipeStep newStep = new RecipeStep();
-                newStep.setStepDescription(s.getStepDescription());
-                newStep.setStepNumber(stepNum++);
-                newStep.setCookingTimePerStep(s.getCookingTimePerStep());
-                newStep.setRecipe(recipeToBeSaved);
-
-                recipeToBeSaved.getSteps().add(newStep);
-            }
-        }
-
-        // Recipe opslaan
         return recipeRepository.save(recipeToBeSaved);
     }
+
 
     public Recipe getRecipeByTitle(String title) {
         return recipeRepository.findByTitle(title)
@@ -209,6 +110,43 @@ public class RecipeService {
         return results;
     }
 
+    private Optional<Recipe> loadRecipeWithRelations(String title) {
+        Optional<Recipe> optionalRecipe = recipeRepository.findByTitle(title);
+
+        if (optionalRecipe.isEmpty()) return Optional.empty();
+
+        Recipe recipe = optionalRecipe.get();
+        recipe.getRecipeingredients().size();
+        recipe.getSteps().size();
+
+        return optionalRecipe;
+    }
+
+    private List<RecipeIngredient> buildRecipeIngredientFormList(Recipe recipe) {
+        List<Ingredient> allIngredients = ingredientRepository.findAll();
+        List<RecipeIngredient> result = new ArrayList<>();
+
+        for (Ingredient ing : allIngredients) {
+            RecipeIngredient existing = recipe.getRecipeingredients().stream()
+                    .filter(ri -> ri.getIngredient() != null &&
+                            ri.getIngredient().getIngredientId().equals(ing.getIngredientId()))
+                    .findFirst()
+                    .orElse(null);
+
+            if (existing != null) {
+                result.add(existing);
+            } else {
+                RecipeIngredient empty = new RecipeIngredient();
+                empty.setIngredient(null);
+                empty.setIngredientAmount(null);
+                empty.setUnit(null);
+                result.add(empty);
+            }
+        }
+
+        return result;
+    }
+
     public int increaseServings(int currentServings) {
         return currentServings + 1;
     }
@@ -223,4 +161,76 @@ public class RecipeService {
         return currentServings - 1;
     }
 
+    private void applyFormIngredientsToRecipe(Recipe recipe, List<RecipeIngredient> formList) {
+        recipe.setRecipeingredients(formList);
+    }
+
+    private Recipe loadOrCreateRecipe(Recipe form) {
+        if (form.getRecipeId() != null) {
+            Recipe existing = recipeRepository.findById(form.getRecipeId())
+                    .orElseThrow(() -> new RuntimeException("Recipe not found: " + form.getRecipeId()));
+
+            existing.setTitle(form.getTitle());
+            existing.setDescription(form.getDescription());
+            existing.setCoverImageUrl(form.getCoverImageUrl());
+            existing.setPublicVisible(form.isPublicVisible());
+            return existing;
+        }
+
+        Recipe newRecipe = new Recipe();
+        newRecipe.setTitle(form.getTitle());
+        newRecipe.setDescription(form.getDescription());
+        newRecipe.setCoverImageUrl(form.getCoverImageUrl());
+        newRecipe.setPublicVisible(form.isPublicVisible());
+        return newRecipe;
+    }
+
+    private void assignOwner(Recipe target, Recipe form) {
+        if (form.getOwner() != null) {
+            target.setOwner(form.getOwner());
+        } else if (target.getOwner() == null) {
+            throw new RuntimeException("Owner must be set before saving a recipe");
+        }
+    }
+
+    private void syncCategories(Recipe target, Set<Category> categoriesFromForm) {
+        Set<Category> categories = new HashSet<>();
+        if (categoriesFromForm != null) {
+            for (Category c : categoriesFromForm) {
+                Category cat = categoryRepository.findById(c.getCategoryId())
+                        .orElseThrow(() -> new RuntimeException("Category not found: " + c.getCategoryId()));
+                categories.add(cat);
+            }
+        }
+        target.setCategories(categories);
+    }
+
+    private void syncIngredients(Recipe target, List<RecipeIngredient> ingredientsFromForm) {
+        target.getRecipeingredients().clear();
+        if (ingredientsFromForm == null) return;
+
+        for (RecipeIngredient ri : ingredientsFromForm) {
+            if (ri.getIngredient() == null) continue;
+            ri.setRecipe(target);
+            target.getRecipeingredients().add(ri);
+        }
+    }
+
+    private void syncSteps(Recipe target, List<RecipeStep> stepsFromForm) {
+        target.getSteps().clear();
+        if (stepsFromForm == null) return;
+
+        int stepNum = 1;
+        for (RecipeStep s : stepsFromForm) {
+            if (s.getStepDescription() == null || s.getStepDescription().isBlank()) continue;
+
+            RecipeStep newStep = new RecipeStep();
+            newStep.setStepDescription(s.getStepDescription());
+            newStep.setStepNumber(stepNum++);
+            newStep.setCookingTimePerStep(s.getCookingTimePerStep());
+            newStep.setRecipe(target);
+
+            target.getSteps().add(newStep);
+        }
+    }
 }
