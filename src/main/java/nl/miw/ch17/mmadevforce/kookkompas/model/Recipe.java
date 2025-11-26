@@ -1,6 +1,8 @@
 package nl.miw.ch17.mmadevforce.kookkompas.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -15,12 +17,17 @@ import java.util.Set;
 @Entity
 public class Recipe {
     private final int DEFAULT_MINIMUM_SERVINGS = 4;
+    private static final int MIN_CHARACTERS_RECIPE = 2;
+    private static final int MAX_CHARACTERS_RECIPE = 50;
 
     @Id @GeneratedValue
     private Long recipeId;
 
-    //bij title nog validation toevoegen
+    @NotBlank(message = "Naam mag niet leeg zijn")
+    @Size(min = MIN_CHARACTERS_RECIPE, max = MAX_CHARACTERS_RECIPE,
+            message = "Categorienaam moet tussen de 2 en 50 tekens lang zijn.")
     private String title;
+
     private String description;
     private int servings = DEFAULT_MINIMUM_SERVINGS;
     private String coverImageUrl;
