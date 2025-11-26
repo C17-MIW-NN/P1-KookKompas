@@ -23,9 +23,10 @@ public class Recipe {
     @Id @GeneratedValue
     private Long recipeId;
 
-    @NotBlank(message = "Naam mag niet leeg zijn")
+    @Column(unique = true)
+    @NotBlank(message = "Titel mag niet leeg zijn")
     @Size(min = MIN_CHARACTERS_RECIPE, max = MAX_CHARACTERS_RECIPE,
-            message = "Categorienaam moet tussen de 2 en 50 tekens lang zijn.")
+            message = "Titel van het recept moet tussen de 2 en 50 tekens lang zijn.")
     private String title;
 
     private String description;
