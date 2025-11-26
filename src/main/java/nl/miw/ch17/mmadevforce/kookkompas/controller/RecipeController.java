@@ -59,12 +59,11 @@ public class RecipeController {
 
         Recipe recipe = new Recipe();
 
-        // Voor elk ingrediënt een lege RecipeIngredient toevoegen
         List<Ingredient> allIngredients = recipeService.getAllIngredients();
         List<RecipeIngredient> recipeIngredients = new ArrayList<>();
         for (Ingredient ing : allIngredients) {
             RecipeIngredient ri = new RecipeIngredient();
-            ri.setIngredient(null); // nog niet gekozen
+            ri.setIngredient(null);
             ri.setIngredientAmount(null);
             ri.setUnit(null);
             recipeIngredients.add(ri);

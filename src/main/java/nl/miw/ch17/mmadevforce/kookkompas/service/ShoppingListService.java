@@ -23,7 +23,6 @@ public class ShoppingListService {
     private final ShoppingListRepository shoppingListRepository;
     private final KookKompasUserRepository kookKompasUserRepository;
 
-   // @Autowired
     private KookKompasUserService kookKompasUserService;
 
     public ShoppingListService(RecipeRepository recipeRepository, ShoppingListItemRepository shoppingListItemRepository, ShoppingListRepository shoppingListRepository, KookKompasUserRepository kookKompasUserRepository, KookKompasUserService kookKompasUserService) {
@@ -62,7 +61,6 @@ public class ShoppingListService {
                 ShoppingListItem newItem = new ShoppingListItem();
                 newItem.setShoppingList(shoppingList);
                 newItem.setIngredient(ingredient);
-                // newItem.setIngredientName(ingredient.getIngredientName());
                 newItem.setAmount(amount);
                 newItem.setUnit(unit);
 
@@ -83,5 +81,4 @@ public class ShoppingListService {
         KookKompasUser kookKompasUser = kookKompasUserService.getLoggedInUser();
         return kookKompasUser.getShoppingList().getShoppingItems();
     }
-
 }
