@@ -107,14 +107,6 @@ public class RecipeController {
             recipeFromForm.setOwner(currentUser);
         }
 
-        try {
-            recipeService.saveOrUpdateRecipe(recipeFromForm);
-        } catch (DataIntegrityViolationException e) {
-            bindingResult.rejectValue("title", "duplicate",
-                    "Recept naam moet uniek zijn");
-            return "recipeForm";
-        }
-
         return "redirect:/recipe/all";
     }
 
