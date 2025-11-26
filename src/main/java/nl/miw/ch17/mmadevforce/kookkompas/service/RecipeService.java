@@ -20,7 +20,9 @@ public class RecipeService {
     private final CategoryRepository categoryRepository;
     private final IngredientRepository ingredientRepository;
 
-    public RecipeService(RecipeRepository recipeRepository, CategoryRepository categoryRepository, IngredientRepository ingredientRepository, KookKompasUserRepository kookKompasUserRepository) {
+    public RecipeService(RecipeRepository recipeRepository
+            , CategoryRepository categoryRepository
+            , IngredientRepository ingredientRepository) {
         this.recipeRepository = recipeRepository;
         this.categoryRepository = categoryRepository;
         this.ingredientRepository = ingredientRepository;

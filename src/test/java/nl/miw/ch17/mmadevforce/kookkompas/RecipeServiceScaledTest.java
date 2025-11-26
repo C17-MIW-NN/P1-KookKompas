@@ -37,7 +37,6 @@ public class RecipeServiceScaledTest {
         RecipeService recipeService = new RecipeService(
                 null,
                 null,
-                null,
                 null);
 
         // Act
@@ -69,7 +68,6 @@ public class RecipeServiceScaledTest {
         RecipeService recipeService = new RecipeService(
                 null,
                 null,
-                null,
                 null);
 
         // Act
@@ -99,7 +97,6 @@ public class RecipeServiceScaledTest {
         recipe.setRecipeingredients(List.of(recipeIngredient));
 
         RecipeService recipeService = new RecipeService(
-                null,
                 null,
                 null
         ,null);
