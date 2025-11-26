@@ -2,8 +2,10 @@ package nl.miw.ch17.mmadevforce.kookkompas.service;
 
 import nl.miw.ch17.mmadevforce.kookkompas.model.Ingredient;
 import nl.miw.ch17.mmadevforce.kookkompas.model.Recipe;
+import nl.miw.ch17.mmadevforce.kookkompas.model.ShoppingListItem;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.IngredientRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.RecipeRepository;
+import nl.miw.ch17.mmadevforce.kookkompas.repositories.ShoppingListItemRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +20,12 @@ import java.util.Optional;
 public class IngredientService {
     private final IngredientRepository ingredientRepository;
     private final RecipeRepository recipeRepository;
+    private final ShoppingListItemRepository shoppingListItemRepository;
 
-    public IngredientService(IngredientRepository ingredientRepository, RecipeRepository recipeRepository) {
+    public IngredientService(IngredientRepository ingredientRepository, RecipeRepository recipeRepository, ShoppingListItemRepository shoppingListItemRepository) {
         this.ingredientRepository = ingredientRepository;
         this.recipeRepository = recipeRepository;
+        this.shoppingListItemRepository = shoppingListItemRepository;
     }
 
     public List<Ingredient> findAllIngredients() {
@@ -47,6 +51,9 @@ public class IngredientService {
         Ingredient ingredient = ingredientRepository.findById(ingredientId).orElse(null);
 
         if (ingredient != null) {
+            List<ShoppingListItem> items = shoppingListItemRepository.findByIngredient(ingredient);
+            shoppingListItemRepository.deleteAll(items);
+
             List<Recipe> recipesWithIngredient = recipeRepository.findByRecipeingredientsIngredient(ingredient);
             recipesWithIngredient.forEach(recipe -> {
                 recipe.getRecipeingredients()
