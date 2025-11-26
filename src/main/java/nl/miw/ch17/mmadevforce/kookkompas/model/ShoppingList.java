@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author MMA Dev Force
@@ -23,26 +22,7 @@ public class ShoppingList {
     @OneToOne
     private KookKompasUser kookKompasUser;
 
-    public ShoppingList(Long shoppingListId) {
-        this.shoppingListId = shoppingListId;
-    }
-
     public ShoppingList(){
-    }
-
-    //METHOD
-
-    public void addItem(ShoppingListItem item) {
-        item.setShoppingList(this);
-        this.shoppingItems.add(item);
-    }
-
-    public List<ShoppingListItem> getShoppingItems() {
-        return shoppingItems;
-    }
-
-    public void setShoppingItems(List<ShoppingListItem> shoppingItems) {
-        this.shoppingItems = shoppingItems;
     }
 
     public Long getShoppingListId() {
@@ -51,6 +31,10 @@ public class ShoppingList {
 
     public void setShoppingListId(Long shoppingListId) {
         this.shoppingListId = shoppingListId;
+    }
+
+    public List<ShoppingListItem> getShoppingItems() {
+        return shoppingItems;
     }
 
     public void setKookKompasUser(KookKompasUser kookKompasUser) {

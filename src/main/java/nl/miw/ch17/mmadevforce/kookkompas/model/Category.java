@@ -68,9 +68,6 @@ public class Category {
     public void setCategoryColor(String categoryColor) {
         this.categoryColor = categoryColor;
     }
-    public Set<Recipe> getRecipes() {
-        return recipes;
-    }
 
     public boolean isPublicVisible() {
         return publicVisible;
@@ -86,5 +83,9 @@ public class Category {
 
     public void setOwner(KookKompasUser owner) {
         this.owner = owner;
+    }
+
+    public Set<Recipe> getRecipes() {
+        return recipes;
     }
 }

@@ -7,7 +7,6 @@ import org.springframework.http.MediaType;
  * @author MMA Dev Force
  * Information regarding images
  */
-
 @Entity
 public class Image {
 
@@ -37,10 +36,6 @@ public class Image {
 
     public void setImageId(Long imageId) {
         this.imageId = imageId;
-    }
-
-    public String getFileName() {
-        return fileName;
     }
 
     public void setFileName(String fileName) {
