@@ -5,6 +5,7 @@ import nl.miw.ch17.mmadevforce.kookkompas.model.ShoppingList;
 import nl.miw.ch17.mmadevforce.kookkompas.model.ShoppingListItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -15,4 +16,6 @@ public interface ShoppingListItemRepository extends JpaRepository<ShoppingListIt
             ShoppingList shoppingList,
             Ingredient ingredient,
             String unit);
+
+    List<ShoppingListItem> findByIngredient(Ingredient ingredient);
 }
