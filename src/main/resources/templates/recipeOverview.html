@@ -86,8 +86,8 @@
                 cards.forEach(card => {
                     const categories = card.dataset.categories.split(",");
 
-                    const match = categories.some(cat =>
-                        activeCategories.includes(cat)
+                    const match = activeCategories.every(cat =>
+                        categories.includes(cat)
                     );
 
                     card.style.display = match ? "block" : "none";
