@@ -1,11 +1,7 @@
 package nl.miw.ch17.mmadevforce.kookkompas.repositories;
 
 import nl.miw.ch17.mmadevforce.kookkompas.model.Category;
-//<<<<<<< HEAD
-//=======
 import nl.miw.ch17.mmadevforce.kookkompas.model.KookKompasUser;
-import org.springframework.data.domain.Limit;
-//>>>>>>> e4b0e1d32849e59efe38e32304b4a1eaebe09974
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
