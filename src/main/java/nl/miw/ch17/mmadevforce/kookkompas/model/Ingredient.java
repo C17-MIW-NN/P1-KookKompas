@@ -13,12 +13,17 @@ import java.util.List;
 
 @Entity
 public class Ingredient {
+    private static final int MIN_CHARACTERS_INGREDIENT = 2;
+    private static final int MAX_CHARACTERS_INGREDIENT = 50;
 
     @Id @GeneratedValue
     private Long ingredientId;
 
     @Column(unique = true)
-    @Size(min = 2, max = 50, message = "Naam moet tussen 2 en 50 tekens zijn")
+    @NotBlank(message = "Naam mag niet leeg zijn")
+    @Size(min = MIN_CHARACTERS_INGREDIENT,
+            max = MAX_CHARACTERS_INGREDIENT,
+            message = "Naam moet tussen 2 en 50 tekens zijn")
     private String ingredientName;
 
     @OneToMany(mappedBy = "ingredient")

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * @author MMA Dev Force
- * Doel van de class:
+ * Handles requests regarding users
  */
 @Controller
 @RequestMapping("/user")
@@ -33,14 +33,17 @@ public class KookKompasUserController {
     }
 
     @PostMapping("/save")
-    private String saveOrUpdateUser(@ModelAttribute("formUser") NewKookKompasUserDTO userDtoToBeSaved, BindingResult result,
+    private String saveOrUpdateUser(@ModelAttribute("formUser") NewKookKompasUserDTO userDtoToBeSaved,
+                                    BindingResult result,
                                     Model datamodel) {
         if (kookKompasUserService.usernameInUse(userDtoToBeSaved.getUsername())) {
-            result.rejectValue("username", "duplicate", "Deze gebruikersnaam is niet beschikbaar");
+            result.rejectValue("username", "duplicate",
+                    "Deze gebruikersnaam is niet beschikbaar");
         }
 
         if (!userDtoToBeSaved.getPassword().equals(userDtoToBeSaved.getConfirmPassword())) {
-            result.rejectValue("password", "no.match", "De wachtwoorden komen niet overeen");
+            result.rejectValue("password", "no.match",
+                    "De wachtwoorden komen niet overeen");
         }
 
         if (result.hasErrors()) {

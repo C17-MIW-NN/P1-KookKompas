@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  * @author MMA Dev Force
- * Homepage
+ * Handles requests regarding homepage
  */
 @Controller
 public class HomepageController {
+    private static final int AMOUNT_RANDOM_RECIPES = 3;
+
     private final HomepageService homepageService;
     private final KookKompasUserService kookKompasUserService;
 
@@ -32,9 +34,10 @@ public class HomepageController {
         if (authentication != null && authentication.isAuthenticated() &&
                 !"anonymousUser".equals(authentication.getName())) {
             KookKompasUser currentUser = kookKompasUserService.getLoggedInUser();
-            model.addAttribute("recipes", homepageService.findRandomRecipesForUser(currentUser, 3));
+            model.addAttribute("recipes", homepageService.findRandomRecipesForUser(currentUser,
+                    AMOUNT_RANDOM_RECIPES));
         } else {
-            model.addAttribute("recipes", homepageService.findRandomPublicRecipes(3));
+            model.addAttribute("recipes", homepageService.findRandomPublicRecipes(AMOUNT_RANDOM_RECIPES));
         }
         return "homepage";
     }

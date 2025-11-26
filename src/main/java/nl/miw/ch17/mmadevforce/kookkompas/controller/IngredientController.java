@@ -42,7 +42,7 @@ public class IngredientController {
             BindingResult bindingResult,
             Model model ) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("formIngredient", ingredientToBeSaved );
+            model.addAttribute("formIngredient", ingredientToBeSaved);
             return "ingredientForm";
         }
 
