@@ -40,6 +40,14 @@ public class RecipeIngredient {
         this.ingredientAmount = ingredientAmount;
     }
 
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
     public Ingredient getIngredient() {
         return ingredient;
     }
@@ -55,14 +63,4 @@ public class RecipeIngredient {
     public void setRecipe(Recipe recipe) {
         this.recipe = recipe;
     }
-
-    public String getUnit() {
-        return unit;
-    }
-
-    public void setUnit(String unit) {
-        this.unit = unit;
-    }
-
-
 }

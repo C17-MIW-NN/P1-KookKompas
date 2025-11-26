@@ -13,7 +13,6 @@ import java.util.Set;
  * @author MMA Dev Force
  * Information regarding recipes of KookKompas
  */
-
 @Entity
 public class Recipe {
     private final int DEFAULT_MINIMUM_SERVINGS = 4;
@@ -65,12 +64,12 @@ public class Recipe {
                 .sum();
     }
 
-    public Set<Category> getCategories() {
-        return categories;
+    public Long getRecipeId() {
+        return recipeId;
     }
 
-    public void setCategories(Set<Category> categories) {
-        this.categories = categories;
+    public void setRecipeId(Long recipeId) {
+        this.recipeId = recipeId;
     }
 
     public String getTitle() {
@@ -81,12 +80,12 @@ public class Recipe {
         this.title = Title;
     }
 
-    public Long getRecipeId() {
-        return recipeId;
+    public String getDescription() {
+        return description;
     }
 
-    public void setRecipeId(Long recipeId) {
-        this.recipeId = recipeId;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public int getServings() {
@@ -97,32 +96,20 @@ public class Recipe {
         this.servings = servings;
     }
 
-    public List<RecipeIngredient> getRecipeingredients() {
-        return recipeingredients;
-    }
-
-    public void setRecipeingredients(List<RecipeIngredient> recipeingredients) {
-        this.recipeingredients = recipeingredients;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public List<RecipeStep> getSteps() {
-        return steps;
-    }
-
     public String getCoverImageUrl() {
         return coverImageUrl;
     }
 
     public void setCoverImageUrl(String coverImageUrl) {
         this.coverImageUrl = coverImageUrl;
+    }
+
+    public boolean isPublicVisible() {
+        return publicVisible;
+    }
+
+    public void setPublicVisible(boolean publicVisible) {
+        this.publicVisible = publicVisible;
     }
 
     public KookKompasUser getOwner() {
@@ -133,11 +120,23 @@ public class Recipe {
         this.owner = owner;
     }
 
-    public boolean isPublicVisible() {
-        return publicVisible;
+    public List<RecipeIngredient> getRecipeingredients() {
+        return recipeingredients;
     }
 
-    public void setPublicVisible(boolean publicVisible) {
-        this.publicVisible = publicVisible;
+    public void setRecipeingredients(List<RecipeIngredient> recipeingredients) {
+        this.recipeingredients = recipeingredients;
+    }
+
+    public List<RecipeStep> getSteps() {
+        return steps;
+    }
+
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
     }
 }

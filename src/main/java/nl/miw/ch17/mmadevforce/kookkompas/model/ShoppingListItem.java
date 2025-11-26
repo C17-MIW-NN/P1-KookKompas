@@ -21,12 +21,15 @@ public class ShoppingListItem {
     @ManyToOne
     private Ingredient ingredient;
 
-    public ShoppingListItem(double amount, String unit) {
-        this.amount = amount;
-        this.unit = unit;
+    public ShoppingListItem() {
     }
 
-    public ShoppingListItem() {
+    public long getShoppingListItemId() {
+        return shoppingListItemId;
+    }
+
+    public void setShoppingListItemId(long shoppingListId) {
+        this.shoppingListItemId = shoppingListId;
     }
 
     public double getAmount() {
@@ -43,14 +46,6 @@ public class ShoppingListItem {
 
     public void setUnit(String unit) {
         this.unit = unit;
-    }
-
-    public long getShoppingListItemId() {
-        return shoppingListItemId;
-    }
-
-    public void setShoppingListItemId(long shoppingListId) {
-        this.shoppingListItemId = shoppingListId;
     }
 
     public void setShoppingList(ShoppingList shoppingList) {

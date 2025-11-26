@@ -4,13 +4,10 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-import java.util.List;
-
 /**
  * @author MMA Dev Force
  * The ingredients that will be used in the recipes.
  */
-
 @Entity
 public class Ingredient {
     private static final int MIN_CHARACTERS_INGREDIENT = 2;
@@ -25,9 +22,6 @@ public class Ingredient {
             max = MAX_CHARACTERS_INGREDIENT,
             message = "Naam moet tussen 2 en 50 tekens zijn")
     private String ingredientName;
-
-    @OneToMany(mappedBy = "ingredient")
-    private List<RecipeIngredient> recipeIngredients;
 
     public Ingredient(String name) {
         this.ingredientName = name;
