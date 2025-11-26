@@ -5,8 +5,10 @@ import nl.miw.ch17.mmadevforce.kookkompas.repositories.CategoryRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.IngredientRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.KookKompasUserRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.RecipeRepository;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -18,7 +20,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class RecipeService {
-
     private final RecipeRepository recipeRepository;
     private final CategoryRepository categoryRepository;
     private final IngredientRepository ingredientRepository;
@@ -31,6 +32,10 @@ public class RecipeService {
 
     public List<Recipe> getAllRecipes() {
         return recipeRepository.findAll();
+    }
+
+    public List<Recipe> searchByTitle(String query) {
+        return recipeRepository.findByTitleContainingIgnoreCase(query);
     }
 
     public List<Recipe> getAllRecipesForUser(KookKompasUser user) {
@@ -66,8 +71,9 @@ public class RecipeService {
 
         if (optionalRecipe.isPresent()) {
             Recipe recipe = optionalRecipe.get();
-            recipe.getRecipeingredients().size();
             recipe.getSteps().size();
+            recipe.getRecipeingredients().size();
+
 
             List<Ingredient> allIngredients = ingredientRepository.findAll();
             List<RecipeIngredient> recipeIngredients = new ArrayList<>();
@@ -179,15 +185,16 @@ public class RecipeService {
 
     // scaledIngredients berekenen
     public List<RecipeIngredient> getScaledIngredients(Recipe recipe, int servings) {
+        double originalServings = recipe.getServings();
         return recipe.getRecipeingredients().stream()
                 .map(ri -> {
-                    Double amount = ri.getIngredientAmount();
-                    double scaled = (amount != null ? amount : 0.0) * servings / recipe.getServings();
-
                     RecipeIngredient copy = new RecipeIngredient();
                     copy.setIngredient(ri.getIngredient());
                     copy.setUnit(ri.getUnit());
-                    copy.setIngredientAmount(scaled);
+                    Double baseAmount = ri.getIngredientAmount() != null ? ri.getIngredientAmount() : 0.0;
+                    //double scaled = (amount != null ? amount : 0.0) * servings / recipe.getServings();
+
+                    copy.setIngredientAmount(baseAmount * servings / originalServings);
                     return copy;
                 })
                 .toList();

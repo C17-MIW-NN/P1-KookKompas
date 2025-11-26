@@ -42,15 +42,13 @@ public class CategoryService {
     }
 
     public List<Recipe> findRecipesByCategoryName(String query) {
-//        List<Category> matchingCategories = categoryRepository.findByCategoryNameContainingIgnoreCase(query);
-//        Set<Recipe> recipes = new HashSet<>();
-//
-//        for (Category category : matchingCategories) {
-//            recipes.addAll(recipeRepository.findByCategories_CategoryNameIgnoreCase(category.getCategoryName()));
-//        }
-//
-//        return new ArrayList<>(recipes);
-        return recipeRepository.findByCategories_CategoryNameIgnoreCase(query);
+        List<Category> categories = categoryRepository.findByCategoryNameContainingIgnoreCase(query);
+        Set<Recipe> result = new HashSet<>();
+
+        for (Category category : categories) {
+            result.addAll(category.getRecipes());
+        }
+        return new ArrayList<>(result);
     }
 
     public List<Category> findAllCategories() {
@@ -97,22 +95,4 @@ public class CategoryService {
                 .filter(Category::isPublicVisible)
                 .collect(Collectors.toList());
     }
-
-//    public KookKompasUser getLoggedInUser() {
-//        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-//        return kookKompasUserRepository.findByUsername(username)
-//                .orElseThrow(() -> new RuntimeException("User not found: " + username));
-//    }
-
-//    public List<Recipe> findRecipesByCategoryQuery(String query) {
-//        List<Category> matchingCategories = categoryRepository.findByCategoryNameContainingIgnoreCase(query);
-//        Set<Recipe> recipes = new HashSet<>();
-//
-//        for (Category category : matchingCategories) {
-//            recipes.addAll(category.getRecipes());
-//        }
-//
-//        return new ArrayList<>(recipes);
-//    }
-
 }

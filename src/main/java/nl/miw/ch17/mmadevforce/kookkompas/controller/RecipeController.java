@@ -24,7 +24,6 @@ import java.util.*;
 @Controller
 @RequestMapping("/recipe")
 public class RecipeController {
-
     private final RecipeService recipeService;
     private final CategoryService categoryService;
     private final ImageService imageService;
@@ -39,20 +38,12 @@ public class RecipeController {
 
     @GetMapping({"/all"})
     private String showRecipeOverview(Model datamodel) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        KookKompasUser user = getCurrentUser();
 
-        KookKompasUser currentUser = null;
+        datamodel.addAttribute("categories", categoryService.findAllCategories());
 
-        if (authentication != null && authentication.isAuthenticated() &&
-                !"anonymousUser".equals(authentication.getName())) {
-            currentUser = kookKompasUserService.getLoggedInUser();
-            datamodel.addAttribute("recipes", recipeService.getAllRecipesForUser(currentUser));
-        } else {
-            datamodel.addAttribute("recipes", recipeService.getAllPublicRecipes());
-        }
-
-        if (currentUser != null) {
-            datamodel.addAttribute("categories", categoryService.getAllCategoriesForUser(currentUser));
+        if (user != null) {
+            datamodel.addAttribute("categories", categoryService.getAllCategoriesForUser(user));
         } else {
             datamodel.addAttribute("categories", categoryService.getAllPublicCategories());
         }
@@ -87,7 +78,6 @@ public class RecipeController {
         if (optionalRecipe.isPresent()) {
             return showRecipeForm(datamodel, optionalRecipe.get());
         }
-
         return "redirect:/recipe/all";
     }
 
@@ -103,19 +93,7 @@ public class RecipeController {
                                      BindingResult result,
                                      @RequestParam MultipartFile coverImageFile) {
 
-        try {
-            if (coverImageFile != null && !coverImageFile.isEmpty()) {
-                imageService.saveImage(coverImageFile);
-                recipeFromForm.setCoverImageUrl("/image/" + coverImageFile.getOriginalFilename());
-            } else if (recipeFromForm.getCoverImageUrl() != null && !recipeFromForm.getCoverImageUrl().isBlank()) {
-
-            } else {
-                recipeFromForm.setCoverImageUrl("/images/default.png");
-            }
-        } catch (IOException imageError) {
-            result.rejectValue("coverImageFile", "imageNotSaved", "Afbeelding niet opgeslagen");
-        }
-
+        processCoverImage(recipeFromForm, coverImageFile, result);
         if (result.hasErrors()) {
             return "recipeForm";
         }
@@ -167,8 +145,16 @@ public class RecipeController {
 
     @GetMapping("/search")
     public String searchRecipes(@RequestParam("query") String query, Model datamodel) {
-        Set<Recipe> results = recipeService.searchRecipes(query);
-        datamodel.addAttribute("recipes", results);
+
+        Set<Recipe> recipeResults = recipeService.searchRecipes(query);
+        List<Recipe> categoryResults = categoryService.findRecipesByCategoryName(query);
+        Set<Recipe> combined = new HashSet<>(recipeResults);
+
+        if (categoryResults != null) {
+            combined.addAll(categoryResults);
+        }
+
+        datamodel.addAttribute("recipes", combined);
         datamodel.addAttribute("query", query);
         return "recipeSearchResults";
     }
@@ -176,9 +162,7 @@ public class RecipeController {
     @PostMapping("/detail/{title}/increase")
     public String increase(@PathVariable("title") String title,
                            @RequestParam int currentServings) {
-
         int updatedServings = recipeService.increaseServings(currentServings);
-
         return "redirect:/recipe/detail/" + title + "?servings=" + updatedServings;
     }
 
@@ -195,5 +179,31 @@ public class RecipeController {
             return showRecipeDetailpage(title, currentServings, model);
         }
         return "redirect:/recipe/detail/" + title + "?servings=" + updatedServings;
+    }
+
+    private void processCoverImage(Recipe recipe, MultipartFile file, BindingResult result) {
+        try {
+            if (file != null && !file.isEmpty()) {
+                imageService.saveImage(file);
+                recipe.setCoverImageUrl("/image/" + file.getOriginalFilename());
+            } else if (recipe.getCoverImageUrl() != null && !recipe.getCoverImageUrl().isBlank()) {
+
+            } else {
+                recipe.setCoverImageUrl("/images/default.png");
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private KookKompasUser getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated() || "anonymousUser".equals(authentication.getName())) {
+            return null;
+        }
+
+        return kookKompasUserService.getLoggedInUser();
     }
 }
