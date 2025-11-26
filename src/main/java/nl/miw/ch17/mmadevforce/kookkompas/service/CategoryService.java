@@ -6,7 +6,6 @@ import nl.miw.ch17.mmadevforce.kookkompas.model.Recipe;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.CategoryRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.KookKompasUserRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.RecipeRepository;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -22,7 +21,9 @@ public class CategoryService {
     private final RecipeRepository recipeRepository;
     private final KookKompasUserRepository kookKompasUserRepository;
 
-    public CategoryService(CategoryRepository categoryRepository, RecipeRepository recipeRepository, KookKompasUserRepository kookKompasUserRepository) {
+    public CategoryService(CategoryRepository categoryRepository,
+                           RecipeRepository recipeRepository,
+                           KookKompasUserRepository kookKompasUserRepository) {
         this.categoryRepository = categoryRepository;
         this.recipeRepository = recipeRepository;
         this.kookKompasUserRepository = kookKompasUserRepository;
@@ -83,8 +84,6 @@ public class CategoryService {
         return categoryRepository.findByCategoryName(categoryName);
     }
 
-//<<<<<<< HEAD
-//=======
     public List<Category> getAllCategoriesForUser(KookKompasUser user) {
         return categoryRepository.findAll().stream()
                 .filter(category -> category.isPublicVisible() ||
@@ -98,22 +97,4 @@ public class CategoryService {
                 .collect(Collectors.toList());
     }
 
-//    public KookKompasUser getLoggedInUser() {
-//        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-//        return kookKompasUserRepository.findByUsername(username)
-//                .orElseThrow(() -> new RuntimeException("User not found: " + username));
-//    }
-
-//    public List<Recipe> findRecipesByCategoryQuery(String query) {
-//        List<Category> matchingCategories = categoryRepository.findByCategoryNameContainingIgnoreCase(query);
-//        Set<Recipe> recipes = new HashSet<>();
-//
-//        for (Category category : matchingCategories) {
-//            recipes.addAll(category.getRecipes());
-//        }
-//
-//        return new ArrayList<>(recipes);
-//    }
-
-//>>>>>>> e4b0e1d32849e59efe38e32304b4a1eaebe09974
 }
