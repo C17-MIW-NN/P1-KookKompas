@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import org.springframework.http.MediaType;
 
 /**
- * @author Manon Kuipers
+ * @author MMA Dev Force
  * Information regarding images
  */
 

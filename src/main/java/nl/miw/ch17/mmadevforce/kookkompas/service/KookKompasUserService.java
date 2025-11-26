@@ -16,6 +16,7 @@ import java.util.List;
 
 /**
  * @author MMA Dev Force
+ * Managing functionalities from the KookKompasUsers
  */
 @Service
 public class KookKompasUserService implements UserDetailsService {

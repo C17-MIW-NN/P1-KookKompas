@@ -7,7 +7,6 @@ import java.util.Optional;
 
 /**
  * @author MMA Dev Force
- * Doel methode
  */
 public interface ImageRepository extends JpaRepository <Image, Long> {
     boolean existsByFileName(String fileName);

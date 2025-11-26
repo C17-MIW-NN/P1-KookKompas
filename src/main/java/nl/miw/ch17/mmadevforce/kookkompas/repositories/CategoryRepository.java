@@ -11,6 +11,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author MMA Dev Force
+ */
 public interface CategoryRepository extends JpaRepository <Category, Long> {
     List<Category> findByCategoryNameAndOwner(String categoryName, KookKompasUser owner);
     List<Category> findByCategoryNameAndPublicVisibleTrue(String categoryName);

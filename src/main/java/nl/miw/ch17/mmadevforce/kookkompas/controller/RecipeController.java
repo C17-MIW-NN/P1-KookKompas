@@ -18,7 +18,7 @@ import java.util.*;
 
 /**
  * @author MMA Dev Force
- * Handles requests regarding recipe categories
+ * Handles requests regarding recipes
  */
 
 @Controller

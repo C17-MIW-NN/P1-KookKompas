@@ -206,7 +206,12 @@ public class RecipeService {
     }
 
     private void syncIngredients(Recipe target, List<RecipeIngredient> ingredientsFromForm) {
-        target.getRecipeingredients().clear();
+        if (target.getRecipeingredients() == null) {
+            target.setRecipeingredients(new ArrayList<>());
+        } else {
+            target.getRecipeingredients().clear();
+        }
+
         if (ingredientsFromForm == null) return;
 
         for (RecipeIngredient ri : ingredientsFromForm) {

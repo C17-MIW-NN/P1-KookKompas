@@ -9,7 +9,6 @@ import java.util.Optional;
 
 /**
  * @author MMA Dev Force
- * Doel methode
  */
 public interface ShoppingListItemRepository extends JpaRepository<ShoppingListItem, Long> {
     Optional<ShoppingListItem> findByShoppingListAndIngredientAndUnit(

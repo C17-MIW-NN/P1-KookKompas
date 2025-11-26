@@ -7,7 +7,6 @@ import java.util.Optional;
 
 /**
  * @author MMA Dev Force
- * Doel methode
  */
 public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
     Optional<Ingredient> findByIngredientName(String name);

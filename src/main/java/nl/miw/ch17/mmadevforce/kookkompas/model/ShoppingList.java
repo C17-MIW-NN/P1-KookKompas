@@ -8,7 +8,7 @@ import java.util.Set;
 
 /**
  * @author MMA Dev Force
- * Doel van de class:
+ * Information regarding the Shoppinglist of KookKompasUsers
  */
 @Entity
 public class ShoppingList {

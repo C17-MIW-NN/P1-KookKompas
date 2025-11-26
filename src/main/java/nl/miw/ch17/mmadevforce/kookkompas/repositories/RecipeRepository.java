@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * @author Arjen Zijlstra
- *
+ * @author MMA Dev Force
  */
+
 public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     Optional<Recipe> findByTitle(String title);
 

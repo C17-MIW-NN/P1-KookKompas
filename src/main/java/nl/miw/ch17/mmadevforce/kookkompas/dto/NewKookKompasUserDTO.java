@@ -2,7 +2,6 @@ package nl.miw.ch17.mmadevforce.kookkompas.dto;
 
 /**
  * @author MMA Dev Force
- * Doel van de class:
  */
 public class NewKookKompasUserDTO {
     private String username;
