@@ -197,12 +197,6 @@ public class InitializeService {
         step.setCookingTimePerStep(cookingTimePerStep);
 
         recipeStepRepository.save(step);
-
-        Recipe updatedRecipe = recipeRepository.findByTitle(recipeTitle)
-                .orElseThrow(() -> new IllegalArgumentException("Recipe not found after saving step: " + recipeTitle));
-
-        updatedRecipe.recalculateCookingTime();
-        recipeRepository.save(updatedRecipe);
     }
 
     private void loadCSVFileIngredientList() {

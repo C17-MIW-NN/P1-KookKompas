@@ -6,7 +6,6 @@ import nl.miw.ch17.mmadevforce.kookkompas.model.Recipe;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.CategoryRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.KookKompasUserRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.RecipeRepository;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -22,7 +21,9 @@ public class CategoryService {
     private final RecipeRepository recipeRepository;
     private final KookKompasUserRepository kookKompasUserRepository;
 
-    public CategoryService(CategoryRepository categoryRepository, RecipeRepository recipeRepository, KookKompasUserRepository kookKompasUserRepository) {
+    public CategoryService(CategoryRepository categoryRepository,
+                           RecipeRepository recipeRepository,
+                           KookKompasUserRepository kookKompasUserRepository) {
         this.categoryRepository = categoryRepository;
         this.recipeRepository = recipeRepository;
         this.kookKompasUserRepository = kookKompasUserRepository;
@@ -95,4 +96,5 @@ public class CategoryService {
                 .filter(Category::isPublicVisible)
                 .collect(Collectors.toList());
     }
+
 }

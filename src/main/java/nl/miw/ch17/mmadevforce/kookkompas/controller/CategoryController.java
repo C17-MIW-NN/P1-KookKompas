@@ -20,29 +20,31 @@ import java.util.Optional;
  * Handles requests regarding recipe categories
  */
 @Controller
+@RequestMapping("/category")
 public class CategoryController {
     private final CategoryService categoryService;
     private final KookKompasUserService kookKompasUserService;
 
-    public CategoryController(CategoryService categoryService, KookKompasUserService kookKompasUserService) {
+    public CategoryController(CategoryService categoryService,
+                              KookKompasUserService kookKompasUserService) {
         this.categoryService = categoryService;
         this.kookKompasUserService = kookKompasUserService;
     }
 
-    @GetMapping("/category/all")
+    @GetMapping("/all")
     public String showRecipeCategories(Model viewmodel,
                                        @AuthenticationPrincipal KookKompasUser user) {
         viewmodel.addAttribute("categories", categoryService.getAllCategoriesForUser(user));
         return "categoryOverview";
     }
 
-    @GetMapping("/category/add")
+    @GetMapping("/add")
     public String showCategoryForm(Model viewmodel) {
         viewmodel.addAttribute("formCategory", new Category());
         return "formRecipeCategories";
     }
 
-    @PostMapping("/category/save")
+    @PostMapping("/save")
     public String saveOrUpdateCategory(
             @Valid @ModelAttribute("formCategory") Category categoryToBeSaved,
             BindingResult bindingResult,
@@ -55,7 +57,8 @@ public class CategoryController {
         }
 
         if (categoryService.isCategoryNameTaken(categoryToBeSaved.getCategoryName(), user)) {
-            bindingResult.rejectValue("categoryName", "error.categoryName", "Deze categorie bestaat al.");
+            bindingResult.rejectValue("categoryName", "error.categoryName",
+                    "Deze categorie bestaat al.");
             model.addAttribute("formCategory", categoryToBeSaved);
             return "formRecipeCategories";
         }
@@ -64,13 +67,13 @@ public class CategoryController {
         return getRedirectCategoryAll();
     }
 
-    @GetMapping("/category/delete/{categoryId}")
+    @GetMapping("/delete/{categoryId}")
     public String deleteCategory(@PathVariable("categoryId") Long categoryId) {
         categoryService.deleteCategory(categoryId);
         return getRedirectCategoryAll();
     }
 
-    @GetMapping("/category/edit/{categoryName}")
+    @GetMapping("/edit/{categoryName}")
     public String showEditCategoryForm(@PathVariable("categoryName") String categoryName, Model viewmodel) {
         Optional<Category> optionalCategory = categoryService.findByCategoryName(categoryName);
 
@@ -81,7 +84,7 @@ public class CategoryController {
         return getRedirectCategoryAll();
     }
 
-    @GetMapping("/category/search")
+    @GetMapping("/search")
     public String searchRecipesByCategory(@RequestParam("query") String query, Model datamodel) {
         List<Recipe> recipes = categoryService.findRecipesByCategoryName(query);
         datamodel.addAttribute("recipes", recipes);

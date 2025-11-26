@@ -25,7 +25,6 @@ public class Recipe {
     private int servings = DEFAULT_MINIMUM_SERVINGS;
     private String coverImageUrl;
     private boolean publicVisible;
-    private int cookingTime;
 
     @ManyToOne
     private KookKompasUser owner;
@@ -39,23 +38,6 @@ public class Recipe {
     @ManyToMany
     private Set<Category> categories;
 
-    public void addStep(RecipeStep step) {
-        step.setRecipe(this);
-        this.steps.add(step);
-    }
-
-    public void recalculateCookingTime() {
-        this.cookingTime = steps.stream().mapToInt(RecipeStep::getCookingTimePerStep).sum();
-    }
-
-    public Set<Category> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(Set<Category> categories) {
-        this.categories = categories;
-    }
-
     public Recipe(String title, int servings, List<RecipeIngredient> recipeingredients) {
         this.title = title;
         this.servings = servings;
@@ -67,6 +49,20 @@ public class Recipe {
     }
 
     public Recipe() {
+    }
+
+    public int getCookingTime() {
+        return steps.stream()
+                .mapToInt(RecipeStep::getCookingTimePerStep)
+                .sum();
+    }
+
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
     }
 
     public String getTitle() {
@@ -135,13 +131,5 @@ public class Recipe {
 
     public void setPublicVisible(boolean publicVisible) {
         this.publicVisible = publicVisible;
-    }
-
-    public int getCookingTime() {
-        return cookingTime;
-    }
-
-    public void setCookingTime(int cookingTime) {
-        this.cookingTime = cookingTime;
     }
 }

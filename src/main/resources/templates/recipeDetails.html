@@ -12,7 +12,7 @@
     <div class="text-center mb-5">
         <h1 th:text="${recipe.title}" class="display-4 fw-bold"></h1>
         <p th:text="${recipe.description}" class="lead"></p>
-        <p><strong>Totale kooktijd:</strong> <span th:text="${recipe.cookingTime}"></span> min</p>
+        <p><strong>Totale kooktijd:</strong> <span th:text="${recipe.getCookingTime()}"></span> min</p>
     </div>
     <div class="text-center mb-5">
         <img th:src="${recipe.coverImageUrl}" class="img-fluid rounded shadow-lg" style="max-height: 400px; object-fit: cover;" alt="Cover Image">

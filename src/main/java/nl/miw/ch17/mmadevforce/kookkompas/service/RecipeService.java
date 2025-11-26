@@ -172,8 +172,6 @@ public class RecipeService {
             }
         }
 
-        recipeToBeSaved.recalculateCookingTime();
-
         // Recipe opslaan
         return recipeRepository.save(recipeToBeSaved);
     }
