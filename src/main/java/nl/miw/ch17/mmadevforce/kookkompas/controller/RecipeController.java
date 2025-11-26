@@ -22,6 +22,7 @@ import java.util.*;
  */
 
 @Controller
+@RequestMapping("/recipe")
 public class RecipeController {
 
     private final RecipeService recipeService;
@@ -36,7 +37,7 @@ public class RecipeController {
         this.kookKompasUserService = kookKompasUserService;
     }
 
-    @GetMapping({"/recipe/all"})
+    @GetMapping({"/all"})
     private String showRecipeOverview(Model datamodel) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -59,7 +60,7 @@ public class RecipeController {
         return "recipeOverview";
     }
 
-    @GetMapping("/recipe/add")
+    @GetMapping("/add")
     public String showRecipeForm(Model datamodel) {
 
         Recipe recipe = new Recipe();
@@ -79,7 +80,7 @@ public class RecipeController {
         return showRecipeForm(datamodel, recipe);
     }
 
-    @GetMapping("/recipe/edit/{title}")
+    @GetMapping("/edit/{title}")
     public String showEditRecipeForm(@PathVariable("title") String title, Model datamodel) {
         Optional<Recipe> optionalRecipe = recipeService.getRecipeWithIngredientsAndCategoriesByTitle(title);
 
@@ -97,7 +98,7 @@ public class RecipeController {
         return "recipeForm";
     }
 
-    @PostMapping("/recipe/save")
+    @PostMapping("/save")
     public String saveOrUpdateRecipe(@ModelAttribute("formRecipe") Recipe recipeFromForm,
                                      BindingResult result,
                                      @RequestParam MultipartFile coverImageFile) {
@@ -128,14 +129,13 @@ public class RecipeController {
         return "redirect:/recipe/all";
     }
 
-
-    @GetMapping("/recipe/delete/{recipeId}")
+    @GetMapping("/delete/{recipeId}")
     public String deleteRecipe(@PathVariable("recipeId") Long recipeId) {
         recipeService.deleteRecipe(recipeId);
         return "redirect:/recipe/all";
     }
 
-    @GetMapping("/recipe/detail/{title}")
+    @GetMapping("/detail/{title}")
     public String showRecipeDetailpage(@PathVariable("title") String title,
                                        @RequestParam(required = false) Integer servings,
                                        Model model) {
@@ -165,7 +165,7 @@ public class RecipeController {
         return "recipeDetails";
     }
 
-    @GetMapping("/recipe/search")
+    @GetMapping("/search")
     public String searchRecipes(@RequestParam("query") String query, Model datamodel) {
         Set<Recipe> results = recipeService.searchRecipes(query);
         datamodel.addAttribute("recipes", results);
@@ -173,7 +173,7 @@ public class RecipeController {
         return "recipeSearchResults";
     }
 
-    @PostMapping("/recipe/detail/{title}/increase")
+    @PostMapping("/detail/{title}/increase")
     public String increase(@PathVariable("title") String title,
                            @RequestParam int currentServings) {
 
@@ -182,11 +182,10 @@ public class RecipeController {
         return "redirect:/recipe/detail/" + title + "?servings=" + updatedServings;
     }
 
-    @PostMapping("/recipe/detail/{title}/decrease")
+    @PostMapping("/detail/{title}/decrease")
     public String decrease(@PathVariable("title") String title,
                            @RequestParam int currentServings, Model model) {
 
-        //int updatedServings = recipeService.decreaseServings(currentServings);
         int updatedServings;
 
         try {
