@@ -19,14 +19,10 @@ import java.util.stream.Collectors;
 public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final RecipeRepository recipeRepository;
-    private final KookKompasUserRepository kookKompasUserRepository;
 
-    public CategoryService(CategoryRepository categoryRepository,
-                           RecipeRepository recipeRepository,
-                           KookKompasUserRepository kookKompasUserRepository) {
+    public CategoryService(CategoryRepository categoryRepository, RecipeRepository recipeRepository, KookKompasUserRepository kookKompasUserRepository) {
         this.categoryRepository = categoryRepository;
         this.recipeRepository = recipeRepository;
-        this.kookKompasUserRepository = kookKompasUserRepository;
     }
 
     public boolean isCategoryNameTaken(String name, KookKompasUser user) {

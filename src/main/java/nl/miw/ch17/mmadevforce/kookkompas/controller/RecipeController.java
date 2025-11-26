@@ -40,6 +40,8 @@ public class RecipeController {
     private String showRecipeOverview(Model datamodel) {
         KookKompasUser user = getCurrentUser();
 
+        addRecipesToModel(datamodel, user);
+
         datamodel.addAttribute("categories", categoryService.findAllCategories());
 
         if (user != null) {
@@ -119,26 +121,16 @@ public class RecipeController {
                                        Model model) {
 
         Recipe recipe = recipeService.getRecipeByTitle(title);
+        KookKompasUser user = getCurrentUser();
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        KookKompasUser currentUser = null;
-        if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getName())) {
-            currentUser = kookKompasUserService.getLoggedInUser();
+        if (!userCanAccess(recipe, user)) {
+            return "redirect:/recipe/all";
         }
 
-        if (!recipe.isPublicVisible()) {
-            if (currentUser == null || !recipe.getOwner().equals(currentUser)) {
-                return "redirect:/recipe/all";
-            }
-        }
+        int currentServings = determineServings(recipe, servings);
+        List<RecipeIngredient> scaled = recipeService.getScaledIngredients(recipe, currentServings);
 
-        int currentServings = (servings != null) ? servings : recipe.getServings();
-
-        List<RecipeIngredient> scaledIngredients = recipeService.getScaledIngredients(recipe, currentServings);
-
-        model.addAttribute("recipe", recipe);
-        model.addAttribute("currentServings", currentServings);
-        model.addAttribute("scaledIngredients", scaledIngredients);
+        addRecipeDetailModelAttributes(model, recipe, currentServings, scaled);
 
         return "recipeDetails";
     }
@@ -181,6 +173,14 @@ public class RecipeController {
         return "redirect:/recipe/detail/" + title + "?servings=" + updatedServings;
     }
 
+    private void addRecipesToModel(Model model, KookKompasUser user) {
+        if (user != null) {
+            model.addAttribute("recipes", recipeService.getAllRecipesForUser(user));
+        } else {
+            model.addAttribute("recipes", recipeService.getAllPublicRecipes());
+        }
+    }
+
     private void processCoverImage(Recipe recipe, MultipartFile file, BindingResult result) {
         try {
             if (file != null && !file.isEmpty()) {
@@ -205,5 +205,26 @@ public class RecipeController {
         }
 
         return kookKompasUserService.getLoggedInUser();
+    }
+
+    private boolean userCanAccess(Recipe recipe, KookKompasUser user) {
+        if (recipe.isPublicVisible()) return true;
+        if (user == null) return false;
+        return recipe.getOwner().equals(user);
+    }
+
+    private int determineServings(Recipe recipe, Integer requestedServings) {
+        return (requestedServings != null) ? requestedServings : recipe.getServings();
+    }
+
+    private void addRecipeDetailModelAttributes(
+            Model model,
+            Recipe recipe,
+            int servings,
+            List<RecipeIngredient> scaledIngredients) {
+
+        model.addAttribute("recipe", recipe);
+        model.addAttribute("currentServings", servings);
+        model.addAttribute("scaledIngredients", scaledIngredients);
     }
 }
