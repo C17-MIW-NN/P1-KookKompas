@@ -6,6 +6,7 @@ import nl.miw.ch17.mmadevforce.kookkompas.service.CategoryService;
 import nl.miw.ch17.mmadevforce.kookkompas.service.ImageService;
 import nl.miw.ch17.mmadevforce.kookkompas.service.KookKompasUserService;
 import nl.miw.ch17.mmadevforce.kookkompas.service.RecipeService;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -92,11 +93,11 @@ public class RecipeController {
 
     @PostMapping("/save")
     public String saveOrUpdateRecipe(@Valid @ModelAttribute("formRecipe") Recipe recipeFromForm,
-                                     BindingResult result,
+                                     BindingResult bindingResult,
                                      @RequestParam MultipartFile coverImageFile) {
 
-        processCoverImage(recipeFromForm, coverImageFile, result);
-        if (result.hasErrors()) {
+        processCoverImage(recipeFromForm, coverImageFile, bindingResult);
+        if (bindingResult.hasErrors()) {
             return "recipeForm";
         }
 
@@ -105,7 +106,6 @@ public class RecipeController {
             recipeFromForm.setOwner(currentUser);
         }
 
-        recipeService.saveOrUpdateRecipe(recipeFromForm);
         return "redirect:/recipe/all";
     }
 
