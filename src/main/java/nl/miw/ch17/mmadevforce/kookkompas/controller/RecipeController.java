@@ -49,16 +49,14 @@ public class RecipeController {
             datamodel.addAttribute("recipes", recipeService.getAllPublicRecipes());
         }
 
-//<<<<<<< HEAD
         datamodel.addAttribute("categories", categoryService.findAllCategories());
-//=======
+
         if (currentUser != null) {
             datamodel.addAttribute("categories", categoryService.getAllCategoriesForUser(currentUser));
         } else {
             datamodel.addAttribute("categories", categoryService.getAllPublicCategories());
         }
 
-//>>>>>>> e4b0e1d32849e59efe38e32304b4a1eaebe09974
         return "recipeOverview";
     }
 
