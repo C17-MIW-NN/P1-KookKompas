@@ -14,12 +14,14 @@
             <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 70%; text-align: center;">
                 <h1 style="text-align: center; color: white; margin: 0 0 45px 0; font-size: 50px;">Welkom bij KookKompas!</h1>
                 <h2 style="color: white; font-size: 25px;">Navigeer naar de lekkerste recepten</h2>
-                <form class="d-flex mt-4 justify-content-center" role="search" th:action="@{/recipe/search}" method="get">
+                <form class="d-flex mt-4 justify-content-center" role="search" th:action="@{/recipe/search}"
+                      method="get">
                     <div class="input-group" style="max-width: 400px;">
                         <span class="input-group-text bg-white">
                             <i class="bi bi-search"></i>
                         </span>
-                        <input class="form-control" type="search" name="query" placeholder="Voer zoekterm in" aria-label="Search"/>
+                        <input class="form-control" type="search" name="query" placeholder="Voer zoekterm in"
+                               aria-label="Search"/>
                         <button class="btn btn-success" type="submit">Zoeken</button>
                     </div>
                 </form>
@@ -33,24 +35,27 @@
         <h2 style="text-align: center; margin: 40px 0 10px 0;">Recepten van de week</h2>
     </div>
 
-    <div class="cards-container" style="display: flex; flex-warp: wrap; justify-content: center; gap: 20px; padding: 20px 0;">
+    <div class="cards-container" style="display: flex; flex-warp: wrap; justify-content: center; gap: 20px;
+        padding: 20px 0;">
         <div class="card bg-light" style="width: 300px" th:each="recipe : ${recipes}">
-        <a th:href="@{/recipe/detail/{title}(title = ${recipe.title})}">
-            <img class="card-img-top card-img rounded-top" style="height: 200px; object-fit: cover;" th:src="${recipe.coverImageUrl}" alt="Cover Image" ></a>
-        <div class="card-body"><!--/*@thymesVar id="category" type="nl.miw.ch17.mmadevforce.kookkompas.model.Category"*/-->
-            <a th:href="@{/recipe/detail/{title}(title = ${recipe.title})}" class="text-decoration-none text-black"><h2 class="card-title text-decoration-none"
-                                                                                                                    th:text="${recipe.title}"></h2></a>
-            <span th:each="category : ${recipe.categories}"
-                  th:text="${category.categoryName}"
-                  th:style="'background-color:' + ${category.categoryColor}"
-                  class="category-badge"></span>
-            <p class="card-text py-2" th:href="@{/recipe/detail/{title}(title = ${recipe.title})}"
+            <a th:href="@{/recipe/detail/{title}(title = ${recipe.title})}">
+                <img class="card-img-top card-img rounded-top" style="height: 200px; object-fit: cover;" th:src="${recipe.coverImageUrl}"
+                     alt="Cover Image" ></a>
+            <div class="card-body">
+            <!--/*@thymesVar id="category" type="nl.miw.ch17.mmadevforce.kookkompas.model.Category"*/-->
+                <a th:href="@{/recipe/detail/{title}(title = ${recipe.title})}"
+                   class="text-decoration-none text-black">
+                    <h2 class="card-title text-decoration-none" th:text="${recipe.title}"></h2></a>
+                <span th:each="category : ${recipe.categories}"
+                      th:text="${category.categoryName}"
+                      th:style="'background-color:' + ${category.categoryColor}" class="category-badge"></span>
+                <p class="card-text py-2" th:href="@{/recipe/detail/{title}(title = ${recipe.title})}"
                 th:text="${recipe.description}"></p>
-            <div>
-                <a th:href="@{/shoppinglist/add/{recipeId}(recipeId=${recipe.recipeId})}"
-               class="btn btn-sm btn-green">Voeg toe aan boodschappenlijst</a>
+                <div>
+                    <a th:href="@{/shoppinglist/add/{recipeId}(recipeId=${recipe.recipeId})}"
+                       class="btn btn-sm btn-green">Voeg toe aan boodschappenlijst</a>
+                </div>
             </div>
-        </div>
         </div>
     </div>
 </div>

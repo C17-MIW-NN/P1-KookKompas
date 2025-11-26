@@ -20,31 +20,41 @@
     <div class="cards-container">
         <div class="card bg-light" style="width: 400px">
             <a>
-                <img class="card-img-top card-img rounded-top" src="/images/recipe_template.jpg" style="height: 300px" alt="Cover Image"></a>
-                <div class="card-body">
-                    <a class="text-decoration-none text-black"><h2 class="card-title text-decoration-none">Nieuw recept</h2></a>
-                    <span style="background-color:#00E099; color:white; padding: 3px 6px; margin: 2px 2px; border-radius: 4px">Jouw categorie</span>
-                    <p class="py-2 ">Klaar om een nieuw recept te maken? Voeg het toe!</p>
-                    <a th:href="@{/recipe/add}" class="btn btn-sm btn-green">Maak nieuw recept</a>
-                    <div></div>
-                </div>
+                <img class="card-img-top card-img rounded-top" src="/images/recipe_template.jpg" style="height: 300px"
+                     alt="Cover Image"></a>
+            <div class="card-body">
+                <a class="text-decoration-none text-black">
+                    <h2 class="card-title text-decoration-none">Nieuw recept</h2></a>
+                <span style="background-color:#00E099; color:white; padding: 3px 6px; margin: 2px 2px; border-radius: 4px">Jouw categorie</span>
+                <p class="py-2 ">Klaar om een nieuw recept te maken? Voeg het toe!</p>
+                <a th:href="@{/recipe/add}" class="btn btn-sm btn-green">Maak nieuw recept</a>
+                <div></div>
+            </div>
         </div>
-        <div class="card bg-light" style="width: 400px" th:each="recipe : ${recipes}" th:attr="data-categories=${#strings.listJoin(recipe.categories, ',')}">
+        <div class="card bg-light" style="width: 400px" th:each="recipe : ${recipes}"
+             th:attr="data-categories=${#strings.listJoin(recipe.categories, ',')}">
             <a th:href="@{/recipe/detail/{title}(title = ${recipe.title})}">
-                <img class="card-img-top card-img rounded-top" style="height: 300px" th:src="${recipe.coverImageUrl}" alt="Cover Image" ></a>
-            <div class="card-body"><!--/*@thymesVar id="category" type="nl.miw.ch17.mmadevforce.kookkompas.model.Category"*/-->
-                <a th:href="@{/recipe/detail/{title}(title = ${recipe.title})}" class="text-decoration-none text-black"><h2 class="card-title text-decoration-none"
-                   th:text="${recipe.title}"></h2></a>
+                <img class="card-img-top card-img rounded-top" style="height: 300px" th:src="${recipe.coverImageUrl}"
+                     alt="Cover Image" ></a>
+            <div class="card-body">
+                <!--/*@thymesVar id="category" type="nl.miw.ch17.mmadevforce.kookkompas.model.Category"*/-->
+                <a th:href="@{/recipe/detail/{title}(title = ${recipe.title})}"
+                   class="text-decoration-none text-black">
+                    <h2 class="card-title text-decoration-none" th:text="${recipe.title}"></h2></a>
                 <span th:each="category : ${recipe.categories}"
-                      th:text="${category.categoryName}" th:style="${'background-color:' + category.categoryColor +
-                 '; padding: 3px 6px; border-radius: 4px; color: white; margin-right:6px;'}"></span>
+                      th:text="${category.categoryName}"
+                      th:style="${'background-color:'
+                                + category.categoryColor
+                                + '; padding: 3px 6px; border-radius: 4px; color: white; margin-right:6px;'}"></span>
                 <p class="card-text py-2" th:href="@{/recipe/detail/{title}(title = ${recipe.title})}"
                    th:text="${recipe.description}"></p>
                 <p><strong>Kooktijd:</strong>
                     <span th:text="${recipe.getCookingTime()}"></span> min</p>
-                <div><a th:href="@{/recipe/edit/{title}(title = ${recipe.title})}" class="btn btn-sm btn-primary btn-blue">
+                <div><a th:href="@{/recipe/edit/{title}(title = ${recipe.title})}"
+                        class="btn btn-sm btn-primary btn-blue">
                     <i class="bi bi-pencil"></i></a>
-                    <a th:href="@{/recipe/delete/{recipeId}(recipeId = ${recipe.recipeId})}" class="btn btn-sm btn-danger btn-red">
+                    <a th:href="@{/recipe/delete/{recipeId}(recipeId = ${recipe.recipeId})}"
+                       class="btn btn-sm btn-danger btn-red">
                     <i class="bi bi-trash"></i></a>
                     <a th:href="@{/shoppinglist/add/{recipeId}(recipeId=${recipe.recipeId})}"
                        class="btn btn-sm btn-green">Voeg toe aan boodschappenlijst</a>

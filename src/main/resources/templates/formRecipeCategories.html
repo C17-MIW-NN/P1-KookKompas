@@ -16,12 +16,15 @@
             <input type="hidden" th:field="*{categoryId}">
             <div class ="mb-3">
                 <label for="categoryName" class="form-label">Categorie: </label>
-                <input type="text" th:field="*{categoryName}" class="form-control" id="categoryName" placeholder="Voer categorienaam in">
-                <div class="text-danger mt-1" th:if="${#fields.hasErrors('categoryName')}" th:errors="*{categoryName}"></div>
+                <input type="text" th:field="*{categoryName}" class="form-control" id="categoryName"
+                       placeholder="Voer categorienaam in">
+                <div class="text-danger mt-1" th:if="${#fields.hasErrors('categoryName')}"
+                     th:errors="*{categoryName}"></div>
             </div>
             <div class="mb-3">
                 <label for="categoryColor" class="form-label">Kleur: </label>
-                <input type="text" th:field="*{categoryColor}" class="form-control" id="categoryColor" placeholder="#FFAA00">
+                <input type="text" th:field="*{categoryColor}" class="form-control" id="categoryColor"
+                       placeholder="#FFAA00">
             </div>
 
             <div class="form-group">
@@ -33,8 +36,6 @@
 
             <button type="submit" class="btn btn-success">Sla categorie op</button>
         </form>
-
-
     </div>
 
     <div th:replace="~{fragments/general :: footer}"></div>
