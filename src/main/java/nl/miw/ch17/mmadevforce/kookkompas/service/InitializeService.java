@@ -50,7 +50,6 @@ public class InitializeService {
 
     public void initializeDB() {
         adminUser = makeUser("Admin", "AdminPW");
-        adminUser = makeUser("Arjen", "ArjenPW");
 
         loadCSVFileIngredientList();
         loadCSVFileRecipeSteps();
