@@ -83,8 +83,8 @@ public class CategoryService {
         return categoryRepository.findByCategoryName(categoryName);
     }
 
-<<<<<<< HEAD
-=======
+//<<<<<<< HEAD
+//=======
     public List<Category> getAllCategoriesForUser(KookKompasUser user) {
         return categoryRepository.findAll().stream()
                 .filter(category -> category.isPublicVisible() ||
@@ -115,5 +115,5 @@ public class CategoryService {
 //        return new ArrayList<>(recipes);
 //    }
 
->>>>>>> e4b0e1d32849e59efe38e32304b4a1eaebe09974
+//>>>>>>> e4b0e1d32849e59efe38e32304b4a1eaebe09974
 }

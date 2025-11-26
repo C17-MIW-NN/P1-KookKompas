@@ -49,16 +49,16 @@ public class RecipeController {
             datamodel.addAttribute("recipes", recipeService.getAllPublicRecipes());
         }
 
-<<<<<<< HEAD
+//<<<<<<< HEAD
         datamodel.addAttribute("categories", categoryService.findAllCategories());
-=======
+//=======
         if (currentUser != null) {
             datamodel.addAttribute("categories", categoryService.getAllCategoriesForUser(currentUser));
         } else {
             datamodel.addAttribute("categories", categoryService.getAllPublicCategories());
         }
 
->>>>>>> e4b0e1d32849e59efe38e32304b4a1eaebe09974
+//>>>>>>> e4b0e1d32849e59efe38e32304b4a1eaebe09974
         return "recipeOverview";
     }
 
@@ -142,10 +142,10 @@ public class RecipeController {
                                        @RequestParam(required = false) Integer servings,
                                        Model model) {
 
-        //Recipe recipe = recipeService.getRecipeByTitle(title);
-        Optional<Recipe> optionalRecipe = recipeService.getRecipeWithIngredientsAndCategoriesByTitle(title);
-        optionalRecipe.ifPresent(r -> r.getSteps().size());
-        Recipe recipe = optionalRecipe.orElseThrow(() -> new RuntimeException("Recipe not found: " + title));
+        Recipe recipe = recipeService.getRecipeByTitle(title);
+//        Optional<Recipe> optionalRecipe = recipeService.getRecipeWithIngredientsAndCategoriesByTitle(title);
+//        optionalRecipe.ifPresent(r -> r.getSteps().size());
+//        Recipe recipe = optionalRecipe.orElseThrow(() -> new RuntimeException("Recipe not found: " + title));
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         KookKompasUser currentUser = null;
         if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getName())) {
