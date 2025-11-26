@@ -4,7 +4,6 @@ import nl.miw.ch17.mmadevforce.kookkompas.model.*;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.*;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -31,7 +30,9 @@ public class InitializeService {
                              RecipeIngredientRepository recipeIngredientRepository,
                              RecipeRepository recipeRepository,
                              RecipeStepRepository recipeStepRepository,
-                             CategoryRepository categoryRepository, CategoryService categoryService, KookKompasUserService kookKompasUserService) {
+                             CategoryRepository categoryRepository,
+                             CategoryService categoryService,
+                             KookKompasUserService kookKompasUserService) {
         this.ingredientRepository = ingredientRepository;
         this.recipeIngredientRepository = recipeIngredientRepository;
         this.recipeRepository = recipeRepository;

@@ -2,7 +2,6 @@ package nl.miw.ch17.mmadevforce.kookkompas.service;
 
 import nl.miw.ch17.mmadevforce.kookkompas.model.Image;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.ImageRepository;
-import org.hibernate.boot.model.naming.IllegalIdentifierException;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;

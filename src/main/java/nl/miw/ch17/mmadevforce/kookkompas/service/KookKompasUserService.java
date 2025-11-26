@@ -33,7 +33,8 @@ public class KookKompasUserService implements UserDetailsService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
 
-        return kookKompasUserRepository.findByUsername(username).orElseThrow(() -> new IllegalArgumentException("Ingelogde gebruiker niet gevonden"));
+        return kookKompasUserRepository.findByUsername(username).orElseThrow(()
+                -> new IllegalArgumentException("Ingelogde gebruiker niet gevonden"));
     }
 
     @Override

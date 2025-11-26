@@ -1,7 +1,6 @@
 package nl.miw.ch17.mmadevforce.kookkompas.service;
 
 import nl.miw.ch17.mmadevforce.kookkompas.model.*;
-import nl.miw.ch17.mmadevforce.kookkompas.repositories.KookKompasUserRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.RecipeRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.ShoppingListItemRepository;
 import java.util.List;
@@ -21,15 +20,15 @@ public class ShoppingListService {
     private final RecipeRepository recipeRepository;
     private final ShoppingListItemRepository shoppingListItemRepository;
     private final ShoppingListRepository shoppingListRepository;
-    private final KookKompasUserRepository kookKompasUserRepository;
+    private final KookKompasUserService kookKompasUserService;
 
-    private KookKompasUserService kookKompasUserService;
-
-    public ShoppingListService(RecipeRepository recipeRepository, ShoppingListItemRepository shoppingListItemRepository, ShoppingListRepository shoppingListRepository, KookKompasUserRepository kookKompasUserRepository, KookKompasUserService kookKompasUserService) {
+    public ShoppingListService(RecipeRepository recipeRepository,
+                               ShoppingListItemRepository shoppingListItemRepository,
+                               ShoppingListRepository shoppingListRepository,
+                               KookKompasUserService kookKompasUserService) {
         this.recipeRepository = recipeRepository;
         this.shoppingListItemRepository = shoppingListItemRepository;
         this.shoppingListRepository = shoppingListRepository;
-        this.kookKompasUserRepository = kookKompasUserRepository;
         this.kookKompasUserService = kookKompasUserService;
     }
 
@@ -51,7 +50,8 @@ public class ShoppingListService {
             Double amount = recipeIngredient.getIngredientAmount();
             String unit = recipeIngredient.getUnit();
 
-            Optional<ShoppingListItem> existing = shoppingListItemRepository.findByShoppingListAndIngredientAndUnit(shoppingList, ingredient, unit);
+            Optional<ShoppingListItem> existing =
+                    shoppingListItemRepository.findByShoppingListAndIngredientAndUnit(shoppingList, ingredient, unit);
 
             if (existing.isPresent()) {
                 ShoppingListItem item = existing.get();

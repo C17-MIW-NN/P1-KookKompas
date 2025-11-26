@@ -22,7 +22,9 @@ public class IngredientService {
     private final RecipeRepository recipeRepository;
     private final ShoppingListItemRepository shoppingListItemRepository;
 
-    public IngredientService(IngredientRepository ingredientRepository, RecipeRepository recipeRepository, ShoppingListItemRepository shoppingListItemRepository) {
+    public IngredientService(IngredientRepository ingredientRepository,
+                             RecipeRepository recipeRepository,
+                             ShoppingListItemRepository shoppingListItemRepository) {
         this.ingredientRepository = ingredientRepository;
         this.recipeRepository = recipeRepository;
         this.shoppingListItemRepository = shoppingListItemRepository;
