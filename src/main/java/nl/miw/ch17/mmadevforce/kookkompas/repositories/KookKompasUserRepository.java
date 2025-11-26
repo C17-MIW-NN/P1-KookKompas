@@ -1,7 +1,6 @@
 package nl.miw.ch17.mmadevforce.kookkompas.repositories;
 
 import nl.miw.ch17.mmadevforce.kookkompas.model.KookKompasUser;
-import org.hibernate.sql.ast.tree.expression.JdbcParameter;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
@@ -11,7 +10,6 @@ import java.util.Optional;
  */
 public interface KookKompasUserRepository extends JpaRepository<KookKompasUser, Long> {
     Optional<KookKompasUser> findByUsername(String username);
-    Optional<KookKompasUser> findByUserId(Long userId);
 
     boolean existsByUsername(String username);
 

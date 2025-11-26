@@ -3,7 +3,6 @@ package nl.miw.ch17.mmadevforce.kookkompas.service;
 import nl.miw.ch17.mmadevforce.kookkompas.model.*;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.CategoryRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.IngredientRepository;
-import nl.miw.ch17.mmadevforce.kookkompas.repositories.KookKompasUserRepository;
 import nl.miw.ch17.mmadevforce.kookkompas.repositories.RecipeRepository;
 import org.springframework.stereotype.Service;
 import java.util.*;
@@ -83,7 +82,6 @@ public class RecipeService {
                 .orElseThrow(() -> new RuntimeException("Recipe not found: " + title));
     }
 
-    // scaledIngredients berekenen
     public List<RecipeIngredient> getScaledIngredients(Recipe recipe, int servings) {
         double originalServings = recipe.getServings();
         return recipe.getRecipeingredients().stream()
@@ -91,8 +89,7 @@ public class RecipeService {
                     RecipeIngredient copy = new RecipeIngredient();
                     copy.setIngredient(ri.getIngredient());
                     copy.setUnit(ri.getUnit());
-                    Double baseAmount = ri.getIngredientAmount() != null ? ri.getIngredientAmount() : 0.0;
-                    //double scaled = (amount != null ? amount : 0.0) * servings / recipe.getServings();
+                    double baseAmount = ri.getIngredientAmount() != null ? ri.getIngredientAmount() : 0.0;
 
                     copy.setIngredientAmount(baseAmount * servings / originalServings);
                     return copy;
