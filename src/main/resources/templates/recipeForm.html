@@ -18,6 +18,8 @@
             <label for="recipeName">Titel</label>
             <input type="hidden" th:field="*{recipeId}">
             <input class="form-control" type="text" id="recipeName" th:field="*{title}">
+            <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+
         </div>
 
         <div class="form-group">
@@ -64,7 +66,9 @@
                     <span th:text="${ingredient.ingredientName}"></span><br>
 
                     <div class="ingredient-extra"
-                        th:style="${formRecipe.recipeingredients[__${iter.index}__].ingredient != null ? 'display:inline;' : 'display:none;'}">
+                        th:style="${formRecipe.recipeingredients[__${iter.index}__].ingredient != null
+                        ? 'display:inline;'
+                        : 'display:none;'}">
                         <input type="text"
                             th:field="*{recipeingredients[__${iter.index}__].ingredientAmount}"
                             placeholder="Hoeveelheid" />
@@ -127,7 +131,6 @@
             });
         }
 
-        // Add step
         addBtn.addEventListener("click", () => {
             const index = table.querySelectorAll("tr").length;
             const newRow = document.createElement("tr");
@@ -137,7 +140,8 @@
             newRow.innerHTML = `
             <td>${index + 1}</td>
             <td><input class="form-control" name="steps[${index}].stepDescription" required></td>
-            <td><input class="form-control" type="number" name="steps[${index}].cookingTimePerStep" placeholder="Kooktijd (minuten)" min="0"></td>
+            <td><input class="form-control" type="number" name="steps[${index}].cookingTimePerStep"
+            placeholder="Kooktijd (minuten)" min="0"></td>
             <td><button type="button" class="delete-step">Verwijder</button></td>
         `;
 
@@ -145,14 +149,12 @@
             reindex();
         });
 
-        // Delete step
         table.addEventListener("click", e => {
             if (!e.target.matches(".delete-step")) return;
             e.target.closest("tr").remove();
             reindex();
         });
 
-        // Init call
         reindex();
     })();
 </script>

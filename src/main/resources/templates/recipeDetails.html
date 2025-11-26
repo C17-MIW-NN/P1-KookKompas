@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
 
 <head th:replace="~{fragments/general :: baseheader(~{:: title})}">
-    <title>Overview of a record</title>
+    <title>Recept details</title>
 </head>
 
 <body>
@@ -15,11 +15,11 @@
         <p><strong>Totale kooktijd:</strong> <span th:text="${recipe.getCookingTime()}"></span> min</p>
     </div>
     <div class="text-center mb-5">
-        <img th:src="${recipe.coverImageUrl}" class="img-fluid rounded shadow-lg" style="max-height: 400px; object-fit: cover;" alt="Cover Image">
+        <img th:src="${recipe.coverImageUrl}" class="img-fluid rounded shadow-lg" style="max-height: 400px;
+        object-fit: cover;" alt="Cover Image">
     </div>
 
     <div class="row g-4">
-
         <div class="col-md-4">
             <div class="card h-100 shadow-sm">
                 <div class="card-body">
@@ -42,13 +42,18 @@
 
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item" th:each="recipeingredient : ${scaledIngredients}"
-                            th:data-baseamount="${recipeingredient.ingredientAmount != null ? recipeingredient.ingredientAmount : 0}"
+                            th:data-baseamount="${recipeingredient.ingredientAmount != null ?
+                            recipeingredient.ingredientAmount : 0}"
                             th:data-unit="${recipeingredient.unit != null ? recipeingredient.unit : ''}"
-                            th:data-name="${recipeingredient.ingredient != null ? recipeingredient.ingredient.ingredientName : ''}">
+                            th:data-name="${recipeingredient.ingredient != null ?
+                            recipeingredient.ingredient.ingredientName : ''}">
 
-                            <span class="amount" th:text="${recipeingredient.ingredientAmount != null ? recipeingredient.ingredientAmount : 0}"></span>
+                            <span class="amount"
+                                  th:text="${recipeingredient.ingredientAmount != null
+                                  ? recipeingredient.ingredientAmount : 0}"></span>
                             <span th:text="${recipeingredient.unit != null ? recipeingredient.unit : ''}"></span>
-                            <span th:text="${recipeingredient.ingredient != null ? recipeingredient.ingredient.ingredientName : ''}"></span>
+                            <span th:text="${recipeingredient.ingredient != null ?
+                            recipeingredient.ingredient.ingredientName : ''}"></span>
                         </li>
                     </ul>
                 </div>
@@ -62,7 +67,9 @@
                     <ol class="preparation-list">
                         <li th:each="recipeStep : ${recipe.steps}">
                             <span th:text="${recipeStep.stepDescription}"></span>
-                            <span th:text="${recipeStep.cookingTimePerStep != null ? '(' + recipeStep.cookingTimePerStep + ' min)' : ''}"></span>
+                            <span th:text="${recipeStep.cookingTimePerStep != null
+                            ? '(' + recipeStep.cookingTimePerStep + ' min)'
+                            : ''}"></span>
                         </li>
                     </ol>
                 </div>
