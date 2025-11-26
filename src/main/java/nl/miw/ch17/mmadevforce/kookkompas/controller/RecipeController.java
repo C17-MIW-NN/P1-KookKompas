@@ -1,5 +1,6 @@
 package nl.miw.ch17.mmadevforce.kookkompas.controller;
 
+import jakarta.validation.Valid;
 import nl.miw.ch17.mmadevforce.kookkompas.model.*;
 import nl.miw.ch17.mmadevforce.kookkompas.service.CategoryService;
 import nl.miw.ch17.mmadevforce.kookkompas.service.ImageService;
@@ -91,7 +92,7 @@ public class RecipeController {
     }
 
     @PostMapping("/save")
-    public String saveOrUpdateRecipe(@ModelAttribute("formRecipe") Recipe recipeFromForm,
+    public String saveOrUpdateRecipe(@Valid @ModelAttribute("formRecipe") Recipe recipeFromForm,
                                      BindingResult result,
                                      @RequestParam MultipartFile coverImageFile) {
 
